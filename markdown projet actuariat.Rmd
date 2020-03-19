@@ -61,3 +61,13 @@ barplot(table_Garage, main="Répartition des garages",
         xlab="Nombre de garages",
         col="orange")
 ```
+
+```{r}
+#calibration d’une loi de Poisson
+fpois <- glm(RiskVar~DrivAge+VehAge+VehClass+VehBody+VehEnergy+Gender, offset=log(Exposure), family=poisson("log"), data=freMPL2)
+summary(fpois)
+
+#calibration d’une loi Poisson sur-dispersée
+fpois2 <- glm(RiskVar~DrivAge+VehAge+VehClass+VehBody+VehEnergy+Gender, offset=log(Exposure), family=quasipoisson("log"), data=freMPL2)
+summary(fpois2)
+```
