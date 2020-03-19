@@ -1,0 +1,63 @@
+---
+title: "projet actuariat"
+author: "Delhaye"
+date: "19/03/2020"
+output: html_document
+---
+
+## R Markdown
+
+### Installation des packages nécessaires 
+
+```{r}
+install.packages(c("xts","sp","zoo"))
+install.packages("CASdatasets", repos = "http://dutangc.free.fr/pub/RRepos/", type="source")
+install.packages("Hmisc")
+```
+
+### Importation des librairies utiles et chargement des données sur lesquels le travail sera effectué
+
+```{r}
+library(zoo)
+library(xts)
+library(sp)
+library(CASdatasets)
+data(freMPL1)
+data(freMPL2)
+```
+
+# 1. Explorez les données freMPL1 et freMPL2 à l'aide des techniques exploratoires usuelles (statistiques descriptives, ACP, AFC)
+
+### freMPL1
+
+```{r}
+head(freMPL1)
+summary(freMPL1)
+```
+
+### freMPL2
+
+```{r}
+head(freMPL2)
+summary(freMPL2)
+```
+
+```{r}
+library(Hmisc)
+describe(freMPL2)
+```
+```{r}
+# effectif
+
+hist(freMPL1$LicAge, 
+      col = c("orange"),
+      main = paste("Histogramme pour la variable LicAge"),
+      ylab = "Effectifs",
+      xlab = "Licence Age in months ")
+
+# Proportion
+table_Garage<-table(freMPL1$Garage)
+barplot(table_Garage, main="Répartition des garages", 
+        xlab="Nombre de garages",
+        col="orange")
+```
