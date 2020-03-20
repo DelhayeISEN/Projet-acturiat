@@ -5,26 +5,37 @@ date: "19/03/2020"
 output: html_document
 ---
 
-## R Markdown
-
-### Installation des packages nécessaires 
+### Installation des packages utilisées dans ce projet 
 
 ```{r}
-install.packages(c("xts","sp","zoo"))
-install.packages("CASdatasets", repos = "http://dutangc.free.fr/pub/RRepos/", type="source")
-install.packages("Hmisc")
+#install.packages(c("xts","sp","zoo"))
+#install.packages("Hmisc")
 ```
 
-### Importation des librairies utiles et chargement des données sur lesquels le travail sera effectué
+
+### Installation du package CASdatasets contenant les 2 jeux de données sur lesquels nous allons travaillés
+
+```{r}
+#install.packages("CASdatasets", repos = "http://dutangc.free.fr/pub/RRepos/", type="source")
+```
+
+### Importation des librairies nécessaires aux datasets
 
 ```{r}
 library(zoo)
 library(xts)
 library(sp)
 library(CASdatasets)
+```
+
+### Chargement des 2 jeux de données freMPL1 et freMPL2
+
+```{r}
 data(freMPL1)
 data(freMPL2)
 ```
+
+Un peu à la manière du machine learning, les données contenues dans freMPL2 serviront de données d'entraînement de notre modèle et les données de freMPL1 serviront pour tester notre modèle final.
 
 # 1. Explorez les données freMPL1 et freMPL2 à l'aide des techniques exploratoires usuelles (statistiques descriptives, ACP, AFC)
 
@@ -35,17 +46,44 @@ head(freMPL1)
 summary(freMPL1)
 ```
 
-### freMPL2
+### Exploration du jeu de données d'entraînement : freMPL2
 
+Dans un premier temps, regardons les premières lignes du jeu de données 
 ```{r}
 head(freMPL2)
+```
+ et les dimmensions de notre jeu de données : 
+```{r}
+dim(freMPL2)
+```
+ Le jeu contient 48295 données différentes, toutes définies par 22 caractéristiques différentes. 
+
+Affichons les différents noms des colonnes : 
+```{r}
+colnames(freMPL2)
+```
+
+Regardons maintenant les différents types d'objets figurant dans les colonnes :  
+```{r}
+str(freMPL2)
+```
+Nous avons donc des objets de type numeric, de type factor, de type int et même de type date. 
+
+Regardons maintenant plus précisement les valeurs particulières de ces colonnes (valeurs minimum et maximum, moyenne, médiane,quantiles, ...)
+
+```{r}
 summary(freMPL2)
 ```
 
+On peut aussi utiliser la méthode describe du package Hmisc pour avoir un aperçu de la dispersion des données.
 ```{r}
-library(Hmisc)
+library("Hmisc")
 describe(freMPL2)
 ```
+Mais cela ne vaut pas une représentation graphique. 
+
+###### Représentations graphiques des données
+
 ```{r}
 # effectif
 
