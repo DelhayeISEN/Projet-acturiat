@@ -85,12 +85,18 @@ Mais cela ne vaut pas une représentation graphique.
 ###### Représentations graphiques des données
 
 ```{r}
-hist(freMPL2$LicAge, 
+par(fig=c(0.1,1,0.1,0.7), mar = c(0,0,2,2))
+hist(freMPL2$LicAge,
       main = paste("LicAge"),
       ylab = "Effectifs",
       xlab = "Licence Age in months ")
-boxplot(freMPL2$LicAge, data = freMPL2, border = "blue", horizontal = TRUE, add = TRUE)
+par(fig=c(0.1,1,0.8,1), mar = c(0,0,2,2), new = TRUE)
+boxplot(freMPL2$LicAge, data = freMPL2, horizontal = TRUE)
+
+hist(freMPL2$LicAge, 
+      main = paste("LicAge"))
 ```
+
 
 ###### ACP 
 
