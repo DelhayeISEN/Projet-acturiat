@@ -85,20 +85,25 @@ Mais cela ne vaut pas une représentation graphique.
 ###### Représentations graphiques des données
 
 ```{r}
-# effectif
-
-hist(freMPL1$LicAge, 
-      col = c("orange"),
-      main = paste("Histogramme pour la variable LicAge"),
+hist(freMPL2$LicAge, 
+      main = paste("LicAge"),
       ylab = "Effectifs",
       xlab = "Licence Age in months ")
-
-# Proportion
-table_Garage<-table(freMPL1$Garage)
-barplot(table_Garage, main="Répartition des garages", 
-        xlab="Nombre de garages",
-        col="orange")
+boxplot(freMPL2$LicAge, data = freMPL2, border = "blue", horizontal = TRUE, add = TRUE)
 ```
+
+###### ACP 
+
+L'ACP permet d’analyser et de visualiser un jeu de données contenant des individus décrits par plusieurs variables quantitatives.
+C’est une méthode statistique qui permet d’explorer des données dites multivariées (données avec plusieurs variables). Chaque variable pourrait être considérée comme une dimension différente.
+L’analyse en composantes principales est utilisée pour extraire et de visualiser les informations importantes contenues dans une table de données multivariées. L’ACP synthétise cette information en seulement quelques nouvelles variables appelées composantes principales. Ces nouvelles variables correspondent à une combinaison linéaire des variables originels. Le nombre de composantes principales est inférieur ou égal au nombre de variables d’origine.
+
+###### AFC 
+
+L’ analyse factorielle des correspondances est une extension de l’analyse en composantes principales pour analyser l’association entre deux variables qualitatives (ou catégorielles).
+L’AFC permet de résumer et de visualiser l’information contenue dans le tableau de contingence formé par les deux variables catégorielles. Le tableau de contingence contient les fréquences formées par les deux variables.
+
+###### GLM 
 
 ```{r}
 #calibration d’une loi de Poisson
@@ -109,3 +114,6 @@ summary(fpois)
 fpois2 <- glm(RiskVar~DrivAge+VehAge+VehClass+VehBody+VehEnergy+Gender, offset=log(Exposure), family=quasipoisson("log"), data=freMPL2)
 summary(fpois2)
 ```
+
+
+
