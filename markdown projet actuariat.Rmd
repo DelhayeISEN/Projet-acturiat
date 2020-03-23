@@ -74,8 +74,10 @@ Regardons maintenant plus précisement les valeurs particulières de ces colonne
 ```{r}
 summary(freMPL2)
 ```
+On remarquera qu'il existe des données manquantes dans la colonne RecEnd.
 
 On peut aussi utiliser la méthode describe du package Hmisc pour avoir un aperçu de la dispersion des données.
+
 ```{r}
 library("Hmisc")
 describe(freMPL2)
@@ -84,6 +86,18 @@ Mais cela ne vaut pas une représentation graphique.
 
 ###### Représentations graphiques des données
 
+###### Exposure : 
+```{r}
+par(fig=c(0.1,1,0.1,0.7), mar = c(0,0,2,2))
+hist(freMPL2$Exposure,
+      main = paste("Exposure"),
+      ylab = "Effectifs",
+      xlab = "Exposure in years ")
+par(fig=c(0.1,1,0.8,1), mar = c(0,0,2,2), new = TRUE)
+boxplot(freMPL2$Exposure, data = freMPL2, horizontal = TRUE)
+```
+
+###### LicAge : 
 ```{r}
 par(fig=c(0.1,1,0.1,0.7), mar = c(0,0,2,2))
 hist(freMPL2$LicAge,
@@ -92,17 +106,68 @@ hist(freMPL2$LicAge,
       xlab = "Licence Age in months ")
 par(fig=c(0.1,1,0.8,1), mar = c(0,0,2,2), new = TRUE)
 boxplot(freMPL2$LicAge, data = freMPL2, horizontal = TRUE)
-
-hist(freMPL2$LicAge, 
-      main = paste("LicAge"))
 ```
-
 
 ###### ACP 
 
 L'ACP permet d’analyser et de visualiser un jeu de données contenant des individus décrits par plusieurs variables quantitatives.
 C’est une méthode statistique qui permet d’explorer des données dites multivariées (données avec plusieurs variables). Chaque variable pourrait être considérée comme une dimension différente.
 L’analyse en composantes principales est utilisée pour extraire et de visualiser les informations importantes contenues dans une table de données multivariées. L’ACP synthétise cette information en seulement quelques nouvelles variables appelées composantes principales. Ces nouvelles variables correspondent à une combinaison linéaire des variables originels. Le nombre de composantes principales est inférieur ou égal au nombre de variables d’origine.
+
+###### Exécution sur nos données freMPL2
+
+Attention, les valeurs doivent être numériques.
+
+On va donc convertir nos valeurs en numérique :
+```{r}
+freMPL2$LicAge <- as.numeric(freMPL2$LicAge)
+freMPL2$VehAge <- as.numeric(freMPL2$VehAge)
+freMPL2$Gender <- as.numeric(freMPL2$Gender)
+freMPL2$MariStat <- as.numeric(freMPL2$MariStat)
+freMPL2$SocioCateg <- as.numeric(freMPL2$SocioCateg)
+freMPL2$VehUsage <- as.numeric(freMPL2$VehUsage)
+freMPL2$DrivAge <- as.numeric(freMPL2$DrivAge)
+freMPL2$BonusMalus <- as.numeric(freMPL2$BonusMalus)
+freMPL2$VehBody <- as.numeric(freMPL2$VehBody)
+freMPL2$VehPrice <- as.numeric(freMPL2$VehPrice)
+freMPL2$VehEngine <- as.numeric(freMPL2$VehEngine)
+freMPL2$VehEnergy <- as.numeric(freMPL2$VehEnergy)
+freMPL2$VehMaxSpeed <- as.numeric(freMPL2$VehMaxSpeed)
+freMPL2$VehClass<- as.numeric(freMPL2$VehClass)
+freMPL2$RiskVar <- as.numeric(freMPL2$RiskVar)
+freMPL2$ClaimAmount <- as.numeric(freMPL2$ClaimAmount)
+freMPL2$Garage<- as.numeric(freMPL2$Garage)
+str(freMPL2)
+```
+
+
+```{r}
+freMPL2.pca <- prcomp(freMPL2[,c(1:2,5:10,12:21)], center = TRUE,scale. = TRUE)
+summary(freMPL2.pca)
+```
+
+Nous avons 18 composantes principales numérotées de 1 à 18 (PC1-18).
+Chacune de ces composantes définit un pourcentage de la variation total du dataset. Par exemple, l'âge de la licence (PC2) représente 10,92% de la variance, ce qui signifie qu'un dixième de l'information contenue dans ce dataset peut être représenté par l'âge de la licence. 
+
+```{r}
+str(freMPL2.pca)
+```
+
+Cette instruction nous montre ce que contient notre objet ACP : 
+- le centre ($center), l'échelle ($scale) et l'écart-type de chaque élément.
+- La relation (corrélation,...) entre nos variables initiales et les composants principaux.($rotation)
+- Les valeurs de chaque exemple concernant les composantes principales ($x).
+
+###### Affichage de l'ACP
+
+```{r}
+library(devtools)
+#install_github("vqv/ggbiplot")
+```
+```{r}
+library(ggbiplot)
+ggbiplot(freMPL2.pca)
+```
 
 ###### AFC 
 
