@@ -10,6 +10,7 @@ output: html_document
 ```{r}
 #install.packages(c("xts","sp","zoo"))
 #install.packages("Hmisc")
+install.packages(c("FactoMineR", "factoextra"))
 ```
 
 
@@ -140,39 +141,61 @@ freMPL2$Garage<- as.numeric(freMPL2$Garage)
 str(freMPL2)
 ```
 
-
 ```{r}
-freMPL2.pca <- prcomp(freMPL2[,c(1:2,5:10,12:21)], center = TRUE,scale. = TRUE)
-summary(freMPL2.pca)
+library("FactoMineR")
+library("factoextra") # Pour la visualisation 
 ```
 
-Nous avons 18 composantes principales numérotées de 1 à 18 (PC1-18).
-Chacune de ces composantes définit un pourcentage de la variation total du dataset. Par exemple, l'âge de la licence (PC2) représente 10,92% de la variance, ce qui signifie qu'un dixième de l'information contenue dans ce dataset peut être représenté par l'âge de la licence. 
-
 ```{r}
-str(freMPL2.pca)
+freMPL2.active <- freMPL2[,c(1:2,5:10,12:21)]
+res.pca <- PCA(freMPL2.active, graph = FALSE)
 ```
 
-Cette instruction nous montre ce que contient notre objet ACP : 
-- le centre ($center), l'échelle ($scale) et l'écart-type de chaque élément.
-- La relation (corrélation,...) entre nos variables initiales et les composants principaux.($rotation)
-- Les valeurs de chaque exemple concernant les composantes principales ($x).
-
-###### Affichage de l'ACP
+Affichage du résultat : 
 
 ```{r}
-library(devtools)
-#install_github("vqv/ggbiplot")
+print(res.pca)
 ```
+
 ```{r}
-library(ggbiplot)
-ggbiplot(freMPL2.pca)
+get_eigenvalue(res.pca)
+fviz_eig(res.pca)
+```
+
+utilisation de cos2 pour juger de la qualité de la représentation :
+
+```{r}
+fviz_pca_var(res.pca, col.var = "cos2",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE # Évite le chevauchement de texte
+             )
+```
+
+contribution des colonnes aux dimensions : 
+
+```{r}
+fviz_pca_var(res.pca, col.var = "contrib",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07")
+             )
+```
+Description des dimensions
+
+Dans les sections précédentes, nous avons décrit comment mettre en évidence les variables en fonction de leurs contributions aux composantes principales.
+
+Notez également que la fonction dimdesc() [dans FactoMineR], pour dimension description (en anglais), peut être utilisée pour identifier les variables les plus significativement associées avec une composante principale donnée . Elle peut être utilisée comme suit:
+```{r}
+res.desc <- dimdesc(res.pca, axes = c(1,2), proba = 0.05)
+res.desc
 ```
 
 ###### AFC 
 
 L’ analyse factorielle des correspondances est une extension de l’analyse en composantes principales pour analyser l’association entre deux variables qualitatives (ou catégorielles).
 L’AFC permet de résumer et de visualiser l’information contenue dans le tableau de contingence formé par les deux variables catégorielles. Le tableau de contingence contient les fréquences formées par les deux variables.
+
+```{r}
+```
+
 
 ###### GLM 
 
