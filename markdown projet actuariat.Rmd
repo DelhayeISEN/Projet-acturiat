@@ -10,7 +10,7 @@ output: html_document
 ```{r}
 #install.packages(c("xts","sp","zoo"))
 #install.packages("Hmisc")
-install.packages(c("FactoMineR", "factoextra"))
+#install.packages(c("FactoMineR", "factoextra"))
 ```
 
 
@@ -147,25 +147,25 @@ library("factoextra") # Pour la visualisation
 ```
 
 ```{r}
-freMPL2.active <- freMPL2[,c(1:2,5:10,12:21)]
-res.pca <- PCA(freMPL2.active, graph = FALSE)
+freMPL2.active <- freMPL2[,c(1:2,5:10,12:19,21)]
+freMPL2.pca <- PCA(freMPL2.active, graph = FALSE)
 ```
 
 Affichage du résultat : 
 
 ```{r}
-print(res.pca)
+print(freMPL2.pca)
 ```
 
 ```{r}
-get_eigenvalue(res.pca)
-fviz_eig(res.pca)
+get_eigenvalue(freMPL2.pca)
+fviz_eig(freMPL2.pca)
 ```
 
 utilisation de cos2 pour juger de la qualité de la représentation :
 
 ```{r}
-fviz_pca_var(res.pca, col.var = "cos2",
+fviz_pca_var(freMPL2.pca, col.var = "cos2",
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
              repel = TRUE # Évite le chevauchement de texte
              )
@@ -174,7 +174,7 @@ fviz_pca_var(res.pca, col.var = "cos2",
 contribution des colonnes aux dimensions : 
 
 ```{r}
-fviz_pca_var(res.pca, col.var = "contrib",
+fviz_pca_var(freMPL2.pca, col.var = "contrib",
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07")
              )
 ```
@@ -183,9 +183,10 @@ Description des dimensions
 Dans les sections précédentes, nous avons décrit comment mettre en évidence les variables en fonction de leurs contributions aux composantes principales.
 
 Notez également que la fonction dimdesc() [dans FactoMineR], pour dimension description (en anglais), peut être utilisée pour identifier les variables les plus significativement associées avec une composante principale donnée . Elle peut être utilisée comme suit:
+
 ```{r}
-res.desc <- dimdesc(res.pca, axes = c(1,2), proba = 0.05)
-res.desc
+freMPL2.desc <- dimdesc(freMPL2.pca, axes = c(1,2), proba = 0.05)
+freMPL2.desc
 ```
 
 ###### AFC 
@@ -194,6 +195,24 @@ L’ analyse factorielle des correspondances est une extension de l’analyse en
 L’AFC permet de résumer et de visualiser l’information contenue dans le tableau de contingence formé par les deux variables catégorielles. Le tableau de contingence contient les fréquences formées par les deux variables.
 
 ```{r}
+library ("FactoMineR")
+freMPL2.ca <- CA (freMPL2.active)
+print(freMPL2.ca)
+```
+```{r}
+get_eigenvalue(freMPL2.ca)
+fviz_screeplot (freMPL2.ca, addlabels = TRUE)
+```
+```{r}
+fviz_ca_col (freMPL2.ca, col.col = "cos2",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE)
+fviz_cos2 (freMPL2.ca, choice = "col", axes = 1:2)
+```
+
+```{r}
+res.desc <- dimdesc(freMPL2.ca, axes = c(1, 2))
+res.desc[[1]]$col
 ```
 
 
