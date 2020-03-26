@@ -88,14 +88,13 @@ Mais cela ne vaut pas une représentation graphique.
 ###### Représentations graphiques des données
 
 ###### Exposure : 
+
 ```{r}
 par(fig=c(0.1,1,0.1,0.7), mar = c(0,0,2,2))
 hist(freMPL2$Exposure,
       main = paste("Exposure"),
       ylab = "Effectifs",
-      xlab = "Exposure in years ",
-     proba = TRUE)
-lines(density(freMPL2$Exposure), col = "red", lwd=3)
+      xlab = "Exposure in years ")
 par(fig=c(0.1,1,0.8,1), mar = c(0,0,2,2), new = TRUE)
 boxplot(freMPL2$Exposure, data = freMPL2, horizontal = TRUE)
 ```
@@ -159,6 +158,185 @@ ggplot(dtGender, aes(x = "", y = prop, fill = class)) +
   theme_void()
 ```
 
+###### MariStat
+
+```{r}
+barplot(table(freMPL2$MariStat), main = "MariStat")
+
+# Affichage diagramme camembert 
+
+dtMariStat <- data.frame(
+  class = levels(freMPL2$MariStat),
+  n = as.data.frame(table(freMPL2$MariStat))[,2],
+  prop = as.data.frame(round(prop.table(table(freMPL2$MariStat)),2))[,2]
+)
+dtMariStat <- dtMariStat %>%
+  arrange(desc(class)) %>%
+  mutate(lab.ypos = cumsum(prop) - 0.5*prop)
+ggplot(dtMariStat, aes(x = "", y = prop, fill = class)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = lab.ypos, label = prop), color = "white")+
+  theme_void()
+```
+
+###### SocioCateg
+
+```{r}
+barplot(table(freMPL2$SocioCateg), main = "SocioCateg")
+
+# Affichage diagramme camembert 
+
+dtSocioCateg <- data.frame(
+  class = levels(freMPL2$SocioCateg),
+  n = as.data.frame(table(freMPL2$SocioCateg))[,2],
+  prop = as.data.frame(round(prop.table(table(freMPL2$SocioCateg)),2))[,2]
+)
+dtSocioCateg <- dtSocioCateg %>%
+  arrange(desc(class)) %>%
+  mutate(lab.ypos = cumsum(prop) - 0.5*prop)
+ggplot(dtSocioCateg, aes(x = "", y = prop, fill = class)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = lab.ypos, label = prop), color = "white")+
+  theme_void()
+```
+
+###### VehUsage
+
+```{r}
+barplot(table(freMPL2$VehUsage), main = "VehUsage")
+
+# Affichage diagramme camembert 
+
+dtVehUsage <- data.frame(
+  class = levels(freMPL2$VehUsage),
+  n = as.data.frame(table(freMPL2$VehUsage))[,2],
+  prop = as.data.frame(round(prop.table(table(freMPL2$VehUsage)),2))[,2]
+)
+dtVehUsage <- dtVehUsage %>%
+  arrange(desc(class)) %>%
+  mutate(lab.ypos = cumsum(prop) - 0.5*prop)
+ggplot(dtVehUsage, aes(x = "", y = prop, fill = class)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = lab.ypos, label = prop), color = "white")+
+  theme_void()
+```
+
+###### DrivAge
+
+```{r}
+par(fig=c(0.1,1,0.1,0.7), mar = c(0,0,2,2))
+hist(freMPL2$DrivAge,
+      main = paste("DrivAge"),
+      ylab = "Effectifs",
+      xlab = "The driver age, in years",
+     proba = TRUE)
+lines(density(freMPL2$DrivAge), col = "red", lwd=3)
+par(fig=c(0.1,1,0.8,1), mar = c(0,0,2,2), new = TRUE)
+boxplot(freMPL2$DrivAge, data = freMPL2, horizontal = TRUE)
+```
+
+###### HasKmLimit
+
+```{r}
+barplot(table(freMPL2$HasKmLimit), main = "HasKmLimit")
+
+# Affichage diagramme camembert 
+
+dtHasKmLimit <- data.frame(
+  class = c("0","1"),
+  n = as.data.frame(table(freMPL2$HasKmLimit))[,2],
+  prop = as.data.frame(round(prop.table(table(freMPL2$HasKmLimit)),2))[,2]
+)
+dtHasKmLimit <- dtHasKmLimit %>%
+  arrange(desc(class)) %>%
+  mutate(lab.ypos = cumsum(prop) - 0.5*prop)
+ggplot(dtHasKmLimit, aes(x = "", y = prop, fill = class)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = lab.ypos, label = prop), color = "white")+
+  theme_void()
+```
+
+###### BonusMalus
+
+```{r}
+par(fig=c(0.1,1,0.1,0.7), mar = c(0,0,2,2))
+hist(freMPL2$BonusMalus,
+      main = paste("BonusMalus"),
+      ylab = "Effectifs",
+      xlab = "A numeric for the bonus/malus")
+par(fig=c(0.1,1,0.8,1), mar = c(0,0,2,2), new = TRUE)
+boxplot(freMPL2$BonusMalus, data = freMPL2, horizontal = TRUE)
+```
+
+###### VehBody
+
+```{r}
+barplot(table(freMPL2$VehBody), main = "VehBody")
+
+# Affichage diagramme camembert 
+
+dtVehBody <- data.frame(
+  class = levels(freMPL2$VehBody),
+  n = as.data.frame(table(freMPL2$VehBody))[,2],
+  prop = as.data.frame(round(prop.table(table(freMPL2$VehBody)),2))[,2]
+)
+dtVehBody <- dtVehBody %>%
+  arrange(desc(class)) %>%
+  mutate(lab.ypos = cumsum(prop) - 0.5*prop)
+ggplot(dtVehBody, aes(x = "", y = prop, fill = class)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = lab.ypos, label = prop), color = "white")+
+  theme_void()
+```
+
+###### VehPrice
+
+```{r}
+barplot(table(freMPL2$VehPrice), main = "VehPrice")
+dt <- as.data.frame(table(freMPL2$VehPrice))
+lines(dt[,1],dt[,2],col = "red", lwd=3)
+# Affichage diagramme camembert 
+
+dtVehPrice <- data.frame(
+  class = levels(freMPL2$VehPrice),
+  n = as.data.frame(table(freMPL2$VehPrice))[,2],
+  prop = as.data.frame(round(prop.table(table(freMPL2$VehPrice)),2))[,2]
+)
+dtVehPrice <- dtVehPrice %>%
+  arrange(desc(class)) %>%
+  mutate(lab.ypos = cumsum(prop) - 0.5*prop)
+ggplot(dtVehPrice, aes(x = "", y = prop, fill = class)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = lab.ypos, label = prop), color = "white")+
+  theme_void()
+```
+
+###### VehEngine
+
+```{r}
+barplot(table(freMPL2$VehEngine), main = "VehEngine")
+# Affichage diagramme camembert 
+
+dtVehEngine <- data.frame(
+  class = levels(freMPL2$VehEngine),
+  n = as.data.frame(table(freMPL2$VehEngine))[,2],
+  prop = as.data.frame(round(prop.table(table(freMPL2$VehEngine)),2))[,2]
+)
+dtVehEngine <- dtVehEngine %>%
+  arrange(desc(class)) %>%
+  mutate(lab.ypos = cumsum(prop) - 0.5*prop)
+ggplot(dtVehEngine, aes(x = "", y = prop, fill = class)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = lab.ypos, label = prop), color = "white")+
+  theme_void()
+```
 
 ###### ACP 
 
