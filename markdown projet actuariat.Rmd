@@ -93,21 +93,72 @@ par(fig=c(0.1,1,0.1,0.7), mar = c(0,0,2,2))
 hist(freMPL2$Exposure,
       main = paste("Exposure"),
       ylab = "Effectifs",
-      xlab = "Exposure in years ")
+      xlab = "Exposure in years ",
+     proba = TRUE)
+lines(density(freMPL2$Exposure), col = "red", lwd=3)
 par(fig=c(0.1,1,0.8,1), mar = c(0,0,2,2), new = TRUE)
 boxplot(freMPL2$Exposure, data = freMPL2, horizontal = TRUE)
 ```
 
 ###### LicAge : 
+
 ```{r}
 par(fig=c(0.1,1,0.1,0.7), mar = c(0,0,2,2))
 hist(freMPL2$LicAge,
       main = paste("LicAge"),
       ylab = "Effectifs",
-      xlab = "Licence Age in months ")
+      xlab = "Licence Age in months ",
+     proba = TRUE)
+lines(density(freMPL2$LicAge), col = "red", lwd=3)
 par(fig=c(0.1,1,0.8,1), mar = c(0,0,2,2), new = TRUE)
 boxplot(freMPL2$LicAge, data = freMPL2, horizontal = TRUE)
 ```
+###### VehAge
+
+```{r}
+library("ggplot2")
+library("dplyr") 
+barplot(table(freMPL2$VehAge), main = "VehAge", names = c('0','1','2','3','4','5','6-7','8-9','10+'))
+
+# Affichage diagramme camembert 
+
+dtVehAge <- data.frame(
+  class = c('0','1','2','3','4','5','6-7','8-9','10+'),
+  n = as.data.frame(table(freMPL2$VehAge))[,2],
+  prop = as.data.frame(round(prop.table(table(freMPL2$VehAge)),2))[,2]
+)
+dtVehAge <- dtVehAge %>%
+  arrange(desc(class)) %>%
+  mutate(lab.ypos = cumsum(prop) - 0.5*prop)
+ggplot(dtVehAge, aes(x = "", y = prop, fill = class)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = lab.ypos, label = prop), color = "white")+
+  theme_void()
+```
+
+###### Gender 
+
+```{r}
+barplot(table(freMPL2$Gender), main = "Gender")
+
+# Affichage diagramme camembert 
+
+dtGender <- data.frame(
+  class = levels(freMPL2$Gender),
+  n = as.data.frame(table(freMPL2$Gender))[,2],
+  prop = as.data.frame(round(prop.table(table(freMPL2$Gender)),2))[,2]
+)
+dtGender <- dtGender %>%
+  arrange(desc(class)) %>%
+  mutate(lab.ypos = cumsum(prop) - 0.5*prop)
+ggplot(dtGender, aes(x = "", y = prop, fill = class)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = lab.ypos, label = prop), color = "white")+
+  theme_void()
+```
+
 
 ###### ACP 
 
@@ -147,7 +198,7 @@ library("factoextra") # Pour la visualisation
 ```
 
 ```{r}
-freMPL2.active <- freMPL2[,c(1:2,5:10,12:19,21)]
+freMPL2.active <- freMPL2[,c(1:2,5:10,12:21)]
 freMPL2.pca <- PCA(freMPL2.active, graph = FALSE)
 ```
 
@@ -196,6 +247,7 @@ L’AFC permet de résumer et de visualiser l’information contenue dans le tab
 
 ```{r}
 library ("FactoMineR")
+freMPL2.active <- freMPL2[,c(1:2,5:10,12:19,21)]
 freMPL2.ca <- CA (freMPL2.active)
 print(freMPL2.ca)
 ```
