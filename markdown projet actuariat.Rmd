@@ -3,8 +3,8 @@ title: "projet actuariat"
 author: "Delhaye"
 date: "19/03/2020"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 ### Installation des packages utilisées dans ce projet 
@@ -115,8 +115,90 @@ freMPL2 <- subset(freMPL2,freMPL2$ClaimAmount>=0)
 dim(freMPL2)[1]
 ```
 
+Traduction des données associées aux types de véhicules : 
 
+Récupération de tous les types de véhicules du jeu de données :
+```{r}
+levels(freMPL2$VehBody)
+```
 
+Voici les traductions francaises des différents termes : 
+"bus" -> autobus
+"cabriolet" -> cabriolet
+"coupe" -> coupé                
+"microvan" -> microvan
+"other microvan" -> autre microvan
+"sedan" -> berline                 
+"sport utility vehicle" -> SUV (véhicule utilitaire sport) 
+"station wagon" -> break
+"van" -> camionnette
+
+Remplaçons donc les différents noms par leur traduction dans notre dataframe.
+```{r}
+# On modifie le levels pour pouvoir changer nos valeurs
+
+levels(freMPL2$VehBody) <- c(levels(freMPL2$VehBody), "autobus", "coupé", "autre microvan", "berline","SUV", "break", "camionnette")
+
+# On modifie les différentes valeurs de notre dataframe
+
+freMPL2$VehBody[freMPL2$VehBody == "bus"]<-"autobus"
+freMPL2$VehBody[freMPL2$VehBody == "coupe"]<-"coupé"
+freMPL2$VehBody[freMPL2$VehBody == "other microvan"]<-"autre microvan"
+freMPL2$VehBody[freMPL2$VehBody == "sedan"]<-"berline"
+freMPL2$VehBody[freMPL2$VehBody == "sport utility vehicle"]<-"SUV"
+freMPL2$VehBody[freMPL2$VehBody == "station wagon"]<-"break"
+freMPL2$VehBody[freMPL2$VehBody == "van"]<-"camionnette"
+
+# On retire les levels que l'on vient de modifier(supprimer)
+
+freMPL2$VehBody <- droplevels(freMPL2$VehBody)
+```
+
+Réduction du nombre de catégories socioprofessionnels : 
+
+```{r}
+levels(freMPL2$SocioCateg)
+```
+Nous remarquons que nous avons 52 catégories socioprofessionnelles différentes (Le premier chiffre correspond au groupe socioprofessionnel et le second à la catégorie).
+Regroupons donc l'ensemble des individus selon leur groupe socioprofessionnels :
+
+```{r}
+# On modifie le levels pour pouvoir changer nos valeurs
+levels(freMPL2$SocioCateg) <- c(levels(freMPL2$SocioCateg), "CSP4", "CSP6")
+
+# On modifie les différentes valeurs de notre dataframe
+
+for (i in 1:dim(freMPL2)[1]){
+  if (freMPL2$SocioCateg[i]%in%c("CSP1","CSP16","CSP18","CSP19")){
+    freMPL2$SocioCateg[i]<-"CSP1"
+  }
+  if (freMPL2$SocioCateg[i]%in%c("CSP2", "CSP20", "CSP21", "CSP22", "CSP23", "CSP25", "CSP26", "CSP27", "CSP28")){
+    freMPL2$SocioCateg[i]<-"CSP2"
+  }
+  if (freMPL2$SocioCateg[i]%in%c("CSP3", "CSP30", "CSP31", "CSP32", "CSP33", "CSP35", "CSP36", "CSP37", "CSP38", "CSP39")){
+    freMPL2$SocioCateg[i]<-"CSP3"
+  }
+  if (freMPL2$SocioCateg[i]%in%c("CSP40", "CSP41", "CSP42", "CSP43", "CSP46", "CSP47", "CSP48", "CSP49")){
+    freMPL2$SocioCateg[i]<-"CSP4"
+  }
+  if (freMPL2$SocioCateg[i]%in%c("CSP5", "CSP50", "CSP51", "CSP55", "CSP56", "CSP57", "CSP59")){
+    freMPL2$SocioCateg[i]<-"CSP5"
+  }
+  if (freMPL2$SocioCateg[i]%in%c("CSP6", "CSP60", "CSP61", "CSP62", "CSP63", "CSP65", "CSP66")){
+    freMPL2$SocioCateg[i]<-"CSP6"
+  }
+  if (freMPL2$SocioCateg[i]%in%c("CSP7", "CSP70", "CSP73", "CSP74", "CSP77")){
+    freMPL2$SocioCateg[i]<-"CSP7"
+  }
+  if (freMPL2$SocioCateg[i]%in%c("CSP9", "CSP91")){
+    freMPL2$SocioCateg[i]<-"CSP9"
+  }
+}
+
+# On retire les levels que l'on vient de modifier(supprimer)
+
+freMPL2$SocioCateg <- droplevels(freMPL2$SocioCateg)
+```
 
 
 
@@ -189,28 +271,6 @@ dtVehAge <- dtVehAge %>%
   arrange(desc(class)) %>%
   mutate(lab.ypos = cumsum(prop) - 0.5*prop)
 ggplot(dtVehAge, aes(x = "", y = prop, fill = class)) +
-  geom_bar(width = 1, stat = "identity", color = "white") +
-  coord_polar("y", start = 0)+
-  geom_text(aes(y = lab.ypos, label = prop), color = "white")+
-  theme_void()
-```
-
-###### Gender 
-
-```{r}
-barplot(table(freMPL2$Gender), main = "Gender")
-
-# Affichage diagramme camembert 
-
-dtGender <- data.frame(
-  class = levels(freMPL2$Gender),
-  n = as.data.frame(table(freMPL2$Gender))[,2],
-  prop = as.data.frame(round(prop.table(table(freMPL2$Gender)),2))[,2]
-)
-dtGender <- dtGender %>%
-  arrange(desc(class)) %>%
-  mutate(lab.ypos = cumsum(prop) - 0.5*prop)
-ggplot(dtGender, aes(x = "", y = prop, fill = class)) +
   geom_bar(width = 1, stat = "identity", color = "white") +
   coord_polar("y", start = 0)+
   geom_text(aes(y = lab.ypos, label = prop), color = "white")+
@@ -411,21 +471,10 @@ On va donc convertir nos valeurs en numérique :
 ```{r}
 freMPL2$LicAge <- as.numeric(freMPL2$LicAge)
 freMPL2$VehAge <- as.numeric(freMPL2$VehAge)
-freMPL2$Gender <- as.numeric(freMPL2$Gender)
-freMPL2$MariStat <- as.numeric(freMPL2$MariStat)
-freMPL2$SocioCateg <- as.numeric(freMPL2$SocioCateg)
-freMPL2$VehUsage <- as.numeric(freMPL2$VehUsage)
 freMPL2$DrivAge <- as.numeric(freMPL2$DrivAge)
 freMPL2$BonusMalus <- as.numeric(freMPL2$BonusMalus)
-freMPL2$VehBody <- as.numeric(freMPL2$VehBody)
-freMPL2$VehPrice <- as.numeric(freMPL2$VehPrice)
-freMPL2$VehEngine <- as.numeric(freMPL2$VehEngine)
-freMPL2$VehEnergy <- as.numeric(freMPL2$VehEnergy)
-freMPL2$VehMaxSpeed <- as.numeric(freMPL2$VehMaxSpeed)
-freMPL2$VehClass<- as.numeric(freMPL2$VehClass)
 freMPL2$RiskVar <- as.numeric(freMPL2$RiskVar)
 freMPL2$ClaimAmount <- as.numeric(freMPL2$ClaimAmount)
-freMPL2$Garage<- as.numeric(freMPL2$Garage)
 str(freMPL2)
 ```
 
