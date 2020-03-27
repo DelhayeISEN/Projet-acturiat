@@ -2,7 +2,9 @@
 title: "projet actuariat"
 author: "Delhaye"
 date: "19/03/2020"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ### Installation des packages utilisées dans ce projet 
@@ -22,7 +24,7 @@ output: html_document
 
 ### Importation des librairies nécessaires aux datasets
 
-```{r}
+```{r, echo = FALSE}
 library(zoo)
 library(xts)
 library(sp)
@@ -31,7 +33,7 @@ library(CASdatasets)
 
 ### Chargement des 2 jeux de données freMPL1 et freMPL2
 
-```{r}
+```{r, echo = FALSE}
 data(freMPL1)
 data(freMPL2)
 ```
@@ -42,8 +44,30 @@ Un peu à la manière du machine learning, les données contenues dans freMPL2 s
 
 ### freMPL1
 
+Dans un premier temps, regardons les premières lignes du jeu de données 
 ```{r}
 head(freMPL1)
+```
+ et les dimmensions de notre jeu de données : 
+```{r}
+dim(freMPL1)
+```
+ Le jeu contient 48295 données différentes, toutes définies par 22 caractéristiques différentes. 
+
+Affichons les différents noms des colonnes : 
+```{r}
+colnames(freMPL1)
+```
+
+Regardons maintenant les différents types d'objets figurant dans les colonnes :  
+```{r}
+str(freMPL1)
+```
+Nous avons donc des objets de type numeric, de type factor, de type int et même de type date. 
+
+Regardons maintenant plus précisement les valeurs particulières de ces colonnes (valeurs minimum et maximum, moyenne, médiane,quantiles, ...)
+
+```{r}
 summary(freMPL1)
 ```
 
@@ -64,6 +88,41 @@ Affichons les différents noms des colonnes :
 colnames(freMPL2)
 ```
 
+###### Nettoyage de données
+
+Remarquons qu'il serait intéressant de faire un peu de nettoyage de données avant d'effectuer quelconques travaux sur celles-ci.
+
+Suppression des données des individus assurés moins d'un jour (Exposure): 
+
+```{r}
+dim(subset(freMPL2,freMPL2$Exposure<1/365.25))[1]
+```
+Il y a 393 individus qui sont assurés moins d'un jour. Nous allons donc retirés ces individus de notre jeu de données(Il doit donc nous rester 47902 lignes dans notre jeu de données).
+```{r}
+freMPL2 <- subset(freMPL2,freMPL2$Exposure>1/365.25)
+dim(freMPL2)[1]
+```
+
+Modification des données des individus ayant un ClaimAmount négatif :
+
+D'abord, regardons le nombre d'individus qui vérifient cette condition.
+```{r}
+dim(subset(freMPL2,freMPL2$ClaimAmount<0))[1]
+```
+405 individus sont donc dans cette situation soit moins d'1 % de notre jeu de données. On peut donc éventuellement supprimer ces données sans impacter notre jeu. On se retrouverait donc 47497 individus.
+```{r}
+freMPL2 <- subset(freMPL2,freMPL2$ClaimAmount>=0)
+dim(freMPL2)[1]
+```
+
+
+
+
+
+
+
+###### Statistiques descriptives 
+
 Regardons maintenant les différents types d'objets figurant dans les colonnes :  
 ```{r}
 str(freMPL2)
@@ -83,7 +142,7 @@ On peut aussi utiliser la méthode describe du package Hmisc pour avoir un aper�
 library("Hmisc")
 describe(freMPL2)
 ```
-Mais cela ne vaut pas une représentation graphique. 
+Mais cela ne vaut pas une représentation graphique.
 
 ###### Représentations graphiques des données
 
