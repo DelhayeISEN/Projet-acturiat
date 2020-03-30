@@ -3,8 +3,8 @@ title: "projet actuariat"
 author: "Delhaye"
 date: "19/03/2020"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ### Installation des packages utilisées dans ce projet 
@@ -94,7 +94,7 @@ Remarquons qu'il serait intéressant de faire un peu de nettoyage de données av
 
 Suppression des données des individus assurés moins d'un jour (Exposure): 
 
-```{r}
+```{r, echo = FALSE}
 dim(subset(freMPL2,freMPL2$Exposure<1/365.25))[1]
 ```
 Il y a 393 individus qui sont assurés moins d'un jour. Nous allons donc retirés ces individus de notre jeu de données(Il doit donc nous rester 47902 lignes dans notre jeu de données).
@@ -115,43 +115,77 @@ freMPL2 <- subset(freMPL2,freMPL2$ClaimAmount>=0)
 dim(freMPL2)[1]
 ```
 
-Traduction des données associées aux types de véhicules : 
-
-Récupération de tous les types de véhicules du jeu de données :
+Suppression de la colonne associée au sexe de la personne :
 ```{r}
-levels(freMPL2$VehBody)
+freMPL2 <- freMPL2[,-6]
 ```
 
-Voici les traductions francaises des différents termes : 
-"bus" -> autobus
-"cabriolet" -> cabriolet
-"coupe" -> coupé                
-"microvan" -> microvan
-"other microvan" -> autre microvan
-"sedan" -> berline                 
-"sport utility vehicle" -> SUV (véhicule utilitaire sport) 
-"station wagon" -> break
-"van" -> camionnette
+###### Traduction des données :
 
-Remplaçons donc les différents noms par leur traduction dans notre dataframe.
 ```{r}
-# On modifie le levels pour pouvoir changer nos valeurs
+for (i in 1:dim(freMPL2)[2]){
+  # Type de véhicules
+  if (colnames(freMPL2)[i]=="VehBody"){
+      levels(freMPL2$VehBody) <- c(levels(freMPL2$VehBody), "autobus", "coupé",
+                                   "autre microvan", "berline","SUV", "break",
+                                   "camionnette")
+      freMPL2$VehBody[freMPL2$VehBody == "bus"]<-"autobus"
+      freMPL2$VehBody[freMPL2$VehBody == "coupe"]<-"coupé"
+      freMPL2$VehBody[freMPL2$VehBody == "other microvan"]<-"autre microvan"
+      freMPL2$VehBody[freMPL2$VehBody == "sedan"]<-"berline"
+      freMPL2$VehBody[freMPL2$VehBody == "sport utility vehicle"]<-"SUV"
+      freMPL2$VehBody[freMPL2$VehBody == "station wagon"]<-"break"
+      freMPL2$VehBody[freMPL2$VehBody == "van"]<-"camionnette"
+      freMPL2$VehBody <- droplevels(freMPL2$VehBody)
+    }
+  # Statut marital
+  if (colnames(freMPL2)[i]=="VehBody"){
+      levels(freMPL2$MariStat) <- c(levels(freMPL2$MariStat), "célibataire", "autre")
+      freMPL2$MariStat[freMPL2$MariStat == "Alone"]<-"célibataire"
+      freMPL2$MariStat[freMPL2$MariStat == "Other"]<-"autre"
+      freMPL2$MariStat <- droplevels(freMPL2$MariStat)
+  }
+  # Utilisation du véhicule
+  if (colnames(freMPL2)[i]=="VehUsage"){
+       levels(freMPL2$VehUsage) <- c(levels(freMPL2$VehUsage), "privée", 
+                                     "privée et trajet vers bureau", "professionnel", 
+                                     "trajet professionnel" )
+       freMPL2$VehUsage[freMPL2$VehUsage == "Private"]<-"privée"
+       freMPL2$VehUsage[freMPL2$VehUsage == "Private+trip to office"]<-"privée et trajet vers bureau"
+       freMPL2$VehUsage[freMPL2$VehUsage == "Professional"]<-"professionnel"
+       freMPL2$VehUsage[freMPL2$VehUsage == "Professional run"]<-"trajet professionnel"
+       freMPL2$VehUsage <- droplevels(freMPL2$VehUsage)
+  }
+  # Moteur du véhicule
+  if (colnames(freMPL2)[i]=="VehUsage"){
+      levels(freMPL2$VehEngine) <- c(levels(freMPL2$VehEngine), "injection directe surpuissante",
+                                     "électrique", "injection surpuissante")
+      freMPL2$VehEngine[freMPL2$VehEngine == "direct injection overpowered"]<-"injection directe surpuissante"
+      freMPL2$VehEngine[freMPL2$VehEngine == "electric"]<-"électrique"
+      freMPL2$VehEngine[freMPL2$VehEngine == "injection overpowered"]<-"injection surpuissante"
+      freMPL2$VehEngine <- droplevels(freMPL2$VehEngine)
+  }
+  # Energie utilisée par le véhicule
+  if (colnames(freMPL2)[i]=="VehEnergy"){
+      levels(freMPL2$VehEnergy) <- c(levels(freMPL2$VehEnergy), "électrique", "essence")
+      freMPL2$VehEnergy[freMPL2$VehEnergy == "regular"]<-"essence"
+      freMPL2$VehEnergy[freMPL2$VehEnergy == "eletric"]<-"électrique"
+      freMPL2$VehEnergy <- droplevels(freMPL2$VehEnergy)
+  }
+  # Garage
+  if (colnames(freMPL2)[i]=="Garage"){
+      levels(freMPL2$Garage) <- c(levels(freMPL2$Garage), "aucun", "garage indépendant", "concessionnaire")
+      freMPL2$Garage[freMPL2$Garage == "None"]<-"aucun"
+      freMPL2$Garage[freMPL2$Garage == "Private garage"]<-"garage indépendant"
+      freMPL2$Garage[freMPL2$Garage == "Collective garage"]<-"concessionnaire"
+      freMPL2$Garage <- droplevels(freMPL2$Garage)
+  }
+}
+```
 
-levels(freMPL2$VehBody) <- c(levels(freMPL2$VehBody), "autobus", "coupé", "autre microvan", "berline","SUV", "break", "camionnette")
-
-# On modifie les différentes valeurs de notre dataframe
-
-freMPL2$VehBody[freMPL2$VehBody == "bus"]<-"autobus"
-freMPL2$VehBody[freMPL2$VehBody == "coupe"]<-"coupé"
-freMPL2$VehBody[freMPL2$VehBody == "other microvan"]<-"autre microvan"
-freMPL2$VehBody[freMPL2$VehBody == "sedan"]<-"berline"
-freMPL2$VehBody[freMPL2$VehBody == "sport utility vehicle"]<-"SUV"
-freMPL2$VehBody[freMPL2$VehBody == "station wagon"]<-"break"
-freMPL2$VehBody[freMPL2$VehBody == "van"]<-"camionnette"
-
-# On retire les levels que l'on vient de modifier(supprimer)
-
-freMPL2$VehBody <- droplevels(freMPL2$VehBody)
+```{r}
+freMPL2
+str(freMPL2)
 ```
 
 Réduction du nombre de catégories socioprofessionnels : 
@@ -199,9 +233,6 @@ for (i in 1:dim(freMPL2)[1]){
 
 freMPL2$SocioCateg <- droplevels(freMPL2$SocioCateg)
 ```
-
-
-
 
 ###### Statistiques descriptives 
 
@@ -415,7 +446,7 @@ ggplot(dtVehBody, aes(x = "", y = prop, fill = class)) +
 
 ###### VehPrice
 
-```{r}
+```{r, echo = FALSE}
 barplot(table(freMPL2$VehPrice), main = "VehPrice")
 dt <- as.data.frame(table(freMPL2$VehPrice))
 lines(dt[,1],dt[,2],col = "red", lwd=3)
@@ -476,6 +507,7 @@ freMPL2$BonusMalus <- as.numeric(freMPL2$BonusMalus)
 freMPL2$RiskVar <- as.numeric(freMPL2$RiskVar)
 freMPL2$ClaimAmount <- as.numeric(freMPL2$ClaimAmount)
 str(freMPL2)
+model.matrix(~ freMPL2$VehBody)
 ```
 
 ```{r}
