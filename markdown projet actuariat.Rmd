@@ -91,147 +91,120 @@ colnames(freMPL2)
 ###### Nettoyage de données
 
 Remarquons qu'il serait intéressant de faire un peu de nettoyage de données avant d'effectuer quelconques travaux sur celles-ci.
-
-Suppression des données des individus assurés moins d'un jour (Exposure): 
-
-```{r, echo = FALSE}
-dim(subset(freMPL2,freMPL2$Exposure<1/365.25))[1]
-```
-Il y a 393 individus qui sont assurés moins d'un jour. Nous allons donc retirés ces individus de notre jeu de données(Il doit donc nous rester 47902 lignes dans notre jeu de données).
-```{r}
-freMPL2 <- subset(freMPL2,freMPL2$Exposure>1/365.25)
-dim(freMPL2)[1]
-```
-
-Modification des données des individus ayant un ClaimAmount négatif :
-
-D'abord, regardons le nombre d'individus qui vérifient cette condition.
-```{r}
-dim(subset(freMPL2,freMPL2$ClaimAmount<0))[1]
-```
-405 individus sont donc dans cette situation soit moins d'1 % de notre jeu de données. On peut donc éventuellement supprimer ces données sans impacter notre jeu. On se retrouverait donc 47497 individus.
-```{r}
-freMPL2 <- subset(freMPL2,freMPL2$ClaimAmount>=0)
-dim(freMPL2)[1]
-```
-
-Suppression de la colonne associée au sexe de la personne :
-```{r}
-freMPL2 <- freMPL2[,-6]
-```
-
-###### Traduction des données :
+Pour cela, nous allons créer une fonction qui servira à nettoyer les 2 dataframes.
 
 ```{r}
-for (i in 1:dim(freMPL2)[2]){
-  # Type de véhicules
-  if (colnames(freMPL2)[i]=="VehBody"){
-      levels(freMPL2$VehBody) <- c(levels(freMPL2$VehBody), "autobus", "coupé",
-                                   "autre microvan", "berline","SUV", "break",
-                                   "camionnette")
-      freMPL2$VehBody[freMPL2$VehBody == "bus"]<-"autobus"
-      freMPL2$VehBody[freMPL2$VehBody == "coupe"]<-"coupé"
-      freMPL2$VehBody[freMPL2$VehBody == "other microvan"]<-"autre microvan"
-      freMPL2$VehBody[freMPL2$VehBody == "sedan"]<-"berline"
-      freMPL2$VehBody[freMPL2$VehBody == "sport utility vehicle"]<-"SUV"
-      freMPL2$VehBody[freMPL2$VehBody == "station wagon"]<-"break"
-      freMPL2$VehBody[freMPL2$VehBody == "van"]<-"camionnette"
-      freMPL2$VehBody <- droplevels(freMPL2$VehBody)
+nettoyage_dataframe <- function(dataframe){
+  
+  # Suppression des données des individus assurés moins d'un jour (Exposure)
+  dataframe <- subset(dataframe,dataframe$Exposure>1/365.25)
+  
+  # Modification des données des individus ayant un ClaimAmount négatif
+  dataframe <- subset(dataframe,dataframe$ClaimAmount>=0)
+  
+  # Suppression de la colonne associée au sexe de la personne
+  dataframe <- dataframe[,-6]
+  
+  # Réduction du nombre de catégories socioprofessionnels
+  levels(dataframe$SocioCateg) <- c(levels(dataframe$SocioCateg), "CSP4", "CSP6","CSP9")
+  for (i in 1:dim(dataframe)[1]){
+    if (dataframe$SocioCateg[i]%in%c("CSP1","CSP16","CSP18","CSP19")){
+      dataframe$SocioCateg[i]<-"CSP1"
+      }
+    if (dataframe$SocioCateg[i]%in%c("CSP2", "CSP20", "CSP21", "CSP22", "CSP23", "CSP25", "CSP26", "CSP27", "CSP28")){
+      dataframe$SocioCateg[i]<-"CSP2"
+      }
+    if (dataframe$SocioCateg[i]%in%c("CSP3", "CSP30", "CSP31", "CSP32", "CSP33", "CSP35", "CSP36", "CSP37", "CSP38", "CSP39")){
+      dataframe$SocioCateg[i]<-"CSP3"
+      }
+    if (dataframe$SocioCateg[i]%in%c("CSP40", "CSP41", "CSP42", "CSP43", "CSP46", "CSP47", "CSP48", "CSP49")){
+      dataframe$SocioCateg[i]<-"CSP4"
+      }
+    if (dataframe$SocioCateg[i]%in%c("CSP5", "CSP50", "CSP51", "CSP55", "CSP56", "CSP57", "CSP59")){
+      dataframe$SocioCateg[i]<-"CSP5"
+      }
+    if (dataframe$SocioCateg[i]%in%c("CSP6", "CSP60", "CSP61", "CSP62", "CSP63", "CSP65", "CSP66")){
+      dataframe$SocioCateg[i]<-"CSP6"
+      }
+    if (dataframe$SocioCateg[i]%in%c("CSP7", "CSP70", "CSP73", "CSP74", "CSP77")){
+      dataframe$SocioCateg[i]<-"CSP7"
+      }
+    if (dataframe$SocioCateg[i]%in%c("CSP9", "CSP91")){
+      dataframe$SocioCateg[i]<-"CSP9"
+      }
+  }
+  dataframe$SocioCateg <- droplevels(dataframe$SocioCateg)
+  
+  # Traduction des données (VehBody, MariStat, VehUsage, VehEngine, VehEnergy, Garage)
+  for (i in 1:dim(dataframe)[2]){
+    # Type de véhicules
+    if (colnames(dataframe)[i]=="VehBody"){
+      levels(dataframe$VehBody) <- c(levels(dataframe$VehBody), "autobus", "coupé",
+                                     "autre microvan", "berline","SUV", "break",
+                                     "camionnette")
+      dataframe$VehBody[dataframe$VehBody == "bus"]<-"autobus"
+      dataframe$VehBody[dataframe$VehBody == "coupe"]<-"coupé"
+      dataframe$VehBody[dataframe$VehBody == "other microvan"]<-"autre microvan"
+      dataframe$VehBody[dataframe$VehBody == "sedan"]<-"berline"
+      dataframe$VehBody[dataframe$VehBody == "sport utility vehicle"]<-"SUV"
+      dataframe$VehBody[dataframe$VehBody == "station wagon"]<-"break"
+      dataframe$VehBody[dataframe$VehBody == "van"]<-"camionnette"
+      dataframe$VehBody <- droplevels(dataframe$VehBody)
+      }
+    # Statut marital
+    if (colnames(dataframe)[i]=="MariStat"){
+      levels(dataframe$MariStat) <- c(levels(dataframe$MariStat), "célibataire", "autre")
+      dataframe$MariStat[dataframe$MariStat == "Alone"]<-"célibataire"
+      dataframe$MariStat[dataframe$MariStat == "Other"]<-"autre"
+      dataframe$MariStat <- droplevels(dataframe$MariStat)
+      }
+    # Utilisation du véhicule
+    if (colnames(dataframe)[i]=="VehUsage"){
+      levels(dataframe$VehUsage) <- c(levels(dataframe$VehUsage), "privée", 
+                                      "privée et trajet vers bureau", "professionnel", 
+                                      "trajet professionnel" )
+      dataframe$VehUsage[dataframe$VehUsage == "Private"]<-"privée"
+      dataframe$VehUsage[dataframe$VehUsage == "Private+trip to office"]<-"privée et trajet vers bureau"
+      dataframe$VehUsage[dataframe$VehUsage == "Professional"]<-"professionnel"
+      dataframe$VehUsage[dataframe$VehUsage == "Professional run"]<-"trajet professionnel"
+      dataframe$VehUsage <- droplevels(dataframe$VehUsage)
+      }
+    # Moteur du véhicule
+    if (colnames(dataframe)[i]=="VehEngine"){
+      levels(dataframe$VehEngine) <- c(levels(dataframe$VehEngine), "injection directe surpuissante",
+                                       "électrique", "injection surpuissante")
+      dataframe$VehEngine[dataframe$VehEngine == "direct injection overpowered"]<-"injection directe surpuissante"
+      dataframe$VehEngine[dataframe$VehEngine == "electric"]<-"électrique"
+      dataframe$VehEngine[dataframe$VehEngine == "injection overpowered"]<-"injection surpuissante"
+      dataframe$VehEngine <- droplevels(dataframe$VehEngine)
+      }
+    # Energie utilisée par le véhicule
+    if (colnames(dataframe)[i]=="VehEnergy"){
+      levels(dataframe$VehEnergy) <- c(levels(dataframe$VehEnergy), "électrique", "essence")
+      dataframe$VehEnergy[dataframe$VehEnergy == "regular"]<-"essence"
+      dataframe$VehEnergy[dataframe$VehEnergy == "eletric"]<-"électrique"
+      dataframe$VehEnergy <- droplevels(dataframe$VehEnergy)
+      }
+    # Garage
+    if (colnames(dataframe)[i]=="Garage"){
+      levels(dataframe$Garage) <- c(levels(dataframe$Garage), "aucun", "garage indépendant", "concessionnaire")
+      dataframe$Garage[dataframe$Garage == "None"]<-"aucun"
+      dataframe$Garage[dataframe$Garage == "Private garage"]<-"garage indépendant"
+      dataframe$Garage[dataframe$Garage == "Collective garage"]<-"concessionnaire"
+      dataframe$Garage <- droplevels(dataframe$Garage)
     }
-  # Statut marital
-  if (colnames(freMPL2)[i]=="VehBody"){
-      levels(freMPL2$MariStat) <- c(levels(freMPL2$MariStat), "célibataire", "autre")
-      freMPL2$MariStat[freMPL2$MariStat == "Alone"]<-"célibataire"
-      freMPL2$MariStat[freMPL2$MariStat == "Other"]<-"autre"
-      freMPL2$MariStat <- droplevels(freMPL2$MariStat)
   }
-  # Utilisation du véhicule
-  if (colnames(freMPL2)[i]=="VehUsage"){
-       levels(freMPL2$VehUsage) <- c(levels(freMPL2$VehUsage), "privée", 
-                                     "privée et trajet vers bureau", "professionnel", 
-                                     "trajet professionnel" )
-       freMPL2$VehUsage[freMPL2$VehUsage == "Private"]<-"privée"
-       freMPL2$VehUsage[freMPL2$VehUsage == "Private+trip to office"]<-"privée et trajet vers bureau"
-       freMPL2$VehUsage[freMPL2$VehUsage == "Professional"]<-"professionnel"
-       freMPL2$VehUsage[freMPL2$VehUsage == "Professional run"]<-"trajet professionnel"
-       freMPL2$VehUsage <- droplevels(freMPL2$VehUsage)
-  }
-  # Moteur du véhicule
-  if (colnames(freMPL2)[i]=="VehUsage"){
-      levels(freMPL2$VehEngine) <- c(levels(freMPL2$VehEngine), "injection directe surpuissante",
-                                     "électrique", "injection surpuissante")
-      freMPL2$VehEngine[freMPL2$VehEngine == "direct injection overpowered"]<-"injection directe surpuissante"
-      freMPL2$VehEngine[freMPL2$VehEngine == "electric"]<-"électrique"
-      freMPL2$VehEngine[freMPL2$VehEngine == "injection overpowered"]<-"injection surpuissante"
-      freMPL2$VehEngine <- droplevels(freMPL2$VehEngine)
-  }
-  # Energie utilisée par le véhicule
-  if (colnames(freMPL2)[i]=="VehEnergy"){
-      levels(freMPL2$VehEnergy) <- c(levels(freMPL2$VehEnergy), "électrique", "essence")
-      freMPL2$VehEnergy[freMPL2$VehEnergy == "regular"]<-"essence"
-      freMPL2$VehEnergy[freMPL2$VehEnergy == "eletric"]<-"électrique"
-      freMPL2$VehEnergy <- droplevels(freMPL2$VehEnergy)
-  }
-  # Garage
-  if (colnames(freMPL2)[i]=="Garage"){
-      levels(freMPL2$Garage) <- c(levels(freMPL2$Garage), "aucun", "garage indépendant", "concessionnaire")
-      freMPL2$Garage[freMPL2$Garage == "None"]<-"aucun"
-      freMPL2$Garage[freMPL2$Garage == "Private garage"]<-"garage indépendant"
-      freMPL2$Garage[freMPL2$Garage == "Collective garage"]<-"concessionnaire"
-      freMPL2$Garage <- droplevels(freMPL2$Garage)
-  }
+  return (dataframe)
 }
 ```
 
+Tests de la fonction sur nos 2 dataframes : 
+
 ```{r}
+freMPL2 <- nettoyage_dataframe(freMPL2)
+freMPL1 <- nettoyage_dataframe(freMPL1)
 freMPL2
-str(freMPL2)
-```
-
-Réduction du nombre de catégories socioprofessionnels : 
-
-```{r}
-levels(freMPL2$SocioCateg)
-```
-Nous remarquons que nous avons 52 catégories socioprofessionnelles différentes (Le premier chiffre correspond au groupe socioprofessionnel et le second à la catégorie).
-Regroupons donc l'ensemble des individus selon leur groupe socioprofessionnels :
-
-```{r}
-# On modifie le levels pour pouvoir changer nos valeurs
-levels(freMPL2$SocioCateg) <- c(levels(freMPL2$SocioCateg), "CSP4", "CSP6")
-
-# On modifie les différentes valeurs de notre dataframe
-
-for (i in 1:dim(freMPL2)[1]){
-  if (freMPL2$SocioCateg[i]%in%c("CSP1","CSP16","CSP18","CSP19")){
-    freMPL2$SocioCateg[i]<-"CSP1"
-  }
-  if (freMPL2$SocioCateg[i]%in%c("CSP2", "CSP20", "CSP21", "CSP22", "CSP23", "CSP25", "CSP26", "CSP27", "CSP28")){
-    freMPL2$SocioCateg[i]<-"CSP2"
-  }
-  if (freMPL2$SocioCateg[i]%in%c("CSP3", "CSP30", "CSP31", "CSP32", "CSP33", "CSP35", "CSP36", "CSP37", "CSP38", "CSP39")){
-    freMPL2$SocioCateg[i]<-"CSP3"
-  }
-  if (freMPL2$SocioCateg[i]%in%c("CSP40", "CSP41", "CSP42", "CSP43", "CSP46", "CSP47", "CSP48", "CSP49")){
-    freMPL2$SocioCateg[i]<-"CSP4"
-  }
-  if (freMPL2$SocioCateg[i]%in%c("CSP5", "CSP50", "CSP51", "CSP55", "CSP56", "CSP57", "CSP59")){
-    freMPL2$SocioCateg[i]<-"CSP5"
-  }
-  if (freMPL2$SocioCateg[i]%in%c("CSP6", "CSP60", "CSP61", "CSP62", "CSP63", "CSP65", "CSP66")){
-    freMPL2$SocioCateg[i]<-"CSP6"
-  }
-  if (freMPL2$SocioCateg[i]%in%c("CSP7", "CSP70", "CSP73", "CSP74", "CSP77")){
-    freMPL2$SocioCateg[i]<-"CSP7"
-  }
-  if (freMPL2$SocioCateg[i]%in%c("CSP9", "CSP91")){
-    freMPL2$SocioCateg[i]<-"CSP9"
-  }
-}
-
-# On retire les levels que l'on vient de modifier(supprimer)
-
-freMPL2$SocioCateg <- droplevels(freMPL2$SocioCateg)
+freMPL1
 ```
 
 ###### Statistiques descriptives 
