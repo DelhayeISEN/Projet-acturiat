@@ -1,99 +1,89 @@
 ---
-title: "projet actuariat"
-author: "Delhaye"
-date: "19/03/2020"
+title: "Projet Actuariat"
+author: "Solène Corre, Florentin Dehooghe,François Delhaye"
+date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
-  html_document: default
-  pdf_document: default
+  pdf_document:
+    number_section: yes
+    toc: yes
+    toc_depth: 3
+  html_document:
+    df_print: paged
+    toc: yes
+    toc_depth: '3'
+lang: fr
 ---
 
-### Installation des packages utilisées dans ce projet 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE,message=FALSE, warning=FALSE)
+```
 
-```{r}
+```{r, echo= FALSE}
+# Installation des packages utilisées dans ce projet
+
 #install.packages(c("xts","sp","zoo"))
 #install.packages("Hmisc")
 #install.packages(c("FactoMineR", "factoextra"))
-```
 
+# Installation du package CASdatasets contenant les 2 jeux de données sur lesquels nous allons travaillés
 
-### Installation du package CASdatasets contenant les 2 jeux de données sur lesquels nous allons travaillés
-
-```{r}
 #install.packages("CASdatasets", repos = "http://dutangc.free.fr/pub/RRepos/", type="source")
-```
 
-### Importation des librairies nécessaires aux datasets
+# Importation des librairies nécessaires aux datasets
 
-```{r, echo = FALSE}
 library(zoo)
 library(xts)
 library(sp)
 library(CASdatasets)
-```
 
-### Chargement des 2 jeux de données freMPL1 et freMPL2
-
-```{r, echo = FALSE}
+# Chargement des 2 jeux de données freMPL1 et freMPL2
 data(freMPL1)
 data(freMPL2)
 ```
 
+# Présentation du projet
+
+# Exploration des jeux de données freMPL1 et freMPL2
+
 Un peu à la manière du machine learning, les données contenues dans freMPL2 serviront de données d'entraînement de notre modèle et les données de freMPL1 serviront pour tester notre modèle final.
 
-# 1. Explorez les données freMPL1 et freMPL2 à l'aide des techniques exploratoires usuelles (statistiques descriptives, ACP, AFC)
+## freMPL2
 
-### freMPL1
+### Première exploration du jeu de données d'entraînement : freMPL2
 
-Dans un premier temps, regardons les premières lignes du jeu de données 
-```{r}
-head(freMPL1)
-```
- et les dimmensions de notre jeu de données : 
-```{r}
-dim(freMPL1)
-```
- Le jeu contient 48295 données différentes, toutes définies par 22 caractéristiques différentes. 
 
-Affichons les différents noms des colonnes : 
-```{r}
-colnames(freMPL1)
+Dans un premier temps, regardons les premières lignes du jeu de données  
+```{r, echo=FALSE}
+knitr::kable(t(head(freMPL2,3)))
 ```
 
-Regardons maintenant les différents types d'objets figurant dans les colonnes :  
-```{r}
-str(freMPL1)
+```{r, echo=FALSE}
+dim_freMPL2 <- dim(freMPL2)
 ```
-Nous avons donc des objets de type numeric, de type factor, de type int et même de type date. 
+Les dimmensions de notre jeu de données sont (`r dim_freMPL2`).
+Ainsi, notre jeu contient `r dim_freMPL2[1]` données différentes, toutes définies par `r dim_freMPL2[2]` caractéristiques différentes. 
 
-Regardons maintenant plus précisement les valeurs particulières de ces colonnes (valeurs minimum et maximum, moyenne, médiane,quantiles, ...)
-
-```{r}
-summary(freMPL1)
+```{r,echo=FALSE}
+colnames_freMPL2 <- colnames(freMPL2)
 ```
+Les noms des différentes caractéristiques sont :
+`r colnames_freMPL2`.
 
-### Exploration du jeu de données d'entraînement : freMPL2
 
-Dans un premier temps, regardons les premières lignes du jeu de données 
-```{r}
-head(freMPL2)
-```
- et les dimmensions de notre jeu de données : 
-```{r}
-dim(freMPL2)
-```
- Le jeu contient 48295 données différentes, toutes définies par 22 caractéristiques différentes. 
-
-Affichons les différents noms des colonnes : 
-```{r}
-colnames(freMPL2)
-```
-
-###### Nettoyage de données
+### Nettoyage de données
 
 Remarquons qu'il serait intéressant de faire un peu de nettoyage de données avant d'effectuer quelconques travaux sur celles-ci.
 Pour cela, nous allons créer une fonction qui servira à nettoyer les 2 dataframes.
 
-```{r}
+Cette fonction (appelée nettoyage_dataframe) prend l'un des deux dataframes en paramètres et effectue les opérations suivantes :
+
+- Suppression des données des individus assurés moins d'un jour (Exposure)
+- Modification des données des individus ayant un ClaimAmount négatif
+- Suppression de la colonne associée au sexe de la personne
+- Réduction du nombre de catégories socioprofessionnels
+- Traduction des données (VehBody, MariStat, VehUsage, VehEngine, VehEnergy, Garage)
+
+```{r, echo=FALSE}
 nettoyage_dataframe <- function(dataframe){
   
   # Suppression des données des individus assurés moins d'un jour (Exposure)
@@ -106,24 +96,30 @@ nettoyage_dataframe <- function(dataframe){
   dataframe <- dataframe[,-6]
   
   # Réduction du nombre de catégories socioprofessionnels
-  levels(dataframe$SocioCateg) <- c(levels(dataframe$SocioCateg), "CSP4", "CSP6","CSP9")
+  levels(dataframe$SocioCateg) <- c(levels(dataframe$SocioCateg), "CSP4", "CSP6",
+                                    "CSP9")
   for (i in 1:dim(dataframe)[1]){
     if (dataframe$SocioCateg[i]%in%c("CSP1","CSP16","CSP18","CSP19")){
       dataframe$SocioCateg[i]<-"CSP1"
       }
-    if (dataframe$SocioCateg[i]%in%c("CSP2", "CSP20", "CSP21", "CSP22", "CSP23", "CSP25", "CSP26", "CSP27", "CSP28")){
+    if (dataframe$SocioCateg[i]%in%c("CSP2", "CSP20", "CSP21", "CSP22", "CSP23",
+                                     "CSP25", "CSP26","CSP27", "CSP28")){
       dataframe$SocioCateg[i]<-"CSP2"
       }
-    if (dataframe$SocioCateg[i]%in%c("CSP3", "CSP30", "CSP31", "CSP32", "CSP33", "CSP35", "CSP36", "CSP37", "CSP38", "CSP39")){
+    if (dataframe$SocioCateg[i]%in%c("CSP3", "CSP30", "CSP31", "CSP32", "CSP33",
+                                     "CSP35", "CSP36","CSP37", "CSP38", "CSP39")){
       dataframe$SocioCateg[i]<-"CSP3"
       }
-    if (dataframe$SocioCateg[i]%in%c("CSP40", "CSP41", "CSP42", "CSP43", "CSP46", "CSP47", "CSP48", "CSP49")){
+    if (dataframe$SocioCateg[i]%in%c("CSP40", "CSP41", "CSP42", "CSP43", "CSP46",
+                                     "CSP47", "CSP48","CSP49")){
       dataframe$SocioCateg[i]<-"CSP4"
       }
-    if (dataframe$SocioCateg[i]%in%c("CSP5", "CSP50", "CSP51", "CSP55", "CSP56", "CSP57", "CSP59")){
+    if (dataframe$SocioCateg[i]%in%c("CSP5", "CSP50", "CSP51", "CSP55", "CSP56", 
+                                     "CSP57", "CSP59")){
       dataframe$SocioCateg[i]<-"CSP5"
       }
-    if (dataframe$SocioCateg[i]%in%c("CSP6", "CSP60", "CSP61", "CSP62", "CSP63", "CSP65", "CSP66")){
+    if (dataframe$SocioCateg[i]%in%c("CSP6", "CSP60", "CSP61", "CSP62", "CSP63",
+                                     "CSP65", "CSP66")){
       dataframe$SocioCateg[i]<-"CSP6"
       }
     if (dataframe$SocioCateg[i]%in%c("CSP7", "CSP70", "CSP73", "CSP74", "CSP77")){
@@ -164,16 +160,19 @@ nettoyage_dataframe <- function(dataframe){
                                       "privée et trajet vers bureau", "professionnel", 
                                       "trajet professionnel" )
       dataframe$VehUsage[dataframe$VehUsage == "Private"]<-"privée"
-      dataframe$VehUsage[dataframe$VehUsage == "Private+trip to office"]<-"privée et trajet vers bureau"
+      dataframe$VehUsage[dataframe$VehUsage == "Private+trip to office"]<-"privée et 
+      trajet vers bureau"
       dataframe$VehUsage[dataframe$VehUsage == "Professional"]<-"professionnel"
       dataframe$VehUsage[dataframe$VehUsage == "Professional run"]<-"trajet professionnel"
       dataframe$VehUsage <- droplevels(dataframe$VehUsage)
       }
     # Moteur du véhicule
     if (colnames(dataframe)[i]=="VehEngine"){
-      levels(dataframe$VehEngine) <- c(levels(dataframe$VehEngine), "injection directe surpuissante",
+      levels(dataframe$VehEngine) <- c(levels(dataframe$VehEngine), 
+                                       "injection directe surpuissante",
                                        "électrique", "injection surpuissante")
-      dataframe$VehEngine[dataframe$VehEngine == "direct injection overpowered"]<-"injection directe surpuissante"
+      dataframe$VehEngine[dataframe$VehEngine == "direct injection overpowered"]<-"injection
+      directe surpuissante"
       dataframe$VehEngine[dataframe$VehEngine == "electric"]<-"électrique"
       dataframe$VehEngine[dataframe$VehEngine == "injection overpowered"]<-"injection surpuissante"
       dataframe$VehEngine <- droplevels(dataframe$VehEngine)
@@ -187,7 +186,8 @@ nettoyage_dataframe <- function(dataframe){
       }
     # Garage
     if (colnames(dataframe)[i]=="Garage"){
-      levels(dataframe$Garage) <- c(levels(dataframe$Garage), "aucun", "garage indépendant", "concessionnaire")
+      levels(dataframe$Garage) <- c(levels(dataframe$Garage), "aucun", "garage indépendant",
+                                    "concessionnaire")
       dataframe$Garage[dataframe$Garage == "None"]<-"aucun"
       dataframe$Garage[dataframe$Garage == "Private garage"]<-"garage indépendant"
       dataframe$Garage[dataframe$Garage == "Collective garage"]<-"concessionnaire"
@@ -198,16 +198,14 @@ nettoyage_dataframe <- function(dataframe){
 }
 ```
 
-Tests de la fonction sur nos 2 dataframes : 
+```{r, echo=FALSE}
+# nettoyage de nos 2 dataframes : 
 
-```{r}
 freMPL2 <- nettoyage_dataframe(freMPL2)
 freMPL1 <- nettoyage_dataframe(freMPL1)
-freMPL2
-freMPL1
 ```
 
-###### Statistiques descriptives 
+## Statistiques descriptives 
 
 Regardons maintenant les différents types d'objets figurant dans les colonnes :  
 ```{r}
@@ -461,7 +459,7 @@ ggplot(dtVehEngine, aes(x = "", y = prop, fill = class)) +
   theme_void()
 ```
 
-###### ACP 
+### ACP 
 
 L'ACP permet d’analyser et de visualiser un jeu de données contenant des individus décrits par plusieurs variables quantitatives.
 C’est une méthode statistique qui permet d’explorer des données dites multivariées (données avec plusieurs variables). Chaque variable pourrait être considérée comme une dimension différente.
@@ -472,7 +470,7 @@ L’analyse en composantes principales est utilisée pour extraire et de visuali
 Attention, les valeurs doivent être numériques.
 
 On va donc convertir nos valeurs en numérique :
-```{r}
+```{r, eval=FALSE}
 freMPL2$LicAge <- as.numeric(freMPL2$LicAge)
 freMPL2$VehAge <- as.numeric(freMPL2$VehAge)
 freMPL2$DrivAge <- as.numeric(freMPL2$DrivAge)
@@ -483,30 +481,30 @@ str(freMPL2)
 model.matrix(~ freMPL2$VehBody)
 ```
 
-```{r}
+```{r, eval=FALSE}
 library("FactoMineR")
 library("factoextra") # Pour la visualisation 
 ```
 
-```{r}
+```{r, eval=FALSE}
 freMPL2.active <- freMPL2[,c(1:2,5:10,12:21)]
 freMPL2.pca <- PCA(freMPL2.active, graph = FALSE)
 ```
 
 Affichage du résultat : 
 
-```{r}
+```{r, eval=FALSE}
 print(freMPL2.pca)
 ```
 
-```{r}
+```{r, eval=FALSE}
 get_eigenvalue(freMPL2.pca)
 fviz_eig(freMPL2.pca)
 ```
 
 utilisation de cos2 pour juger de la qualité de la représentation :
 
-```{r}
+```{r, eval=FALSE}
 fviz_pca_var(freMPL2.pca, col.var = "cos2",
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
              repel = TRUE # Évite le chevauchement de texte
@@ -515,7 +513,7 @@ fviz_pca_var(freMPL2.pca, col.var = "cos2",
 
 contribution des colonnes aux dimensions : 
 
-```{r}
+```{r, eval=FALSE}
 fviz_pca_var(freMPL2.pca, col.var = "contrib",
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07")
              )
@@ -526,7 +524,7 @@ Dans les sections précédentes, nous avons décrit comment mettre en évidence 
 
 Notez également que la fonction dimdesc() [dans FactoMineR], pour dimension description (en anglais), peut être utilisée pour identifier les variables les plus significativement associées avec une composante principale donnée . Elle peut être utilisée comme suit:
 
-```{r}
+```{r, eval=FALSE}
 freMPL2.desc <- dimdesc(freMPL2.pca, axes = c(1,2), proba = 0.05)
 freMPL2.desc
 ```
@@ -536,24 +534,24 @@ freMPL2.desc
 L’ analyse factorielle des correspondances est une extension de l’analyse en composantes principales pour analyser l’association entre deux variables qualitatives (ou catégorielles).
 L’AFC permet de résumer et de visualiser l’information contenue dans le tableau de contingence formé par les deux variables catégorielles. Le tableau de contingence contient les fréquences formées par les deux variables.
 
-```{r}
+```{r, eval=FALSE}
 library ("FactoMineR")
 freMPL2.active <- freMPL2[,c(1:2,5:10,12:19,21)]
 freMPL2.ca <- CA (freMPL2.active)
 print(freMPL2.ca)
 ```
-```{r}
+```{r, eval=FALSE}
 get_eigenvalue(freMPL2.ca)
 fviz_screeplot (freMPL2.ca, addlabels = TRUE)
 ```
-```{r}
+```{r, eval=FALSE}
 fviz_ca_col (freMPL2.ca, col.col = "cos2",
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
              repel = TRUE)
 fviz_cos2 (freMPL2.ca, choice = "col", axes = 1:2)
 ```
 
-```{r}
+```{r, eval=FALSE}
 res.desc <- dimdesc(freMPL2.ca, axes = c(1, 2))
 res.desc[[1]]$col
 ```
@@ -563,13 +561,29 @@ res.desc[[1]]$col
 
 ```{r}
 #calibration d’une loi de Poisson
-fpois <- glm(RiskVar~DrivAge+VehAge+VehClass+VehBody+VehEnergy+Gender, offset=log(Exposure), family=poisson("log"), data=freMPL2)
+fpois <- glm(RiskVar~DrivAge+VehAge+VehClass+VehBody+VehEnergy, offset=log(Exposure), family=poisson("log"), data=freMPL2)
 summary(fpois)
 
 #calibration d’une loi Poisson sur-dispersée
-fpois2 <- glm(RiskVar~DrivAge+VehAge+VehClass+VehBody+VehEnergy+Gender, offset=log(Exposure), family=quasipoisson("log"), data=freMPL2)
+fpois2 <- glm(RiskVar~DrivAge+VehAge+VehClass+VehBody+VehEnergy, offset=log(Exposure), family=quasipoisson("log"), data=freMPL2)
 summary(fpois2)
 ```
 
+
+
+
+
+
+
+
+
+# Bibliographie
+
+# Annexes
+
+## Affichage de l'implementation de la fonction nettoyage_dataframe : 
+```{r, echo=FALSE}
+nettoyage_dataframe
+```
 
 
