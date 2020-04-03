@@ -13,7 +13,6 @@ output:
     toc_depth: '3'
 lang: fr
 ---
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo=TRUE,message=FALSE, warning=FALSE)
 ```
@@ -24,6 +23,7 @@ knitr::opts_chunk$set(echo=TRUE,message=FALSE, warning=FALSE)
 #install.packages(c("xts","sp","zoo"))
 #install.packages("Hmisc")
 #install.packages(c("FactoMineR", "factoextra"))
+#install.packages("cowplot")
 
 # Installation du package CASdatasets contenant les 2 jeux de données sur lesquels nous allons travaillés
 
@@ -67,8 +67,29 @@ Ainsi, notre jeu contient `r dim_freMPL2[1]` données différentes, toutes défi
 colnames_freMPL2 <- colnames(freMPL2)
 ```
 Les noms des différentes caractéristiques sont :
-`r colnames_freMPL2`.
 
+- **`r colnames_freMPL2[1]`** : 
+- **`r colnames_freMPL2[2]`** : 
+- **`r colnames_freMPL2[3]`** : 
+- **`r colnames_freMPL2[4]`** : 
+- **`r colnames_freMPL2[5]`** : 
+- **`r colnames_freMPL2[6]`** : 
+- **`r colnames_freMPL2[7]`** : 
+- **`r colnames_freMPL2[8]`** : 
+- **`r colnames_freMPL2[9]`** : 
+- **`r colnames_freMPL2[10]`** : 
+- **`r colnames_freMPL2[11]`** : 
+- **`r colnames_freMPL2[12]`** : 
+- **`r colnames_freMPL2[13]`** : 
+- **`r colnames_freMPL2[14]`** : 
+- **`r colnames_freMPL2[15]`** : 
+- **`r colnames_freMPL2[16]`** : 
+- **`r colnames_freMPL2[17]`** : 
+- **`r colnames_freMPL2[18]`** : 
+- **`r colnames_freMPL2[19]`** : 
+- **`r colnames_freMPL2[20]`** :
+- **`r colnames_freMPL2[21]`** :
+- **`r colnames_freMPL2[22]`** :
 
 ### Nettoyage de données
 
@@ -84,117 +105,119 @@ Cette fonction (appelée nettoyage_dataframe) prend l'un des deux dataframes en 
 - Traduction des données (VehBody, MariStat, VehUsage, VehEngine, VehEnergy, Garage)
 
 ```{r, echo=FALSE}
-nettoyage_dataframe <- function(dataframe){
+nettoyage_dataframe <- function(dt){
   
   # Suppression des données des individus assurés moins d'un jour (Exposure)
-  dataframe <- subset(dataframe,dataframe$Exposure>1/365.25)
+  dt <- subset(dt,dt$Exposure>1/365.25)
   
   # Modification des données des individus ayant un ClaimAmount négatif
-  dataframe <- subset(dataframe,dataframe$ClaimAmount>=0)
+  dt <- subset(dt,dt$ClaimAmount>=0)
   
   # Suppression de la colonne associée au sexe de la personne
-  dataframe <- dataframe[,-6]
+  dt <- dt[,-6]
   
   # Réduction du nombre de catégories socioprofessionnels
-  levels(dataframe$SocioCateg) <- c(levels(dataframe$SocioCateg), "CSP4", "CSP6",
+  levels(dt$SocioCateg) <- c(levels(dt$SocioCateg), "CSP4", "CSP6",
                                     "CSP9")
-  for (i in 1:dim(dataframe)[1]){
-    if (dataframe$SocioCateg[i]%in%c("CSP1","CSP16","CSP18","CSP19")){
-      dataframe$SocioCateg[i]<-"CSP1"
+  for (i in 1:dim(dt)[1]){
+    if (dt$SocioCateg[i]%in%c("CSP1","CSP16","CSP18","CSP19")){
+      dt$SocioCateg[i]<-"CSP1"
       }
-    if (dataframe$SocioCateg[i]%in%c("CSP2", "CSP20", "CSP21", "CSP22", "CSP23",
+    if (dt$SocioCateg[i]%in%c("CSP2", "CSP20", "CSP21", "CSP22", "CSP23",
                                      "CSP25", "CSP26","CSP27", "CSP28")){
-      dataframe$SocioCateg[i]<-"CSP2"
+      dt$SocioCateg[i]<-"CSP2"
       }
-    if (dataframe$SocioCateg[i]%in%c("CSP3", "CSP30", "CSP31", "CSP32", "CSP33",
+    if (dt$SocioCateg[i]%in%c("CSP3", "CSP30", "CSP31", "CSP32", "CSP33",
                                      "CSP35", "CSP36","CSP37", "CSP38", "CSP39")){
-      dataframe$SocioCateg[i]<-"CSP3"
+      dt$SocioCateg[i]<-"CSP3"
       }
-    if (dataframe$SocioCateg[i]%in%c("CSP40", "CSP41", "CSP42", "CSP43", "CSP46",
+    if (dt$SocioCateg[i]%in%c("CSP40", "CSP41", "CSP42", "CSP43", "CSP46",
                                      "CSP47", "CSP48","CSP49")){
-      dataframe$SocioCateg[i]<-"CSP4"
+      dt$SocioCateg[i]<-"CSP4"
       }
-    if (dataframe$SocioCateg[i]%in%c("CSP5", "CSP50", "CSP51", "CSP55", "CSP56", 
+    if (dt$SocioCateg[i]%in%c("CSP5", "CSP50", "CSP51", "CSP55", "CSP56", 
                                      "CSP57", "CSP59")){
-      dataframe$SocioCateg[i]<-"CSP5"
+      dt$SocioCateg[i]<-"CSP5"
       }
-    if (dataframe$SocioCateg[i]%in%c("CSP6", "CSP60", "CSP61", "CSP62", "CSP63",
+    if (dt$SocioCateg[i]%in%c("CSP6", "CSP60", "CSP61", "CSP62", "CSP63",
                                      "CSP65", "CSP66")){
-      dataframe$SocioCateg[i]<-"CSP6"
+      dt$SocioCateg[i]<-"CSP6"
       }
-    if (dataframe$SocioCateg[i]%in%c("CSP7", "CSP70", "CSP73", "CSP74", "CSP77")){
-      dataframe$SocioCateg[i]<-"CSP7"
+    if (dt$SocioCateg[i]%in%c("CSP7", "CSP70", "CSP73", "CSP74", "CSP77")){
+      dt$SocioCateg[i]<-"CSP7"
       }
-    if (dataframe$SocioCateg[i]%in%c("CSP9", "CSP91")){
-      dataframe$SocioCateg[i]<-"CSP9"
+    if (dt$SocioCateg[i]%in%c("CSP9", "CSP91")){
+      dt$SocioCateg[i]<-"CSP9"
       }
   }
-  dataframe$SocioCateg <- droplevels(dataframe$SocioCateg)
+  dt$SocioCateg <- droplevels(dt$SocioCateg)
   
   # Traduction des données (VehBody, MariStat, VehUsage, VehEngine, VehEnergy, Garage)
-  for (i in 1:dim(dataframe)[2]){
+  for (i in 1:dim(dt)[2]){
     # Type de véhicules
-    if (colnames(dataframe)[i]=="VehBody"){
-      levels(dataframe$VehBody) <- c(levels(dataframe$VehBody), "autobus", "coupé",
+    if (colnames(dt)[i]=="VehBody"){
+      levels(dt$VehBody) <- c(levels(dt$VehBody), "autobus", "coupé",
                                      "autre microvan", "berline","SUV", "break",
                                      "camionnette")
-      dataframe$VehBody[dataframe$VehBody == "bus"]<-"autobus"
-      dataframe$VehBody[dataframe$VehBody == "coupe"]<-"coupé"
-      dataframe$VehBody[dataframe$VehBody == "other microvan"]<-"autre microvan"
-      dataframe$VehBody[dataframe$VehBody == "sedan"]<-"berline"
-      dataframe$VehBody[dataframe$VehBody == "sport utility vehicle"]<-"SUV"
-      dataframe$VehBody[dataframe$VehBody == "station wagon"]<-"break"
-      dataframe$VehBody[dataframe$VehBody == "van"]<-"camionnette"
-      dataframe$VehBody <- droplevels(dataframe$VehBody)
+      dt$VehBody[dt$VehBody == "bus"]<-"autobus"
+      dt$VehBody[dt$VehBody == "coupe"]<-"coupé"
+      dt$VehBody[dt$VehBody == "other microvan"]<-"autre microvan"
+      dt$VehBody[dt$VehBody == "sedan"]<-"berline"
+      dt$VehBody[dt$VehBody == "sport utility vehicle"]<-"SUV"
+      dt$VehBody[dt$VehBody == "station wagon"]<-"break"
+      dt$VehBody[dt$VehBody == "van"]<-"camionnette"
+      dt$VehBody <- droplevels(dt$VehBody)
       }
     # Statut marital
-    if (colnames(dataframe)[i]=="MariStat"){
-      levels(dataframe$MariStat) <- c(levels(dataframe$MariStat), "célibataire", "autre")
-      dataframe$MariStat[dataframe$MariStat == "Alone"]<-"célibataire"
-      dataframe$MariStat[dataframe$MariStat == "Other"]<-"autre"
-      dataframe$MariStat <- droplevels(dataframe$MariStat)
+    if (colnames(dt)[i]=="MariStat"){
+      levels(dt$MariStat) <- c(levels(dt$MariStat), "célibataire", "autre")
+      dt$MariStat[dt$MariStat == "Alone"]<-"célibataire"
+      dt$MariStat[dt$MariStat == "Other"]<-"autre"
+      dt$MariStat <- droplevels(dt$MariStat)
       }
     # Utilisation du véhicule
-    if (colnames(dataframe)[i]=="VehUsage"){
-      levels(dataframe$VehUsage) <- c(levels(dataframe$VehUsage), "privée", 
+    if (colnames(dt)[i]=="VehUsage"){
+      levels(dt$VehUsage) <- c(levels(dt$VehUsage), "privée", 
                                       "privée et trajet vers bureau", "professionnel", 
                                       "trajet professionnel" )
-      dataframe$VehUsage[dataframe$VehUsage == "Private"]<-"privée"
-      dataframe$VehUsage[dataframe$VehUsage == "Private+trip to office"]<-"privée et 
-      trajet vers bureau"
-      dataframe$VehUsage[dataframe$VehUsage == "Professional"]<-"professionnel"
-      dataframe$VehUsage[dataframe$VehUsage == "Professional run"]<-"trajet professionnel"
-      dataframe$VehUsage <- droplevels(dataframe$VehUsage)
+      dt$VehUsage[dt$VehUsage == "Private"]<-"privée"
+      dt$VehUsage[dt$VehUsage == "Private+trip to office"]<-
+      "privée et trajet vers bureau"
+      dt$VehUsage[dt$VehUsage == "Professional"]<-"professionnel"
+      dt$VehUsage[dt$VehUsage == "Professional run"]<-
+      "trajet professionnel"
+      dt$VehUsage <- droplevels(dt$VehUsage)
       }
     # Moteur du véhicule
-    if (colnames(dataframe)[i]=="VehEngine"){
-      levels(dataframe$VehEngine) <- c(levels(dataframe$VehEngine), 
+    if (colnames(dt)[i]=="VehEngine"){
+      levels(dt$VehEngine) <- c(levels(dt$VehEngine), 
                                        "injection directe surpuissante",
                                        "électrique", "injection surpuissante")
-      dataframe$VehEngine[dataframe$VehEngine == "direct injection overpowered"]<-"injection
-      directe surpuissante"
-      dataframe$VehEngine[dataframe$VehEngine == "electric"]<-"électrique"
-      dataframe$VehEngine[dataframe$VehEngine == "injection overpowered"]<-"injection surpuissante"
-      dataframe$VehEngine <- droplevels(dataframe$VehEngine)
+      dt$VehEngine[dt$VehEngine == "direct injection overpowered"]<-
+      "injection directe surpuissante"
+      dt$VehEngine[dt$VehEngine == "electric"]<-"électrique"
+      dt$VehEngine[dt$VehEngine == "injection overpowered"]<-
+      "injection surpuissante"
+      dt$VehEngine <- droplevels(dt$VehEngine)
       }
     # Energie utilisée par le véhicule
-    if (colnames(dataframe)[i]=="VehEnergy"){
-      levels(dataframe$VehEnergy) <- c(levels(dataframe$VehEnergy), "électrique", "essence")
-      dataframe$VehEnergy[dataframe$VehEnergy == "regular"]<-"essence"
-      dataframe$VehEnergy[dataframe$VehEnergy == "eletric"]<-"électrique"
-      dataframe$VehEnergy <- droplevels(dataframe$VehEnergy)
+    if (colnames(dt)[i]=="VehEnergy"){
+      levels(dt$VehEnergy) <- c(levels(dt$VehEnergy), "électrique", "essence")
+      dt$VehEnergy[dt$VehEnergy == "regular"]<-"essence"
+      dt$VehEnergy[dt$VehEnergy == "eletric"]<-"électrique"
+      dt$VehEnergy <- droplevels(dt$VehEnergy)
       }
     # Garage
-    if (colnames(dataframe)[i]=="Garage"){
-      levels(dataframe$Garage) <- c(levels(dataframe$Garage), "aucun", "garage indépendant",
+    if (colnames(dt)[i]=="Garage"){
+      levels(dt$Garage) <- c(levels(dt$Garage), "aucun", "garage indépendant",
                                     "concessionnaire")
-      dataframe$Garage[dataframe$Garage == "None"]<-"aucun"
-      dataframe$Garage[dataframe$Garage == "Private garage"]<-"garage indépendant"
-      dataframe$Garage[dataframe$Garage == "Collective garage"]<-"concessionnaire"
-      dataframe$Garage <- droplevels(dataframe$Garage)
+      dt$Garage[dt$Garage == "None"]<-"aucun"
+      dt$Garage[dt$Garage == "Private garage"]<-"garage indépendant"
+      dt$Garage[dt$Garage == "Collective garage"]<-"concessionnaire"
+      dt$Garage <- droplevels(dt$Garage)
     }
   }
-  return (dataframe)
+  return (dt)
 }
 ```
 
@@ -205,259 +228,112 @@ freMPL2 <- nettoyage_dataframe(freMPL2)
 freMPL1 <- nettoyage_dataframe(freMPL1)
 ```
 
-## Statistiques descriptives 
+### Statistiques descriptives 
 
 Regardons maintenant les différents types d'objets figurant dans les colonnes :  
-```{r}
+```{r, echo = FALSE, eval = FALSE}
 str(freMPL2)
 ```
 Nous avons donc des objets de type numeric, de type factor, de type int et même de type date. 
 
 Regardons maintenant plus précisement les valeurs particulières de ces colonnes (valeurs minimum et maximum, moyenne, médiane,quantiles, ...)
 
-```{r}
+```{r, echo = FALSE, eval = FALSE}
 summary(freMPL2)
 ```
-On remarquera qu'il existe des données manquantes dans la colonne RecEnd.
+On remarquera qu'il existe des données manquantes dans la colonne RecEnd, ce qui signifie que les individus concernés sont toujours assurés. 
 
 On peut aussi utiliser la méthode describe du package Hmisc pour avoir un aperçu de la dispersion des données.
 
-```{r}
+```{r, echo = FALSE, eval = FALSE}
 library("Hmisc")
 describe(freMPL2)
 ```
 Mais cela ne vaut pas une représentation graphique.
 
-###### Représentations graphiques des données
+### Représentations graphiques des données
 
-###### Exposure : 
-
-```{r}
-par(fig=c(0.1,1,0.1,0.7), mar = c(0,0,2,2))
-hist(freMPL2$Exposure,
-      main = paste("Exposure"),
-      ylab = "Effectifs",
-      xlab = "Exposure in years ")
-par(fig=c(0.1,1,0.8,1), mar = c(0,0,2,2), new = TRUE)
-boxplot(freMPL2$Exposure, data = freMPL2, horizontal = TRUE)
-```
-
-###### LicAge : 
-
-```{r}
-par(fig=c(0.1,1,0.1,0.7), mar = c(0,0,2,2))
-hist(freMPL2$LicAge,
-      main = paste("LicAge"),
-      ylab = "Effectifs",
-      xlab = "Licence Age in months ",
-     proba = TRUE)
-lines(density(freMPL2$LicAge), col = "red", lwd=3)
-par(fig=c(0.1,1,0.8,1), mar = c(0,0,2,2), new = TRUE)
-boxplot(freMPL2$LicAge, data = freMPL2, horizontal = TRUE)
-```
-###### VehAge
-
-```{r}
+```{r, echo=FALSE}
 library("ggplot2")
 library("dplyr") 
-barplot(table(freMPL2$VehAge), main = "VehAge", names = c('0','1','2','3','4','5','6-7','8-9','10+'))
+library("cowplot")
 
-# Affichage diagramme camembert 
+representation_graphique <- function(dataframe, col){
+  indice_col <-  which(colnames(dataframe) == col)
+  if(indice_col %in% c(1,2,9,11,18,19)){
+    par(fig=c(0.1,1,0.1,0.7), mar = c(0,0,2,2))
+    hist(dataframe[,indice_col],
+      main = paste(col))
+    par(fig=c(0.1,1,0.8,1), mar = c(0,0,2,2), new = TRUE)
+    boxplot(dataframe[,indice_col], data = dataframe, horizontal = TRUE)
+  }
+  else{
+    if(indice_col %in% c(5)){
+      dt <- data.frame(
+        class = factor(levels(dataframe[,indice_col])),
+        n = as.data.frame(table(dataframe[,indice_col]))[,2],
+        prop = as.data.frame(round(prop.table(table(dataframe[,indice_col])),2))[,2]
+        )
+      dt <- dt %>%
+        arrange(desc(class)) %>%
+        mutate(lab.ypos = cumsum(prop) - 0.5*prop)
+      barre <- ggplot(dt, aes(x = class, y = n, fill = class)) +
+        geom_bar(width = 1, stat = "identity", color = "white")+
+        theme_minimal()
+      camembert <- ggplot(dt, aes(x = "", y = prop, fill = class)) +
+        geom_bar(width = 1, stat = "identity", color = "white") +
+        coord_polar("y", start = 0)+
+        geom_text(aes(y = lab.ypos, label = prop), color = "white")+
+        theme_void()
+      plot_grid(barre, camembert, ncol = 2, nrow = 1)
+    }
+    else{
+      if(indice_col %in% c(10,21)){
+        print("coucou")
+        dt <- data.frame(
+          class = c("0","1"),
+          n = as.data.frame(table(dataframe[,indice_col]))[,2],
+          prop = as.data.frame(round(prop.table(table(dataframe[,indice_col])),2))[,2]
+          )
+        dt <- dt %>%
+          arrange(desc(class)) %>%
+          mutate(lab.ypos = cumsum(prop) - 0.5*prop)
+        barre <- ggplot(dt, aes(x = class, y = n, fill = class)) +
+          geom_bar(width = 1, stat = "identity", color = "white")+
+          theme_minimal()
+        camembert <- ggplot(dt, aes(x = "", y = prop, fill = class)) +
+          geom_bar(width = 1, stat = "identity", color = "white") +
+          coord_polar("y", start = 0)+
+          geom_text(aes(y = lab.ypos, label = prop), color = "white")+
+          theme_void()
+        plot_grid(barre, camembert, ncol = 2, nrow = 1)
+      }
+      else{
+        dt <- data.frame(
+          class = levels(dataframe[,indice_col]),
+          n = as.data.frame(table(dataframe[,indice_col]))[,2],
+          prop = as.data.frame(round(prop.table(table(dataframe[,indice_col])),2))[,2]
+          )
+        dt <- dt %>%
+          arrange(desc(class)) %>%
+          mutate(lab.ypos = cumsum(prop) - 0.5*prop)
+        barre <- ggplot(dt, aes(x = class, y = n, fill = class)) +
+          geom_bar(width = 1, stat = "identity", color = "white")+
+          theme_minimal()
+        camembert <- ggplot(dt, aes(x = "", y = prop, fill = class)) +
+          geom_bar(width = 1, stat = "identity", color = "white") +
+          coord_polar("y", start = 0)+
+          geom_text(aes(y = lab.ypos, label = prop), color = "white")+
+          theme_void()
+        plot_grid(barre, camembert, ncol = 2, nrow = 1)
+      }
+    }
+  }
+}
 
-dtVehAge <- data.frame(
-  class = c('0','1','2','3','4','5','6-7','8-9','10+'),
-  n = as.data.frame(table(freMPL2$VehAge))[,2],
-  prop = as.data.frame(round(prop.table(table(freMPL2$VehAge)),2))[,2]
-)
-dtVehAge <- dtVehAge %>%
-  arrange(desc(class)) %>%
-  mutate(lab.ypos = cumsum(prop) - 0.5*prop)
-ggplot(dtVehAge, aes(x = "", y = prop, fill = class)) +
-  geom_bar(width = 1, stat = "identity", color = "white") +
-  coord_polar("y", start = 0)+
-  geom_text(aes(y = lab.ypos, label = prop), color = "white")+
-  theme_void()
+representation_graphique(freMPL2, "Exposure")
 ```
 
-###### MariStat
-
-```{r}
-barplot(table(freMPL2$MariStat), main = "MariStat")
-
-# Affichage diagramme camembert 
-
-dtMariStat <- data.frame(
-  class = levels(freMPL2$MariStat),
-  n = as.data.frame(table(freMPL2$MariStat))[,2],
-  prop = as.data.frame(round(prop.table(table(freMPL2$MariStat)),2))[,2]
-)
-dtMariStat <- dtMariStat %>%
-  arrange(desc(class)) %>%
-  mutate(lab.ypos = cumsum(prop) - 0.5*prop)
-ggplot(dtMariStat, aes(x = "", y = prop, fill = class)) +
-  geom_bar(width = 1, stat = "identity", color = "white") +
-  coord_polar("y", start = 0)+
-  geom_text(aes(y = lab.ypos, label = prop), color = "white")+
-  theme_void()
-```
-
-###### SocioCateg
-
-```{r}
-barplot(table(freMPL2$SocioCateg), main = "SocioCateg")
-
-# Affichage diagramme camembert 
-
-dtSocioCateg <- data.frame(
-  class = levels(freMPL2$SocioCateg),
-  n = as.data.frame(table(freMPL2$SocioCateg))[,2],
-  prop = as.data.frame(round(prop.table(table(freMPL2$SocioCateg)),2))[,2]
-)
-dtSocioCateg <- dtSocioCateg %>%
-  arrange(desc(class)) %>%
-  mutate(lab.ypos = cumsum(prop) - 0.5*prop)
-ggplot(dtSocioCateg, aes(x = "", y = prop, fill = class)) +
-  geom_bar(width = 1, stat = "identity", color = "white") +
-  coord_polar("y", start = 0)+
-  geom_text(aes(y = lab.ypos, label = prop), color = "white")+
-  theme_void()
-```
-
-###### VehUsage
-
-```{r}
-barplot(table(freMPL2$VehUsage), main = "VehUsage")
-
-# Affichage diagramme camembert 
-
-dtVehUsage <- data.frame(
-  class = levels(freMPL2$VehUsage),
-  n = as.data.frame(table(freMPL2$VehUsage))[,2],
-  prop = as.data.frame(round(prop.table(table(freMPL2$VehUsage)),2))[,2]
-)
-dtVehUsage <- dtVehUsage %>%
-  arrange(desc(class)) %>%
-  mutate(lab.ypos = cumsum(prop) - 0.5*prop)
-ggplot(dtVehUsage, aes(x = "", y = prop, fill = class)) +
-  geom_bar(width = 1, stat = "identity", color = "white") +
-  coord_polar("y", start = 0)+
-  geom_text(aes(y = lab.ypos, label = prop), color = "white")+
-  theme_void()
-```
-
-###### DrivAge
-
-```{r}
-par(fig=c(0.1,1,0.1,0.7), mar = c(0,0,2,2))
-hist(freMPL2$DrivAge,
-      main = paste("DrivAge"),
-      ylab = "Effectifs",
-      xlab = "The driver age, in years",
-     proba = TRUE)
-lines(density(freMPL2$DrivAge), col = "red", lwd=3)
-par(fig=c(0.1,1,0.8,1), mar = c(0,0,2,2), new = TRUE)
-boxplot(freMPL2$DrivAge, data = freMPL2, horizontal = TRUE)
-```
-
-###### HasKmLimit
-
-```{r}
-barplot(table(freMPL2$HasKmLimit), main = "HasKmLimit")
-
-# Affichage diagramme camembert 
-
-dtHasKmLimit <- data.frame(
-  class = c("0","1"),
-  n = as.data.frame(table(freMPL2$HasKmLimit))[,2],
-  prop = as.data.frame(round(prop.table(table(freMPL2$HasKmLimit)),2))[,2]
-)
-dtHasKmLimit <- dtHasKmLimit %>%
-  arrange(desc(class)) %>%
-  mutate(lab.ypos = cumsum(prop) - 0.5*prop)
-ggplot(dtHasKmLimit, aes(x = "", y = prop, fill = class)) +
-  geom_bar(width = 1, stat = "identity", color = "white") +
-  coord_polar("y", start = 0)+
-  geom_text(aes(y = lab.ypos, label = prop), color = "white")+
-  theme_void()
-```
-
-###### BonusMalus
-
-```{r}
-par(fig=c(0.1,1,0.1,0.7), mar = c(0,0,2,2))
-hist(freMPL2$BonusMalus,
-      main = paste("BonusMalus"),
-      ylab = "Effectifs",
-      xlab = "A numeric for the bonus/malus")
-par(fig=c(0.1,1,0.8,1), mar = c(0,0,2,2), new = TRUE)
-boxplot(freMPL2$BonusMalus, data = freMPL2, horizontal = TRUE)
-```
-
-###### VehBody
-
-```{r}
-barplot(table(freMPL2$VehBody), main = "VehBody")
-
-# Affichage diagramme camembert 
-
-dtVehBody <- data.frame(
-  class = levels(freMPL2$VehBody),
-  n = as.data.frame(table(freMPL2$VehBody))[,2],
-  prop = as.data.frame(round(prop.table(table(freMPL2$VehBody)),2))[,2]
-)
-dtVehBody <- dtVehBody %>%
-  arrange(desc(class)) %>%
-  mutate(lab.ypos = cumsum(prop) - 0.5*prop)
-ggplot(dtVehBody, aes(x = "", y = prop, fill = class)) +
-  geom_bar(width = 1, stat = "identity", color = "white") +
-  coord_polar("y", start = 0)+
-  geom_text(aes(y = lab.ypos, label = prop), color = "white")+
-  theme_void()
-```
-
-###### VehPrice
-
-```{r, echo = FALSE}
-barplot(table(freMPL2$VehPrice), main = "VehPrice")
-dt <- as.data.frame(table(freMPL2$VehPrice))
-lines(dt[,1],dt[,2],col = "red", lwd=3)
-# Affichage diagramme camembert 
-
-dtVehPrice <- data.frame(
-  class = levels(freMPL2$VehPrice),
-  n = as.data.frame(table(freMPL2$VehPrice))[,2],
-  prop = as.data.frame(round(prop.table(table(freMPL2$VehPrice)),2))[,2]
-)
-dtVehPrice <- dtVehPrice %>%
-  arrange(desc(class)) %>%
-  mutate(lab.ypos = cumsum(prop) - 0.5*prop)
-ggplot(dtVehPrice, aes(x = "", y = prop, fill = class)) +
-  geom_bar(width = 1, stat = "identity", color = "white") +
-  coord_polar("y", start = 0)+
-  geom_text(aes(y = lab.ypos, label = prop), color = "white")+
-  theme_void()
-```
-
-###### VehEngine
-
-```{r}
-barplot(table(freMPL2$VehEngine), main = "VehEngine")
-# Affichage diagramme camembert 
-
-dtVehEngine <- data.frame(
-  class = levels(freMPL2$VehEngine),
-  n = as.data.frame(table(freMPL2$VehEngine))[,2],
-  prop = as.data.frame(round(prop.table(table(freMPL2$VehEngine)),2))[,2]
-)
-dtVehEngine <- dtVehEngine %>%
-  arrange(desc(class)) %>%
-  mutate(lab.ypos = cumsum(prop) - 0.5*prop)
-ggplot(dtVehEngine, aes(x = "", y = prop, fill = class)) +
-  geom_bar(width = 1, stat = "identity", color = "white") +
-  coord_polar("y", start = 0)+
-  geom_text(aes(y = lab.ypos, label = prop), color = "white")+
-  theme_void()
-```
 
 ### ACP 
 
@@ -465,46 +341,45 @@ L'ACP permet d’analyser et de visualiser un jeu de données contenant des indi
 C’est une méthode statistique qui permet d’explorer des données dites multivariées (données avec plusieurs variables). Chaque variable pourrait être considérée comme une dimension différente.
 L’analyse en composantes principales est utilisée pour extraire et de visualiser les informations importantes contenues dans une table de données multivariées. L’ACP synthétise cette information en seulement quelques nouvelles variables appelées composantes principales. Ces nouvelles variables correspondent à une combinaison linéaire des variables originels. Le nombre de composantes principales est inférieur ou égal au nombre de variables d’origine.
 
-###### Exécution sur nos données freMPL2
+#### Exécution sur nos données freMPL2
 
 Attention, les valeurs doivent être numériques.
 
 On va donc convertir nos valeurs en numérique :
-```{r, eval=FALSE}
+```{r}
 freMPL2$LicAge <- as.numeric(freMPL2$LicAge)
 freMPL2$VehAge <- as.numeric(freMPL2$VehAge)
 freMPL2$DrivAge <- as.numeric(freMPL2$DrivAge)
 freMPL2$BonusMalus <- as.numeric(freMPL2$BonusMalus)
 freMPL2$RiskVar <- as.numeric(freMPL2$RiskVar)
 freMPL2$ClaimAmount <- as.numeric(freMPL2$ClaimAmount)
-str(freMPL2)
-model.matrix(~ freMPL2$VehBody)
 ```
 
-```{r, eval=FALSE}
+Certaines colonnes sont catégorisés et pourraient nous être utiles pour éxécuter notre ACP.
+Il n'est cependant pas judicieux d'appliquer une conversion numérique à ces colonnes puisqu'on leur attribue une valeur arbitraire nous faisant penser à une classification des différents facteurs possibles. Pour éviter cela, on va donc utiliser la méthode model.matrix() qui crée une matrice binaire spécifiant à quel facteur correspond une ligne du dataframe.
+
+
+
+```{r}
 library("FactoMineR")
 library("factoextra") # Pour la visualisation 
 ```
 
-```{r, eval=FALSE}
-freMPL2.active <- freMPL2[,c(1:2,5:10,12:21)]
+```{r}
+freMPL2.active <- freMPL2[,c(1:2,9,11, 18:19)]
 freMPL2.pca <- PCA(freMPL2.active, graph = FALSE)
 ```
 
 Affichage du résultat : 
 
-```{r, eval=FALSE}
-print(freMPL2.pca)
-```
-
-```{r, eval=FALSE}
+```{r}
 get_eigenvalue(freMPL2.pca)
 fviz_eig(freMPL2.pca)
 ```
 
 utilisation de cos2 pour juger de la qualité de la représentation :
 
-```{r, eval=FALSE}
+```{r}
 fviz_pca_var(freMPL2.pca, col.var = "cos2",
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
              repel = TRUE # Évite le chevauchement de texte
@@ -513,7 +388,7 @@ fviz_pca_var(freMPL2.pca, col.var = "cos2",
 
 contribution des colonnes aux dimensions : 
 
-```{r, eval=FALSE}
+```{r}
 fviz_pca_var(freMPL2.pca, col.var = "contrib",
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07")
              )
@@ -524,9 +399,9 @@ Dans les sections précédentes, nous avons décrit comment mettre en évidence 
 
 Notez également que la fonction dimdesc() [dans FactoMineR], pour dimension description (en anglais), peut être utilisée pour identifier les variables les plus significativement associées avec une composante principale donnée . Elle peut être utilisée comme suit:
 
-```{r, eval=FALSE}
+```{r, eval = FALSE}
 freMPL2.desc <- dimdesc(freMPL2.pca, axes = c(1,2), proba = 0.05)
-freMPL2.desc
+head(freMPL2.desc)
 ```
 
 ###### AFC 
@@ -534,30 +409,30 @@ freMPL2.desc
 L’ analyse factorielle des correspondances est une extension de l’analyse en composantes principales pour analyser l’association entre deux variables qualitatives (ou catégorielles).
 L’AFC permet de résumer et de visualiser l’information contenue dans le tableau de contingence formé par les deux variables catégorielles. Le tableau de contingence contient les fréquences formées par les deux variables.
 
-```{r, eval=FALSE}
+```{r}
 library ("FactoMineR")
-freMPL2.active <- freMPL2[,c(1:2,5:10,12:19,21)]
 freMPL2.ca <- CA (freMPL2.active)
-print(freMPL2.ca)
 ```
-```{r, eval=FALSE}
+
+```{r}
 get_eigenvalue(freMPL2.ca)
 fviz_screeplot (freMPL2.ca, addlabels = TRUE)
 ```
-```{r, eval=FALSE}
+
+```{r}
 fviz_ca_col (freMPL2.ca, col.col = "cos2",
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
              repel = TRUE)
 fviz_cos2 (freMPL2.ca, choice = "col", axes = 1:2)
 ```
 
-```{r, eval=FALSE}
+```{r}
 res.desc <- dimdesc(freMPL2.ca, axes = c(1, 2))
 res.desc[[1]]$col
 ```
 
 
-###### GLM 
+# GLM 
 
 ```{r}
 #calibration d’une loi de Poisson
@@ -569,21 +444,129 @@ fpois2 <- glm(RiskVar~DrivAge+VehAge+VehClass+VehBody+VehEnergy, offset=log(Expo
 summary(fpois2)
 ```
 
-
-
-
-
-
-
-
-
 # Bibliographie
+
+
 
 # Annexes
 
 ## Affichage de l'implementation de la fonction nettoyage_dataframe : 
-```{r, echo=FALSE}
-nettoyage_dataframe
+
+```
+nettoyage_dataframe <- function(dt){
+  
+  # Suppression des données des individus assurés moins d'un jour (Exposure)
+  dt <- subset(dt,dt$Exposure>1/365.25)
+  
+  # Modification des données des individus ayant un ClaimAmount négatif
+  dt <- subset(dt,dt$ClaimAmount>=0)
+  
+  # Suppression de la colonne associée au sexe de la personne
+  dt <- dt[,-6]
+  
+  # Réduction du nombre de catégories socioprofessionnels
+  levels(dt$SocioCateg) <- c(levels(dt$SocioCateg), "CSP4", "CSP6",
+                                    "CSP9")
+  for (i in 1:dim(dt)[1]){
+    if (dt$SocioCateg[i]%in%c("CSP1","CSP16","CSP18","CSP19")){
+      dt$SocioCateg[i]<-"CSP1"
+      }
+    if (dt$SocioCateg[i]%in%c("CSP2", "CSP20", "CSP21", "CSP22", "CSP23",
+                                     "CSP25", "CSP26","CSP27", "CSP28")){
+      dt$SocioCateg[i]<-"CSP2"
+      }
+    if (dt$SocioCateg[i]%in%c("CSP3", "CSP30", "CSP31", "CSP32", "CSP33",
+                                     "CSP35", "CSP36","CSP37", "CSP38", "CSP39")){
+      dt$SocioCateg[i]<-"CSP3"
+      }
+    if (dt$SocioCateg[i]%in%c("CSP40", "CSP41", "CSP42", "CSP43", "CSP46",
+                                     "CSP47", "CSP48","CSP49")){
+      dt$SocioCateg[i]<-"CSP4"
+      }
+    if (dt$SocioCateg[i]%in%c("CSP5", "CSP50", "CSP51", "CSP55", "CSP56", 
+                                     "CSP57", "CSP59")){
+      dt$SocioCateg[i]<-"CSP5"
+      }
+    if (dt$SocioCateg[i]%in%c("CSP6", "CSP60", "CSP61", "CSP62", "CSP63",
+                                     "CSP65", "CSP66")){
+      dt$SocioCateg[i]<-"CSP6"
+      }
+    if (dt$SocioCateg[i]%in%c("CSP7", "CSP70", "CSP73", "CSP74", "CSP77")){
+      dt$SocioCateg[i]<-"CSP7"
+      }
+    if (dt$SocioCateg[i]%in%c("CSP9", "CSP91")){
+      dt$SocioCateg[i]<-"CSP9"
+      }
+  }
+  dt$SocioCateg <- droplevels(dt$SocioCateg)
+  
+  # Traduction des données (VehBody, MariStat, VehUsage, VehEngine, VehEnergy, Garage)
+  for (i in 1:dim(dt)[2]){
+    # Type de véhicules
+    if (colnames(dt)[i]=="VehBody"){
+      levels(dt$VehBody) <- c(levels(dt$VehBody), "autobus", "coupé",
+                                     "autre microvan", "berline","SUV", "break",
+                                     "camionnette")
+      dt$VehBody[dt$VehBody == "bus"]<-"autobus"
+      dt$VehBody[dt$VehBody == "coupe"]<-"coupé"
+      dt$VehBody[dt$VehBody == "other microvan"]<-"autre microvan"
+      dt$VehBody[dt$VehBody == "sedan"]<-"berline"
+      dt$VehBody[dt$VehBody == "sport utility vehicle"]<-"SUV"
+      dt$VehBody[dt$VehBody == "station wagon"]<-"break"
+      dt$VehBody[dt$VehBody == "van"]<-"camionnette"
+      dt$VehBody <- droplevels(dt$VehBody)
+      }
+    # Statut marital
+    if (colnames(dt)[i]=="MariStat"){
+      levels(dt$MariStat) <- c(levels(dt$MariStat), "célibataire", "autre")
+      dt$MariStat[dt$MariStat == "Alone"]<-"célibataire"
+      dt$MariStat[dt$MariStat == "Other"]<-"autre"
+      dt$MariStat <- droplevels(dt$MariStat)
+      }
+    # Utilisation du véhicule
+    if (colnames(dt)[i]=="VehUsage"){
+      levels(dt$VehUsage) <- c(levels(dt$VehUsage), "privée", 
+                                      "privée et trajet vers bureau", "professionnel", 
+                                      "trajet professionnel" )
+      dt$VehUsage[dt$VehUsage == "Private"]<-"privée"
+      dt$VehUsage[dt$VehUsage == "Private+trip to office"]<-
+      "privée et trajet vers bureau"
+      dt$VehUsage[dt$VehUsage == "Professional"]<-"professionnel"
+      dt$VehUsage[dt$VehUsage == "Professional run"]<-
+      "trajet professionnel"
+      dt$VehUsage <- droplevels(dt$VehUsage)
+      }
+    # Moteur du véhicule
+    if (colnames(dt)[i]=="VehEngine"){
+      levels(dt$VehEngine) <- c(levels(dt$VehEngine), 
+                                       "injection directe surpuissante",
+                                       "électrique", "injection surpuissante")
+      dt$VehEngine[dt$VehEngine == "direct injection overpowered"]<-
+      "injection directe surpuissante"
+      dt$VehEngine[dt$VehEngine == "electric"]<-"électrique"
+      dt$VehEngine[dt$VehEngine == "injection overpowered"]<-
+      "injection surpuissante"
+      dt$VehEngine <- droplevels(dt$VehEngine)
+      }
+    # Energie utilisée par le véhicule
+    if (colnames(dt)[i]=="VehEnergy"){
+      levels(dt$VehEnergy) <- c(levels(dt$VehEnergy), "électrique", "essence")
+      dt$VehEnergy[dt$VehEnergy == "regular"]<-"essence"
+      dt$VehEnergy[dt$VehEnergy == "eletric"]<-"électrique"
+      dt$VehEnergy <- droplevels(dt$VehEnergy)
+      }
+    # Garage
+    if (colnames(dt)[i]=="Garage"){
+      levels(dt$Garage) <- c(levels(dt$Garage), "aucun", "garage indépendant",
+                                    "concessionnaire")
+      dt$Garage[dt$Garage == "None"]<-"aucun"
+      dt$Garage[dt$Garage == "Private garage"]<-"garage indépendant"
+      dt$Garage[dt$Garage == "Collective garage"]<-"concessionnaire"
+      dt$Garage <- droplevels(dt$Garage)
+    }
+  }
+  return (dt)
+}
 ```
 
-
+## Affichage de l'ensemble des reprsentations graphiques
