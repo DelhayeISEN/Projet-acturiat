@@ -253,6 +253,13 @@ Mais cela ne vaut pas une représentation graphique.
 
 ### Représentations graphiques des données
 
+```{r}
+# On met les colonnes dans le même ordre
+
+freMPL1 <- freMPL1[,c(1:17,19,18,20:21)]
+```
+
+
 ```{r, echo=FALSE}
 library("ggplot2")
 library("dplyr") 
@@ -266,11 +273,10 @@ representation_graphique <- function(dataframe, col){
       main = paste(col))
     par(fig=c(0.1,1,0.8,1), mar = c(0,0,2,2), new = TRUE)
     boxplot(dataframe[,indice_col], data = dataframe, horizontal = TRUE)
-  }
-  else{
+  }else{
     if(indice_col %in% c(5)){
       dt <- data.frame(
-        class = factor(levels(dataframe[,indice_col])),
+        class = c("0","1","2","3","4","5","6-7","8-9","10+"),
         n = as.data.frame(table(dataframe[,indice_col]))[,2],
         prop = as.data.frame(round(prop.table(table(dataframe[,indice_col])),2))[,2]
         )
@@ -286,10 +292,8 @@ representation_graphique <- function(dataframe, col){
         geom_text(aes(y = lab.ypos, label = prop), color = "white")+
         theme_void()
       plot_grid(barre, camembert, ncol = 2, nrow = 1)
-    }
-    else{
+    }else{
       if(indice_col %in% c(10,21)){
-        print("coucou")
         dt <- data.frame(
           class = c("0","1"),
           n = as.data.frame(table(dataframe[,indice_col]))[,2],
@@ -307,8 +311,7 @@ representation_graphique <- function(dataframe, col){
           geom_text(aes(y = lab.ypos, label = prop), color = "white")+
           theme_void()
         plot_grid(barre, camembert, ncol = 2, nrow = 1)
-      }
-      else{
+      }else{
         dt <- data.frame(
           class = levels(dataframe[,indice_col]),
           n = as.data.frame(table(dataframe[,indice_col]))[,2],
@@ -330,8 +333,124 @@ representation_graphique <- function(dataframe, col){
     }
   }
 }
+```
 
-representation_graphique(freMPL2, "Exposure")
+```{r, echo = FALSE}
+png(file = "graphique/Exposure1.png", width = 800, height = 700)
+representation_graphique(freMPL1,colnames(freMPL1)[1])
+dev.off()
+png(file = "graphique/LicAge1.png", width = 800, height = 700)
+representation_graphique(freMPL1,colnames(freMPL1)[2])
+dev.off()
+png(file = "graphique/VehAge1.png", width = 800, height = 700)
+representation_graphique(freMPL1,colnames(freMPL1)[5])
+dev.off()
+png(file = "graphique/MariStat1.png", width = 800, height = 700)
+representation_graphique(freMPL1,colnames(freMPL1)[6])
+dev.off()
+png(file = "graphique/SocioCateg1.png", width = 800, height = 700)
+representation_graphique(freMPL1,colnames(freMPL1)[7])
+dev.off()
+png(file = "graphique/VehUsage1.png", width = 800, height = 700)
+representation_graphique(freMPL1,colnames(freMPL1)[8])
+dev.off()
+png(file = "graphique/DrivAge1.png", width = 800, height = 700)
+representation_graphique(freMPL1,colnames(freMPL1)[9])
+dev.off()
+png(file = "graphique/HasKmLimit1.png", width = 800, height = 700)
+representation_graphique(freMPL1,colnames(freMPL1)[10])
+dev.off()
+png(file = "graphique/BonusMalus1.png", width = 800, height = 700)
+representation_graphique(freMPL1,colnames(freMPL1)[11])
+dev.off()
+png(file = "graphique/VehBody1.png", width = 800, height = 700)
+representation_graphique(freMPL1,colnames(freMPL1)[12])
+dev.off()
+png(file = "graphique/VehPrice1.png", width = 800, height = 700)
+representation_graphique(freMPL1,colnames(freMPL1)[13])
+dev.off()
+png(file = "graphique/VehEngine1.png", width = 800, height = 700)
+representation_graphique(freMPL1,colnames(freMPL1)[14])
+dev.off()
+png(file = "graphique/VehEnergy1.png", width = 800, height = 700)
+representation_graphique(freMPL1,colnames(freMPL1)[15])
+dev.off()
+png(file = "graphique/VehMaxSpeed1.png", width = 800, height = 700)
+representation_graphique(freMPL1,colnames(freMPL1)[16])
+dev.off()
+png(file = "graphique/VehClass1.png", width = 800, height = 700)
+representation_graphique(freMPL1,colnames(freMPL1)[17])
+dev.off()
+png(file = "graphique/RiskVar1.png", width = 800, height = 700)
+representation_graphique(freMPL1,colnames(freMPL1)[18])
+dev.off()
+png(file = "graphique/ClaimAmount1.png", width = 800, height = 700)
+representation_graphique(freMPL1,colnames(freMPL1)[19])
+dev.off()
+png(file = "graphique/Garage1.png", width = 800, height = 700)
+representation_graphique(freMPL1,colnames(freMPL1)[20])
+dev.off()
+png(file = "graphique/ClaimInd1.png", width = 800, height = 700)
+representation_graphique(freMPL1,colnames(freMPL1)[21])
+dev.off()
+
+png(file = "graphique/Exposure2.png", width = 800, height = 700)
+representation_graphique(freMPL2,colnames(freMPL2)[1])
+dev.off()
+png(file = "graphique/LicAge2.png", width = 800, height = 700)
+representation_graphique(freMPL2,colnames(freMPL2)[2])
+dev.off()
+png(file = "graphique/VehAge2.png", width = 800, height = 700)
+representation_graphique(freMPL2,colnames(freMPL2)[5])
+dev.off()
+png(file = "graphique/MariStat2.png", width = 800, height = 700)
+representation_graphique(freMPL2,colnames(freMPL2)[6])
+dev.off()
+png(file = "graphique/SocioCateg2.png", width = 800, height = 700)
+representation_graphique(freMPL2,colnames(freMPL2)[7])
+dev.off()
+png(file = "graphique/VehUsage2.png", width = 800, height = 700)
+representation_graphique(freMPL2,colnames(freMPL2)[8])
+dev.off()
+png(file = "graphique/DrivAge2.png", width = 800, height = 700)
+representation_graphique(freMPL2,colnames(freMPL2)[9])
+dev.off()
+png(file = "graphique/HasKmLimit2.png", width = 800, height = 700)
+representation_graphique(freMPL2,colnames(freMPL2)[10])
+dev.off()
+png(file = "graphique/BonusMalus2.png", width = 800, height = 700)
+representation_graphique(freMPL2,colnames(freMPL2)[11])
+dev.off()
+png(file = "graphique/VehBody2.png", width = 800, height = 700)
+representation_graphique(freMPL2,colnames(freMPL2)[12])
+dev.off()
+png(file = "graphique/VehPrice2.png", width = 800, height = 700)
+representation_graphique(freMPL2,colnames(freMPL2)[13])
+dev.off()
+png(file = "graphique/VehEngine2.png", width = 800, height = 700)
+representation_graphique(freMPL2,colnames(freMPL2)[14])
+dev.off()
+png(file = "graphique/VehEnergy2.png", width = 800, height = 700)
+representation_graphique(freMPL2,colnames(freMPL2)[15])
+dev.off()
+png(file = "graphique/VehMaxSpeed2.png", width = 800, height = 700)
+representation_graphique(freMPL2,colnames(freMPL2)[16])
+dev.off()
+png(file = "graphique/VehClass2.png", width = 800, height = 700)
+representation_graphique(freMPL2,colnames(freMPL2)[17])
+dev.off()
+png(file = "graphique/RiskVar2.png", width = 800, height = 700)
+representation_graphique(freMPL2,colnames(freMPL2)[18])
+dev.off()
+png(file = "graphique/ClaimAmount2.png", width = 800, height = 700)
+representation_graphique(freMPL2,colnames(freMPL2)[19])
+dev.off()
+png(file = "graphique/Garage2.png", width = 800, height = 700)
+representation_graphique(freMPL2,colnames(freMPL2)[20])
+dev.off()
+png(file = "graphique/ClaimInd2.png", width = 800, height = 700)
+representation_graphique(freMPL2,colnames(freMPL2)[21])
+dev.off()
 ```
 
 
@@ -348,7 +467,6 @@ Attention, les valeurs doivent être numériques.
 On va donc convertir nos valeurs en numérique :
 ```{r}
 freMPL2$LicAge <- as.numeric(freMPL2$LicAge)
-freMPL2$VehAge <- as.numeric(freMPL2$VehAge)
 freMPL2$DrivAge <- as.numeric(freMPL2$DrivAge)
 freMPL2$BonusMalus <- as.numeric(freMPL2$BonusMalus)
 freMPL2$RiskVar <- as.numeric(freMPL2$RiskVar)
@@ -569,4 +687,27 @@ nettoyage_dataframe <- function(dt){
 }
 ```
 
-## Affichage de l'ensemble des reprsentations graphiques
+
+## Affichage de l'ensemble des représentations graphiques
+
+|| **freMPL1**  	| **freMPL2** 	|
+|:-:|:-:|:-:|
+|**`r colnames_freMPL2[1]`**|![](graphique/Exposure1.png){width=40%}|![](graphique/Exposure2.png){width=40%}|
+|**`r colnames_freMPL2[2]`**   	|![](graphique/LicAge1.png){width=40%}   	| ![](graphique/LicAge2.png){width=40%}  	|
+|  **`r colnames_freMPL2[5]`** 	|![](graphique/VehAge1.png){width=40%}|![](graphique/VehAge2.png){width=40%}|
+| **`r colnames_freMPL2[6]`**  	|![](graphique/MariStat1.png){width=40%}|![](graphique/MariStat2.png){width=40%}|
+| **`r colnames_freMPL2[7]`**  	|![](graphique/SocioCateg1.png){width=40%}|![](graphique/SocioCateg2.png){width=40%}|
+| **`r colnames_freMPL2[8]`**  	| ![](graphique/VehUsage1.png){width=40%}|![](graphique/VehUsage2.png){width=40%}|
+| **`r colnames_freMPL2[9]`**  	|![](graphique/DrivAge1.png){width=40%}|![](graphique/DrivAge2.png){width=40%}|
+| **`r colnames_freMPL2[10]`**  	|   ![](graphique/HasKmLimit1.png){width=40%}|![](graphique/HasKmLimit2.png){width=40%}|
+|**`r colnames_freMPL2[11]`**   	| ![](graphique/BonusMalus1.png){width=40%}|![](graphique/BonusMalus2.png){width=40%}|
+|**`r colnames_freMPL2[12]`**   	| ![](graphique/VehBody1.png){width=40%}|![](graphique/VehBody2.png){width=40%}|
+|**`r colnames_freMPL2[13]`**   	| ![](graphique/VehPrice1.png){width=40%}|![](graphique/VehPrice2.png){width=40%}|
+| **`r colnames_freMPL2[14]`**  	|![](graphique/VehEngine1.png){width=40%}|![](graphique/VehEngine2.png){width=40%}|
+| **`r colnames_freMPL2[15]`**  	| ![](graphique/VehEnergy1.png){width=40%}|![](graphique/VehEnergy2.png){width=40%}|
+| **`r colnames_freMPL2[16]`**  	| ![](graphique/VehMaxSpeed1.png){width=40%}|![](graphique/VehMaxSpeed2.png){width=40%}|
+|   **`r colnames_freMPL2[17]`**	| ![](graphique/VehClass1.png){width=40%}|![](graphique/VehClass2.png){width=40%}|
+| **`r colnames_freMPL2[18]`**  	|![](graphique/RiskVar1.png){width=40%}|![](graphique/RiskVar2.png){width=40%}|
+| **`r colnames_freMPL2[19]`**  	| ![](graphique/ClaimAmount1.png){width=40%}|![](graphique/ClaimAmount2.png){width=40%}|
+| **`r colnames_freMPL2[20]`**  	| ![](graphique/Garage1.png){width=40%}|![](graphique/Garage2.png){width=40%}|
+| **`r colnames_freMPL2[21]`**  	| ![](graphique/ClaimInd1.png){width=40%}|![](graphique/ClaimInd2.png){width=40%}|
