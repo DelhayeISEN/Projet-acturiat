@@ -14,10 +14,10 @@ output:
 lang: fr
 ---
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo=TRUE,message=FALSE, warning=FALSE)
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE)
 ```
 
-```{r, echo= FALSE}
+```{r}
 # Installation des packages utilisées dans ce projet
 
 #install.packages(c("xts","sp","zoo"))
@@ -43,53 +43,75 @@ data(freMPL2)
 
 # Présentation du projet
 
+L’assurance est un contrat par lequel, moyennant le versement d’une prime dont le montant est ﬁxé a priori (en début de période de couverture), l’assureur s’engage à indemniser l’assuré pendant toute la période de couverture (généralement un an). Cette prime doit reﬂéter le risque associé au contrat. 
+Pour chaque police d’assurance, la prime est fonction de variables dites de tariﬁcation permettant de segmenter la population en fonction de son risque. Il est usuel d’utiliser une approche fréquence/sévérité ou une approche indemnitaire pour modéliser le coût annuel d’une police d’assurance. Sur les données utilisées dans ce projet, nous utiliserons cette dernière approche car on ne dispose pas des montants individuels de sinistre.
+Le but de ce projet est de proposer un tariﬁcateur en se basant deux méthodes : les modèles linéaires généralisés (GLM) et les modèles additifs généralisés (GAM). Ces derniers sont une extension des GLM (proposé par McCullagh et Nelder, 1989) en considérant une approche non-paramétrique pour le prédicteur. 
+Un second objectif sera, en plus de calculer une prime pure par police, de déterminer une commerciale intégrant une marge pour risque. Une approche par simulation sera réalisée pour juger de l’adéquation du chargement par rapport à la charge sinistre totale portefeuille.
+
 # Exploration des jeux de données freMPL1 et freMPL2
 
 Un peu à la manière du machine learning, les données contenues dans freMPL2 serviront de données d'entraînement de notre modèle et les données de freMPL1 serviront pour tester notre modèle final.
 
-## freMPL2
+## Première visualisation des jeux de données 
 
-### Première exploration du jeu de données d'entraînement : freMPL2
-
-
-Dans un premier temps, regardons les premières lignes du jeu de données  
-```{r, echo=FALSE}
-knitr::kable(t(head(freMPL2,3)))
-```
-
-```{r, echo=FALSE}
+```{r}
+dim_freMPL1 <- dim(freMPL1)
 dim_freMPL2 <- dim(freMPL2)
 ```
-Les dimmensions de notre jeu de données sont (`r dim_freMPL2`).
+
+Les dimmensions du jeu de données **freMPL1** sont (`r dim_freMPL1`).
+Ainsi, notre jeu contient `r dim_freMPL1[1]` données différentes, toutes définies par `r dim_freMPL1[2]` caractéristiques différentes. 
+
+De même, les dimmensions du jeu de données **freMPL2** sont (`r dim_freMPL2`).
 Ainsi, notre jeu contient `r dim_freMPL2[1]` données différentes, toutes définies par `r dim_freMPL2[2]` caractéristiques différentes. 
 
-```{r,echo=FALSE}
-colnames_freMPL2 <- colnames(freMPL2)
-```
-Les noms des différentes caractéristiques sont :
+```{r, results='hide'}
+colnames_freMPL1 <- colnames(freMPL1)
+colnames_freMPL2 <- colnames(freMPL2) 
+colnames_freMPL1
+colnames_freMPL2
+# Les noms des colonnes sont les mêmes. La seule différence entre nos 2 tableaux est l'inversion entre les colonnes RiskVar et ClaiAmount. 
 
-- **`r colnames_freMPL2[1]`** : 
-- **`r colnames_freMPL2[2]`** : 
-- **`r colnames_freMPL2[3]`** : 
-- **`r colnames_freMPL2[4]`** : 
-- **`r colnames_freMPL2[5]`** : 
-- **`r colnames_freMPL2[6]`** : 
-- **`r colnames_freMPL2[7]`** : 
-- **`r colnames_freMPL2[8]`** : 
-- **`r colnames_freMPL2[9]`** : 
-- **`r colnames_freMPL2[10]`** : 
-- **`r colnames_freMPL2[11]`** : 
-- **`r colnames_freMPL2[12]`** : 
-- **`r colnames_freMPL2[13]`** : 
-- **`r colnames_freMPL2[14]`** : 
-- **`r colnames_freMPL2[15]`** : 
-- **`r colnames_freMPL2[16]`** : 
-- **`r colnames_freMPL2[17]`** : 
-- **`r colnames_freMPL2[18]`** : 
-- **`r colnames_freMPL2[19]`** : 
-- **`r colnames_freMPL2[20]`** :
-- **`r colnames_freMPL2[21]`** :
-- **`r colnames_freMPL2[22]`** :
+# Regardons aussi les différents types d'objets figurant dans les colonnes :  
+str(freMPL2)
+# On constate qu'il y a de nombreux types de données : des données numériques, des données descriptives (ex : Il y a troix types de garages : "collective garage", "None" et "Private Garage")
+```
+
+Les noms des caractéristiques des jeux de données sont les mêmes. es différentes caractéristiques sont :
+
+- **`r colnames_freMPL2[1]`** : il s'agit d'une donnée de type numérique qui correspond à la fréquence d'exposition aux risques d'un individu sur une année. Par exemple, si l'individu a été exposé 100 jours, le chiffre affiché est 0,27 (= 100/365,25).
+- **`r colnames_freMPL2[2]`** : c'est un nombre entier de mois correspondant à l'âge de la licence de la personne concernée.
+- **`r colnames_freMPL2[3]`** : cela correspond à la date de début d'exposition aux risques.
+- **`r colnames_freMPL2[4]`** : c'est la date de fin d'exposition au risque. Si elle n'est pas renseigner, c'est que la personne est toujours exposée.
+- **`r colnames_freMPL2[5]`** : Il correspond à l'âge du véhicule en année(s). Il est composé en 9 catégories distinctes : "0", "1", "2", "3", "4", "5", "6-7", "8-9" et "10+".
+- **`r colnames_freMPL2[6]`** : c'est le sexe de l'individu.
+- **`r colnames_freMPL2[7]`** : il s'agit du statut marital de la personne. Elle est soit célibataire ("Alone") soit autre chose ("Other").
+- **`r colnames_freMPL2[8]`** : Cela correspond à la catégorie socioprofessionnelle de l'individu. Les valeurs, comprises entre "CSP1" et "CSP99", correspondent à la classification française (voir lien suivant : <https://fr.wikipedia.org/wiki/Professions_et_catégories_socioprofessionnelles_en_France>). 
+- **`r colnames_freMPL2[9]`** : Cela correspond à l'utilisation du véhicule par le propriétaire. Il est soit privée ("Private"), soit professionnel ("Professional"), ...
+- **`r colnames_freMPL2[10]`** : C'est l'âge du conducteur (en années). Pour rappel, en France, la conduite est possible à partir de 18 ans.
+- **`r colnames_freMPL2[11]`** : il s'agit d'une valeur numérique spécifiant si oui ("1") ou non ("0") l'assurance comporte une limite kilométique.
+- **`r colnames_freMPL2[12]`** : c'est un variable de type numérique, dont la valeur est comprise entre 50 et 350, précisant si la personne possède des bonus ou des malus. Si la valeur est inférieure à 100, l'individu a droit à des bonus. Sinon, la personne a des malus.
+- **`r colnames_freMPL2[13]`** : il s'agit du type de modèle concerné par l'assurance de l'individu.
+- **`r colnames_freMPL2[14]`** : c'est un indicateur correspondant au prix du véhicule. 
+- **`r colnames_freMPL2[15]`** : cela correspond au type de moteur que possède le véhicule.
+- **`r colnames_freMPL2[16]`** : cela correspond au type d'énergie consommé par le véhicule que possède le véhicule
+- **`r colnames_freMPL2[17]`** : c'est la vitesse maximum que peut atteindre le véhicule. Les différentes catégories sont:"1-130 km/h", "130-140 km/h", "140-150 km/h", "150-160 km/h", "160-170 km/h", "170-180 km/h", "180-190 km/h", "190-200 km/h", "200-220 km/h", "220+ km/h".
+- **`r colnames_freMPL2[18]`** : il s'agit de la classe du véhicule.
+- **`r colnames_freMPL2[19]`** : Nombre compris entre 1 et 20 correspondant au risque inconnu probable.
+- **`r colnames_freMPL2[20]`** : c'est le montant total de la garantie ) laquelle peut prétendre l'assuré.
+- **`r colnames_freMPL2[21]`** : il s'agit du type de garage auquel se rend l'assuré.
+- **`r colnames_freMPL2[22]`** : c'est un indicateur précisant si oui ou non l'assuré peut prétendre à une garantie.
+
+Regardons maintenant les premiers éléments composant le jeu de données **freMPL1**:
+
+```{r}
+knitr::kable(t(head(freMPL1,3)))
+```
+
+et aussi les premiers éléments composants **freMPL2**: 
+```{r}
+knitr::kable(t(head(freMPL2,3)))
+```
 
 ### Nettoyage de données
 
@@ -101,10 +123,11 @@ Cette fonction (appelée nettoyage_dataframe) prend l'un des deux dataframes en 
 - Suppression des données des individus assurés moins d'un jour (Exposure)
 - Modification des données des individus ayant un ClaimAmount négatif
 - Suppression de la colonne associée au sexe de la personne
+- Suppression de la colonne spécifiant si l'assuré peut prétendre ou non à une prime d'assurance (ClaimInd)
 - Réduction du nombre de catégories socioprofessionnels
 - Traduction des données (VehBody, MariStat, VehUsage, VehEngine, VehEnergy, Garage)
 
-```{r, echo=FALSE}
+```{r}
 nettoyage_dataframe <- function(dt){
   
   # Suppression des données des individus assurés moins d'un jour (Exposure)
@@ -113,8 +136,9 @@ nettoyage_dataframe <- function(dt){
   # Modification des données des individus ayant un ClaimAmount négatif
   dt <- subset(dt,dt$ClaimAmount>=0)
   
-  # Suppression de la colonne associée au sexe de la personne
+  # Suppression de la colonne associée au sexe de la personne et de ClaimInd
   dt <- dt[,-6]
+  dt <- dt[,-21]
   
   # Réduction du nombre de catégories socioprofessionnels
   levels(dt$SocioCateg) <- c(levels(dt$SocioCateg), "CSP4", "CSP6",
@@ -221,7 +245,7 @@ nettoyage_dataframe <- function(dt){
 }
 ```
 
-```{r, echo=FALSE}
+```{r}
 # nettoyage de nos 2 dataframes : 
 
 freMPL2 <- nettoyage_dataframe(freMPL2)
@@ -230,22 +254,16 @@ freMPL1 <- nettoyage_dataframe(freMPL1)
 
 ### Statistiques descriptives 
 
-Regardons maintenant les différents types d'objets figurant dans les colonnes :  
-```{r, echo = FALSE, eval = FALSE}
-str(freMPL2)
-```
-Nous avons donc des objets de type numeric, de type factor, de type int et même de type date. 
-
 Regardons maintenant plus précisement les valeurs particulières de ces colonnes (valeurs minimum et maximum, moyenne, médiane,quantiles, ...)
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, eval = FALSE}
 summary(freMPL2)
 ```
 On remarquera qu'il existe des données manquantes dans la colonne RecEnd, ce qui signifie que les individus concernés sont toujours assurés. 
 
 On peut aussi utiliser la méthode describe du package Hmisc pour avoir un aperçu de la dispersion des données.
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, eval = FALSE}
 library("Hmisc")
 describe(freMPL2)
 ```
@@ -256,11 +274,11 @@ Mais cela ne vaut pas une représentation graphique.
 ```{r}
 # On met les colonnes dans le même ordre
 
-freMPL1 <- freMPL1[,c(1:17,19,18,20:21)]
+freMPL1 <- freMPL1[,c(1:17,19,18,20)]
 ```
 
 
-```{r, echo=FALSE}
+```{r}
 library("ggplot2")
 library("dplyr") 
 library("cowplot")
@@ -293,7 +311,7 @@ representation_graphique <- function(dataframe, col){
         theme_void()
       plot_grid(barre, camembert, ncol = 2, nrow = 1)
     }else{
-      if(indice_col %in% c(10,21)){
+      if(indice_col %in% c(10)){
         dt <- data.frame(
           class = c("0","1"),
           n = as.data.frame(table(dataframe[,indice_col]))[,2],
@@ -335,7 +353,7 @@ representation_graphique <- function(dataframe, col){
 }
 ```
 
-```{r, echo = FALSE}
+```{r, results = 'hide'}
 png(file = "graphique/Exposure1.png", width = 800, height = 700)
 representation_graphique(freMPL1,colnames(freMPL1)[1])
 dev.off()
@@ -389,9 +407,6 @@ representation_graphique(freMPL1,colnames(freMPL1)[19])
 dev.off()
 png(file = "graphique/Garage1.png", width = 800, height = 700)
 representation_graphique(freMPL1,colnames(freMPL1)[20])
-dev.off()
-png(file = "graphique/ClaimInd1.png", width = 800, height = 700)
-representation_graphique(freMPL1,colnames(freMPL1)[21])
 dev.off()
 
 png(file = "graphique/Exposure2.png", width = 800, height = 700)
@@ -448,9 +463,6 @@ dev.off()
 png(file = "graphique/Garage2.png", width = 800, height = 700)
 representation_graphique(freMPL2,colnames(freMPL2)[20])
 dev.off()
-png(file = "graphique/ClaimInd2.png", width = 800, height = 700)
-representation_graphique(freMPL2,colnames(freMPL2)[21])
-dev.off()
 ```
 
 
@@ -475,6 +487,12 @@ freMPL2$ClaimAmount <- as.numeric(freMPL2$ClaimAmount)
 
 Certaines colonnes sont catégorisés et pourraient nous être utiles pour éxécuter notre ACP.
 Il n'est cependant pas judicieux d'appliquer une conversion numérique à ces colonnes puisqu'on leur attribue une valeur arbitraire nous faisant penser à une classification des différents facteurs possibles. Pour éviter cela, on va donc utiliser la méthode model.matrix() qui crée une matrice binaire spécifiant à quel facteur correspond une ligne du dataframe.
+
+```{r}
+head(model.matrix(~VehAge, data = freMPL2))
+head(model.matrix(~MariStat, data = freMPL2))
+```
+
 
 
 
@@ -522,7 +540,7 @@ freMPL2.desc <- dimdesc(freMPL2.pca, axes = c(1,2), proba = 0.05)
 head(freMPL2.desc)
 ```
 
-###### AFC 
+### AFC 
 
 L’ analyse factorielle des correspondances est une extension de l’analyse en composantes principales pour analyser l’association entre deux variables qualitatives (ou catégorielles).
 L’AFC permet de résumer et de visualiser l’information contenue dans le tableau de contingence formé par les deux variables catégorielles. Le tableau de contingence contient les fréquences formées par les deux variables.
@@ -548,7 +566,6 @@ fviz_cos2 (freMPL2.ca, choice = "col", axes = 1:2)
 res.desc <- dimdesc(freMPL2.ca, axes = c(1, 2))
 res.desc[[1]]$col
 ```
-
 
 # GLM 
 
@@ -579,8 +596,9 @@ nettoyage_dataframe <- function(dt){
   # Modification des données des individus ayant un ClaimAmount négatif
   dt <- subset(dt,dt$ClaimAmount>=0)
   
-  # Suppression de la colonne associée au sexe de la personne
+  # Suppression de la colonne associée au sexe de la personne et de ClaimInd
   dt <- dt[,-6]
+  dt <- dt[,-21]
   
   # Réduction du nombre de catégories socioprofessionnels
   levels(dt$SocioCateg) <- c(levels(dt$SocioCateg), "CSP4", "CSP6",
@@ -710,4 +728,5 @@ nettoyage_dataframe <- function(dt){
 | **`r colnames_freMPL2[18]`**  	|![](graphique/RiskVar1.png){width=40%}|![](graphique/RiskVar2.png){width=40%}|
 | **`r colnames_freMPL2[19]`**  	| ![](graphique/ClaimAmount1.png){width=40%}|![](graphique/ClaimAmount2.png){width=40%}|
 | **`r colnames_freMPL2[20]`**  	| ![](graphique/Garage1.png){width=40%}|![](graphique/Garage2.png){width=40%}|
-| **`r colnames_freMPL2[21]`**  	| ![](graphique/ClaimInd1.png){width=40%}|![](graphique/ClaimInd2.png){width=40%}|
+
+
