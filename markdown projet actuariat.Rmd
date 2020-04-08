@@ -6,11 +6,11 @@ output:
   pdf_document:
     number_section: yes
     toc: yes
-    toc_depth: 3
+    toc_depth: 4
   html_document:
     df_print: paged
     toc: yes
-    toc_depth: '3'
+    toc_depth: '4'
 lang: fr
 ---
 ```{r setup, include=FALSE}
@@ -569,15 +569,82 @@ res.desc[[1]]$col
 
 # GLM 
 
+Les lois les plus utilisées sont :
+- Poisson pour les fréquences des sinistres
+- Gamma et Inverse gauss pour la sévérité des sinistres
+
+## Fréquence des sinistres
+
+### Présentation des lois utilisables
+
+#### la loi de Poisson
+
+```{r}
+x_dpois <- seq(0, 30, by = 1) 
+par(mfcol = c(1,3))
+y_dpois1 <- dpois(x_dpois, lambda = 5)
+y_dpois2 <- dpois(x_dpois, lambda = 10) 
+y_dpois3 <- dpois(x_dpois, lambda = 15) 
+plot(y_dpois1, type = "b", col = "blue", main =" lambda = 5", xlab = "x", ylab = "y", ylim = c(0,0.2))
+plot(y_dpois2, type = "b", col = "red", main =" lambda = 10", xlab = "x", ylab = "y", ylim = c(0,0.2))
+plot(y_dpois3, type = "b", col = "green", main =" lambda = 15", xlab = "x", ylab = "y", ylim = c(0,0.2))
+```
+
+Test du modèle GLM avec la loi de Poisson : 
+
 ```{r}
 #calibration d’une loi de Poisson
 fpois <- glm(RiskVar~DrivAge+VehAge+VehClass+VehBody+VehEnergy, offset=log(Exposure), family=poisson("log"), data=freMPL2)
 summary(fpois)
-
-#calibration d’une loi Poisson sur-dispersée
-fpois2 <- glm(RiskVar~DrivAge+VehAge+VehClass+VehBody+VehEnergy, offset=log(Exposure), family=quasipoisson("log"), data=freMPL2)
-summary(fpois2)
 ```
+
+## Sévérité des sinistres
+
+### Présentation des lois utilisables
+
+#### loi de gamma (ou d'Euler)
+
+```{r}
+x_dgamma<- seq(0, 20, by = 0.01) 
+y_dgamma1 <- dgamma(x_dgamma, shape = 1, scale = 2)
+y_dgamma2 <- dgamma(x_dgamma, shape = 2, scale = 2)
+y_dgamma3 <- dgamma(x_dgamma, shape = 3, scale = 2)
+y_dgamma4 <- dgamma(x_dgamma, shape = 5, scale = 1)
+y_dgamma5 <- dgamma(x_dgamma, shape = 9, scale = 0.5)
+y_dgamma6 <- dgamma(x_dgamma, shape = 7.5, scale = 1)
+y_dgamma7 <- dgamma(x_dgamma, shape = 0.5, scale = 1)
+# shape correspond à alpha et scale correspond à beta 
+
+plot(x_dgamma, y_dgamma1, type = "l",col = "red",main = "distribution de loi gamma", xlab = " ", ylab = " ")
+lines(x_dgamma, y_dgamma2, col = "orange")
+lines(x_dgamma, y_dgamma3, col = "yellow")
+lines(x_dgamma, y_dgamma4, col = "green")
+lines(x_dgamma, y_dgamma5, col = "black")
+lines(x_dgamma, y_dgamma6, col = "blue")
+lines(x_dgamma, y_dgamma7, col = "purple")
+legend(x=10, y=0.5, legend = c("alpha = 1 et beta = 2", "alpha = 2 et beta = 2", "alpha = 3 et beta = 2","alpha = 5 et beta = 1", "alpha = 9 et beta = 0.5", "alpha = 7.5 et beta = 1", "alpha = 0.5 et beta = 1"),lty = 1, col = c("red", "orange", "yellow", "green", "black", "blue", "purple"))
+```
+
+### Inverse gauss
+
+```{r}
+#install.packages("statmod")
+library("statmod")
+x_dinvgauss <- seq(0, 5, by = 0.01) 
+y_dinvgauss1 <- dinvgauss(x_dinvgauss, 1, 1) 
+y_dinvgauss2 <- dinvgauss(x_dinvgauss, 1, 0.2) 
+y_dinvgauss3 <- dinvgauss(x_dinvgauss, 1, 3) 
+y_dinvgauss4 <- dinvgauss(x_dinvgauss, 3, 1) 
+plot(x_dinvgauss, y_dinvgauss1, type = "l",col = "green",main = "distribution de loi inverse gaussienne", xlab = " ", ylab = " ")
+lines(x_dinvgauss, y_dinvgauss2, col = "red")
+lines(x_dinvgauss, y_dinvgauss3, col = "blue")
+lines(x_dinvgauss, y_dinvgauss4, col = "orange")
+legend(x=3, y=1, legend = c("mu = 1 et lambda = 1", "mu = 1 et lambda = 0.2", "mu = 1 et lambda = 3","mu = 3 et lambda = 1"),lty = 1, col = c("green", "red", "blue", "orange"))
+```
+
+
+
+
 
 # Bibliographie
 
