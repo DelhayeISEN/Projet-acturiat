@@ -123,7 +123,6 @@ Cette fonction (appelée nettoyage_dataframe) prend l'un des deux dataframes en 
 - Suppression des données des individus assurés moins d'un jour (Exposure)
 - Modification des données des individus ayant un ClaimAmount négatif
 - Suppression de la colonne associée au sexe de la personne
-- Suppression de la colonne spécifiant si l'assuré peut prétendre ou non à une prime d'assurance (ClaimInd)
 - Réduction du nombre de catégories socioprofessionnels
 - Traduction des données (VehBody, MariStat, VehUsage, VehEngine, VehEnergy, Garage)
 
@@ -136,9 +135,8 @@ nettoyage_dataframe <- function(dt){
   # Modification des données des individus ayant un ClaimAmount négatif
   dt <- subset(dt,dt$ClaimAmount>=0)
   
-  # Suppression de la colonne associée au sexe de la personne et de ClaimInd
+  # Suppression de la colonne associée au sexe de la personne 
   dt <- dt[,-6]
-  dt <- dt[,-21]
   
   # Réduction du nombre de catégories socioprofessionnels
   levels(dt$SocioCateg) <- c(levels(dt$SocioCateg), "CSP4", "CSP6",
@@ -274,7 +272,7 @@ Mais cela ne vaut pas une représentation graphique.
 ```{r}
 # On met les colonnes dans le même ordre
 
-freMPL1 <- freMPL1[,c(1:17,19,18,20)]
+freMPL1 <- freMPL1[,c(1:17,19,18,20:21)]
 ```
 
 
@@ -311,7 +309,7 @@ representation_graphique <- function(dataframe, col){
         theme_void()
       plot_grid(barre, camembert, ncol = 2, nrow = 1)
     }else{
-      if(indice_col %in% c(10)){
+      if(indice_col %in% c(10,21)){
         dt <- data.frame(
           class = c("0","1"),
           n = as.data.frame(table(dataframe[,indice_col]))[,2],
@@ -354,6 +352,7 @@ representation_graphique <- function(dataframe, col){
 ```
 
 ```{r, results = 'hide'}
+colnames(freMPL1)
 png(file = "graphique/Exposure1.png", width = 800, height = 700)
 representation_graphique(freMPL1,colnames(freMPL1)[1])
 dev.off()
@@ -407,6 +406,9 @@ representation_graphique(freMPL1,colnames(freMPL1)[19])
 dev.off()
 png(file = "graphique/Garage1.png", width = 800, height = 700)
 representation_graphique(freMPL1,colnames(freMPL1)[20])
+dev.off()
+png(file = "graphique/ClaimInd1.png", width = 800, height = 700)
+representation_graphique(freMPL1,colnames(freMPL1)[21])
 dev.off()
 
 png(file = "graphique/Exposure2.png", width = 800, height = 700)
@@ -462,6 +464,9 @@ representation_graphique(freMPL2,colnames(freMPL2)[19])
 dev.off()
 png(file = "graphique/Garage2.png", width = 800, height = 700)
 representation_graphique(freMPL2,colnames(freMPL2)[20])
+dev.off()
+png(file = "graphique/ClaimInd2.png", width = 800, height = 700)
+representation_graphique(freMPL1,colnames(freMPL2)[21])
 dev.off()
 ```
 
@@ -570,7 +575,7 @@ res.desc[[1]]$col
 # GLM 
 
 Les lois les plus utilisées sont :
-- Poisson pour les fréquences des sinistres
+- Poisson ou binomiale négative pour les fréquences des sinistres
 - Gamma et Inverse gauss pour la sévérité des sinistres
 
 ## Fréquence des sinistres
@@ -592,11 +597,29 @@ plot(y_dpois3, type = "b", col = "green", main =" lambda = 15", xlab = "x", ylab
 
 Test du modèle GLM avec la loi de Poisson : 
 
-```{r}
+```{r, echo = TRUE}
+freMPL2$DrivAge <- cut(freMPL2$DrivAge, c(17, 2:8*10, 100)) 
+
 #calibration d’une loi de Poisson
-fpois <- glm(RiskVar~DrivAge+VehAge+VehClass+VehBody+VehEnergy, offset=log(Exposure), family=poisson("log"), data=freMPL2)
-summary(fpois)
+glm1 <- glm(RiskVar~DrivAge+VehAge+VehClass+VehBody+VehEnergy, offset=log(Exposure), family=poisson("log"), data=freMPL2)
+summary(glm1)
+glm1$aic
+glm1$null.deviance
+glm1$deviance
+glm1$iter
+predict1 <- predict(glm1, freMPL2, type = 'response')
+recap1 <- data.frame(Riskvar = freMPL2$RiskVar,
+                     Predict_RiskVar = round(predict1,0),
+                     difference = freMPL2$RiskVar- round(predict1,0))
+ratio1 <- dim(recap1[recap1$difference == 0,])[1]/dim(recap1)[1]
+ratio1
 ```
+
+Le résumé de notre modèle révèle des informations intéressantes. La performance d'une régression logistique est évaluée avec des métriques clés spécifiques :
+- AIC (Critère d'information d'Akaike): Il mesure l'ajustement lorsqu'une pénalité est appliquée au nombre de paramètres. Des valeurs AIC plus petites indiquent que le modèle est plus proche de la vérité. Ici, il est de 213416.2 ce qui n'est pas bon du tout. 
+- Null deviance : Il s'agit de la déviance du modèle nul, c'est-à-dire qu'il 'est caractérisé par aucun facteur. Elle est de 297600 sur 25387 degrés de liberté.
+- Residual deviance : Il s'agit de la déviance du modèle avec toutes les variables. Elle est de 102549 sur 25304 degrés de liberté.
+- Number of Fisher Scoring iterations : Il s'agit du nombre d'itérations avant la convergence
 
 ## Sévérité des sinistres
 
@@ -780,20 +803,20 @@ nettoyage_dataframe <- function(dt){
 |**`r colnames_freMPL2[1]`**|![](graphique/Exposure1.png){width=40%}|![](graphique/Exposure2.png){width=40%}|
 |**`r colnames_freMPL2[2]`**   	|![](graphique/LicAge1.png){width=40%}   	| ![](graphique/LicAge2.png){width=40%}  	|
 |  **`r colnames_freMPL2[5]`** 	|![](graphique/VehAge1.png){width=40%}|![](graphique/VehAge2.png){width=40%}|
-| **`r colnames_freMPL2[6]`**  	|![](graphique/MariStat1.png){width=40%}|![](graphique/MariStat2.png){width=40%}|
-| **`r colnames_freMPL2[7]`**  	|![](graphique/SocioCateg1.png){width=40%}|![](graphique/SocioCateg2.png){width=40%}|
-| **`r colnames_freMPL2[8]`**  	| ![](graphique/VehUsage1.png){width=40%}|![](graphique/VehUsage2.png){width=40%}|
-| **`r colnames_freMPL2[9]`**  	|![](graphique/DrivAge1.png){width=40%}|![](graphique/DrivAge2.png){width=40%}|
-| **`r colnames_freMPL2[10]`**  	|   ![](graphique/HasKmLimit1.png){width=40%}|![](graphique/HasKmLimit2.png){width=40%}|
-|**`r colnames_freMPL2[11]`**   	| ![](graphique/BonusMalus1.png){width=40%}|![](graphique/BonusMalus2.png){width=40%}|
-|**`r colnames_freMPL2[12]`**   	| ![](graphique/VehBody1.png){width=40%}|![](graphique/VehBody2.png){width=40%}|
-|**`r colnames_freMPL2[13]`**   	| ![](graphique/VehPrice1.png){width=40%}|![](graphique/VehPrice2.png){width=40%}|
-| **`r colnames_freMPL2[14]`**  	|![](graphique/VehEngine1.png){width=40%}|![](graphique/VehEngine2.png){width=40%}|
-| **`r colnames_freMPL2[15]`**  	| ![](graphique/VehEnergy1.png){width=40%}|![](graphique/VehEnergy2.png){width=40%}|
-| **`r colnames_freMPL2[16]`**  	| ![](graphique/VehMaxSpeed1.png){width=40%}|![](graphique/VehMaxSpeed2.png){width=40%}|
-|   **`r colnames_freMPL2[17]`**	| ![](graphique/VehClass1.png){width=40%}|![](graphique/VehClass2.png){width=40%}|
-| **`r colnames_freMPL2[18]`**  	|![](graphique/RiskVar1.png){width=40%}|![](graphique/RiskVar2.png){width=40%}|
-| **`r colnames_freMPL2[19]`**  	| ![](graphique/ClaimAmount1.png){width=40%}|![](graphique/ClaimAmount2.png){width=40%}|
-| **`r colnames_freMPL2[20]`**  	| ![](graphique/Garage1.png){width=40%}|![](graphique/Garage2.png){width=40%}|
-
+| **`r colnames_freMPL2[7]`**  	|![](graphique/MariStat1.png){width=40%}|![](graphique/MariStat2.png){width=40%}|
+| **`r colnames_freMPL2[8]`**  	|![](graphique/SocioCateg1.png){width=40%}|![](graphique/SocioCateg2.png){width=40%}|
+| **`r colnames_freMPL2[9]`**  	| ![](graphique/VehUsage1.png){width=40%}|![](graphique/VehUsage2.png){width=40%}|
+| **`r colnames_freMPL2[10]`**  	|![](graphique/DrivAge1.png){width=40%}|![](graphique/DrivAge2.png){width=40%}|
+| **`r colnames_freMPL2[11]`**  	|   ![](graphique/HasKmLimit1.png){width=40%}|![](graphique/HasKmLimit2.png){width=40%}|
+|**`r colnames_freMPL2[12]`**   	| ![](graphique/BonusMalus1.png){width=40%}|![](graphique/BonusMalus2.png){width=40%}|
+|**`r colnames_freMPL2[13]`**   	| ![](graphique/VehBody1.png){width=40%}|![](graphique/VehBody2.png){width=40%}|
+|**`r colnames_freMPL2[14]`**   	| ![](graphique/VehPrice1.png){width=40%}|![](graphique/VehPrice2.png){width=40%}|
+| **`r colnames_freMPL2[15]`**  	|![](graphique/VehEngine1.png){width=40%}|![](graphique/VehEngine2.png){width=40%}|
+| **`r colnames_freMPL2[16]`**  	| ![](graphique/VehEnergy1.png){width=40%}|![](graphique/VehEnergy2.png){width=40%}|
+| **`r colnames_freMPL2[17]`**  	| ![](graphique/VehMaxSpeed1.png){width=40%}|![](graphique/VehMaxSpeed2.png){width=40%}|
+|   **`r colnames_freMPL2[18]`**	| ![](graphique/VehClass1.png){width=40%}|![](graphique/VehClass2.png){width=40%}|
+| **`r colnames_freMPL2[19]`**  	|![](graphique/RiskVar1.png){width=40%}|![](graphique/RiskVar2.png){width=40%}|
+| **`r colnames_freMPL2[20]`**  	| ![](graphique/ClaimAmount1.png){width=40%}|![](graphique/ClaimAmount2.png){width=40%}|
+| **`r colnames_freMPL2[21]`**  	| ![](graphique/Garage1.png){width=40%}|![](graphique/Garage2.png){width=40%}|
+| **`r colnames_freMPL2[22]`**  	| ![](graphique/ClaimInd1.png){width=40%}|![](graphique/ClaimInd2.png){width=40%}|
 
