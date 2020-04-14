@@ -632,7 +632,7 @@ Test du modèle GLM avec la loi de Poisson :
 
 ```{r, echo = TRUE}
 #calibration d’une loi de Poisson
-glm1 <- glm(ClaimInd~DrivAge+HasKmLimit+offset(log(Exposure)), family=poisson("log"), data=freMPL2)
+glm1 <- glm(ClaimInd~DrivAge+VehAge+VehUsage+BonusMalus+VehBody+VehMaxSpeed+ClaimAmount+offset(log(Exposure)), family=poisson("log"), data=freMPL2)
 summary(glm1)
 #glm1$aic
 #glm1$null.deviance
@@ -677,7 +677,9 @@ plot(test1$DrivAge,test1$frequence_obs, type = "b")
 lines(test1$DrivAge,test1$frequence_pred, type = "b", col = "red")
 ```
 
-
+```{r}
+glm1
+```
 
 
 Quasipoisson: 
@@ -688,7 +690,7 @@ Dispersion????
 
 ```{r}
 #calibration d’une loi de quasipoisson
-glm2 <- glm(ClaimInd~DrivAge+HasKmLimit+offset(log(Exposure)), family=quasipoisson("log"), data=freMPL2)
+glm2 <- glm(ClaimInd~DrivAge+VehAge+VehUsage+BonusMalus+VehBody+VehMaxSpeed+ClaimAmount+offset(log(Exposure)), family=quasipoisson("log"), data=freMPL2)
 summary(glm2)
 #glm2$aic
 #glm2$null.deviance
@@ -732,6 +734,55 @@ for (j in 1:dim(test1)[1]){
 plot(test2$DrivAge,test2$frequence_obs, type = "b")
 lines(test2$DrivAge,test2$frequence_pred, type = "b", col = "red")
 ```
+
+```{r}
+# neg bin
+library(MASS)
+phi <- 1
+
+glm3 <- glm(ClaimInd~DrivAge+VehAge+VehUsage+BonusMalus+VehBody+VehMaxSpeed+ClaimAmount+offset(log(Exposure)), family=negative.binomial(phi), data=freMPL2)
+summary(glm3)
+predict3 <- predict(glm3, freMPL2, type = 'response')
+recap3 <- data.frame(ClaimInd = freMPL2$ClaimInd,
+                     Predict_ClaimInd = predict3,
+                     difference = abs(freMPL2$ClaimInd- predict3))
+head(recap3,10)
+recap3[recap3$difference<0.1 & recap3$ClaimInd == 1,]
+ # Ce modèle ne fonctionne pas pour prédire les ClaimInd égaux à 1
+
+
+test3 <- data.frame(
+  DrivAge = c(18:103),
+  nb_individu = rep(0,times = 103-18+1),
+  total_obs = rep(0,times = 103-18+1),
+  total_pred = rep(0,times = 103-18+1),
+  frequence_obs = rep(0,times = 103-18+1),
+  frequence_pred = rep(0,times = 103-18+1)
+)
+
+for (i in 1:dim(freMPL2)[1]){
+  age <- freMPL2$DrivAge[i]
+  test3[test3$DrivAge==age,"nb_individu"] <- test3[test3$DrivAge==age,"nb_individu"]+1
+  test3[test3$DrivAge==age,"total_obs"] <-
+    test3[test3$DrivAge==age,"total_obs"]+(freMPL2$ClaimInd[i]/freMPL2$Exposure[i])
+  test3[test3$DrivAge==age,"total_pred"] <-
+    test3[test3$DrivAge==age,"total_pred"]+(predict3[i]/freMPL2$Exposure[i])
+}
+
+
+for (j in 1:dim(test1)[1]){
+  if (test3$nb_individu[j]!=0){
+    test3[j,"frequence_obs"] <- test3[j,"total_obs"]/ test3[j,"nb_individu"]
+    test3[j,"frequence_pred"] <- test3[j,"total_pred"]/ test3[j,"nb_individu"] 
+  }
+}
+
+plot(test3$DrivAge,test3$frequence_obs, type = "b")
+lines(test3$DrivAge,test3$frequence_pred, type = "b", col = "red")
+```
+#  *Ce modèle binomiale négative semble intéressant. Reste à savoir comment déterminer le coefficient phi. Et si nos paramètres sont les bons.*
+
+
 
 
 
@@ -786,13 +837,13 @@ legend("topright", legend = c("mu = 1 et lambda = 1", "mu = 1 et lambda = 0.2", 
 ```
 
 ```{r}
-glm3 <- glm(ClaimAmount~DrivAge+VehAge+VehClass+VehBody+VehEnergy+offset(log(Exposure)), family=poisson("log"), data=freMPL2)
-summary(glm3)
-predict3 <- predict(glm3, freMPL2, type = 'response')
-recap3 <- data.frame(ClaimAmount = freMPL2$ClaimAmount,
-                     Predict_ClaimAmount = predict3,
-                     difference = abs(freMPL2$ClaimAmount- predict3))
-head(recap3,10)
+glm4 <- glm(ClaimAmount~DrivAge+VehAge+VehUsage+BonusMalus+VehBody+VehMaxSpeed+ClaimAmount+offset(log(Exposure)), family=poisson("log"), data=freMPL2)
+summary(glm4)
+predict4 <- predict(glm4, freMPL2, type = 'response')
+recap4 <- data.frame(ClaimAmount = freMPL2$ClaimAmount,
+                     Predict_ClaimAmount = predict4,
+                     difference = abs(freMPL2$ClaimAmount- predict4))
+head(recap4,10)
 ```
 
 
