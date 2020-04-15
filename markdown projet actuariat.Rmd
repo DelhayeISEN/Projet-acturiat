@@ -260,7 +260,7 @@ On peut aussi utiliser la méthode describe du package Hmisc pour avoir un aper�
 
 ```{r, eval = FALSE}
 library("Hmisc")
-describe(freMPL2)
+#describe(freMPL2)
 ```
 Mais cela ne vaut pas une représentation graphique.
 
@@ -349,7 +349,6 @@ representation_graphique <- function(dataframe, col){
 ```
 
 ```{r, results = 'hide'}
-colnames(freMPL1)
 png(file = "graphique/Exposure1.png", width = 800, height = 700)
 representation_graphique(freMPL1,colnames(freMPL1)[1])
 dev.off()
@@ -677,16 +676,16 @@ plot(test1$DrivAge,test1$frequence_obs, type = "b")
 lines(test1$DrivAge,test1$frequence_pred, type = "b", col = "red")
 ```
 
+
 ```{r}
-glm1
+glm1$coefficients["(Intercept)"]
 ```
+
 
 
 Quasipoisson: 
 
-
 Dispersion????
-
 
 ```{r}
 #calibration d’une loi de quasipoisson
@@ -770,27 +769,31 @@ for (i in 1:dim(freMPL2)[1]){
 }
 
 
-for (j in 1:dim(test1)[1]){
+for (j in 1:dim(test3)[1]){
   if (test3$nb_individu[j]!=0){
     test3[j,"frequence_obs"] <- test3[j,"total_obs"]/ test3[j,"nb_individu"]
     test3[j,"frequence_pred"] <- test3[j,"total_pred"]/ test3[j,"nb_individu"] 
   }
 }
 
+
+test3
+
 plot(test3$DrivAge,test3$frequence_obs, type = "b")
 lines(test3$DrivAge,test3$frequence_pred, type = "b", col = "red")
 ```
-#  *Ce modèle binomiale négative semble intéressant. Reste à savoir comment déterminer le coefficient phi. Et si nos paramètres sont les bons.*
+
+*Ce modèle binomiale négative semble intéressant. Reste à savoir comment déterminer le coefficient phi. Et si nos paramètres sont les bons.*
 
 
 
 
 
 Le résumé de notre modèle révèle des informations intéressantes. La performance d'une régression logistique est évaluée avec des métriques clés spécifiques :
-- AIC (Critère d'information d'Akaike): Il mesure l'ajustement lorsqu'une pénalité est appliquée au nombre de paramètres. Des valeurs AIC plus petites indiquent que le modèle est plus proche de la vérité. Ici, il est de 213416.2 ce qui n'est pas bon du tout. 
-- Null deviance : Il s'agit de la déviance du modèle nul, c'est-à-dire qu'il 'est caractérisé par aucun facteur. Elle est de 297600 sur 25387 degrés de liberté.
-- Residual deviance : Il s'agit de la déviance du modèle avec toutes les variables. Elle est de 102549 sur 25304 degrés de liberté.
-- Number of Fisher Scoring iterations : Il s'agit du nombre d'itérations avant la convergence
+- AIC (Critère d'information d'Akaike): Il mesure l'ajustement lorsqu'une pénalité est appliquée au nombre de paramètres. Des valeurs AIC plus petites indiquent que le modèle est plus proche de la vérité. 
+- Null deviance : Il s'agit de la déviance du modèle nul, c'est-à-dire qu'il 'est caractérisé par aucun facteur.
+- Residual deviance : Il s'agit de la déviance du modèle avec toutes les variables. 
+- Number of Fisher Scoring iterations : Il s'agit du nombre d'itérations avant la convergence.
 
 ## Sévérité des sinistres
 
@@ -837,7 +840,7 @@ legend("topright", legend = c("mu = 1 et lambda = 1", "mu = 1 et lambda = 0.2", 
 ```
 
 ```{r}
-glm4 <- glm(ClaimAmount~DrivAge+VehAge+VehUsage+BonusMalus+VehBody+VehMaxSpeed+ClaimAmount+offset(log(Exposure)), family=poisson("log"), data=freMPL2)
+glm4 <- glm(ClaimAmount~DrivAge+VehAge+VehUsage+BonusMalus+VehBody+VehMaxSpeed+ClaimAmount+offset(ClaimInd), family=poisson("log"), data=freMPL2)
 summary(glm4)
 predict4 <- predict(glm4, freMPL2, type = 'response')
 recap4 <- data.frame(ClaimAmount = freMPL2$ClaimAmount,
@@ -865,6 +868,154 @@ En admettant que la fréquence n'a pas d'influence sur la sévérité et que les
 
 Comment calculer E(N)? Comment calculer E(B)?
 
+
+### Calcul de l'espérance E(N)
+
+FORMULE  : E(N/x) = offset*exp(Bx) ?    OFFSET ? 
+
+
+# GAM
+
+```{r}
+#install.packages("gam")
+library("gam")
+```
+
+Poisson
+
+```{r}
+gam1 <- gam(ClaimInd~DrivAge+VehAge+VehUsage+BonusMalus+VehBody+VehMaxSpeed+ClaimAmount+offset(log(Exposure)), family=poisson("log"), data=freMPL2)
+summary(gam1)
+predictgam1 <- predict(gam1, freMPL2, type = 'response')
+recapgam1 <- data.frame(ClaimInd = freMPL2$ClaimInd,
+                     Predict_ClaimInd = predictgam1,
+                     difference = abs(freMPL2$ClaimInd- predictgam1))
+head(recapgam1,10)
+recapgam1[recapgam1$difference<0.5 & recapgam1$ClaimInd == 1,]
+ # Ce modèle ne fonctionne pas pour prédire les ClaimInd égaux à 1
+
+
+testgam1 <- data.frame(
+  DrivAge = c(18:103),
+  nb_individu = rep(0,times = 103-18+1),
+  total_obs = rep(0,times = 103-18+1),
+  total_pred = rep(0,times = 103-18+1),
+  frequence_obs = rep(0,times = 103-18+1),
+  frequence_pred = rep(0,times = 103-18+1)
+)
+
+for (i in 1:dim(freMPL2)[1]){
+  age <- freMPL2$DrivAge[i]
+  testgam1[testgam1$DrivAge==age,"nb_individu"] <- testgam1[testgam1$DrivAge==age,"nb_individu"]+1
+  testgam1[testgam1$DrivAge==age,"total_obs"] <-
+    testgam1[testgam1$DrivAge==age,"total_obs"]+(freMPL2$ClaimInd[i]/freMPL2$Exposure[i])
+  testgam1[testgam1$DrivAge==age,"total_pred"] <-
+    testgam1[testgam1$DrivAge==age,"total_pred"]+(predictgam1[i]/freMPL2$Exposure[i])
+}
+
+
+for (j in 1:dim(testgam1)[1]){
+  if (testgam1$nb_individu[j]!=0){
+    testgam1[j,"frequence_obs"] <- testgam1[j,"total_obs"]/ testgam1[j,"nb_individu"]
+    testgam1[j,"frequence_pred"] <- testgam1[j,"total_pred"]/ testgam1[j,"nb_individu"] 
+  }
+}
+
+plot(testgam1$DrivAge,testgam1$frequence_obs, type = "b")
+lines(testgam1$DrivAge,testgam1$frequence_pred, type = "b", col = "red")
+```
+
+quasipoisson
+
+
+```{r}
+gam2 <- gam(ClaimInd~DrivAge+VehAge+VehUsage+BonusMalus+VehBody+VehMaxSpeed+ClaimAmount+offset(log(Exposure)), family=quasipoisson("log"), data=freMPL2)
+summary(gam2)
+predictgam2 <- predict(gam2, freMPL2, type = 'response')
+recapgam2 <- data.frame(ClaimInd = freMPL2$ClaimInd,
+                     Predict_ClaimInd = predictgam2,
+                     difference = abs(freMPL2$ClaimInd- predictgam2))
+head(recapgam2,10)
+recapgam2[recapgam2$difference<0.5 & recapgam2$ClaimInd == 1,]
+ # Ce modèle ne fonctionne pas pour prédire les ClaimInd égaux à 1
+
+
+testgam2 <- data.frame(
+  DrivAge = c(18:103),
+  nb_individu = rep(0,times = 103-18+1),
+  total_obs = rep(0,times = 103-18+1),
+  total_pred = rep(0,times = 103-18+1),
+  frequence_obs = rep(0,times = 103-18+1),
+  frequence_pred = rep(0,times = 103-18+1)
+)
+
+for (i in 1:dim(freMPL2)[1]){
+  age <- freMPL2$DrivAge[i]
+  testgam2[testgam2$DrivAge==age,"nb_individu"] <- testgam2[testgam2$DrivAge==age,"nb_individu"]+1
+  testgam2[testgam2$DrivAge==age,"total_obs"] <-
+    testgam2[testgam2$DrivAge==age,"total_obs"]+(freMPL2$ClaimInd[i]/freMPL2$Exposure[i])
+  testgam2[testgam2$DrivAge==age,"total_pred"] <-
+    testgam2[testgam2$DrivAge==age,"total_pred"]+(predictgam2[i]/freMPL2$Exposure[i])
+}
+
+
+for (j in 1:dim(testgam2)[1]){
+  if (testgam2$nb_individu[j]!=0){
+    testgam2[j,"frequence_obs"] <- testgam2[j,"total_obs"]/ testgam2[j,"nb_individu"]
+    testgam2[j,"frequence_pred"] <- testgam2[j,"total_pred"]/ testgam2[j,"nb_individu"] 
+  }
+}
+
+plot(testgam2$DrivAge,testgam2$frequence_obs, type = "b")
+lines(testgam2$DrivAge,testgam2$frequence_pred, type = "b", col = "red")
+```
+
+binomiale negative
+
+```{r}
+library(MASS)
+phi <- 1
+
+gam3 <- gam(ClaimInd~DrivAge+VehAge+VehUsage+BonusMalus+VehBody+VehMaxSpeed+ClaimAmount+offset(log(Exposure)), family=negative.binomial(phi), data=freMPL2)
+summary(gam3)
+predictgam3 <- predict(gam3, freMPL2, type = 'response')
+recapgam3 <- data.frame(ClaimInd = freMPL2$ClaimInd,
+                     Predict_ClaimInd = predictgam3,
+                     difference = abs(freMPL2$ClaimInd- predictgam3))
+head(recapgam3,10)
+recapgam3[recapgam3$difference<0.1 & recapgam3$ClaimInd == 1,]
+ # Ce modèle ne fonctionne pas pour prédire les ClaimInd égaux à 1
+
+
+testgam3 <- data.frame(
+  DrivAge = c(18:103),
+  nb_individu = rep(0,times = 103-18+1),
+  total_obs = rep(0,times = 103-18+1),
+  total_pred = rep(0,times = 103-18+1),
+  frequence_obs = rep(0,times = 103-18+1),
+  frequence_pred = rep(0,times = 103-18+1)
+)
+
+for (i in 1:dim(freMPL2)[1]){
+  age <- freMPL2$DrivAge[i]
+  testgam3[testgam3$DrivAge==age,"nb_individu"] <- testgam3[testgam3$DrivAge==age,"nb_individu"]+1
+  testgam3[testgam3$DrivAge==age,"total_obs"] <-
+    testgam3[testgam3$DrivAge==age,"total_obs"]+(freMPL2$ClaimInd[i]/freMPL2$Exposure[i])
+  testgam3[testgam3$DrivAge==age,"total_pred"] <-
+    testgam3[testgam3$DrivAge==age,"total_pred"]+(predictgam3[i]/freMPL2$Exposure[i])
+}
+
+
+for (j in 1:dim(testgam3)[1]){
+  if (testgam3$nb_individu[j]!=0){
+    testgam3[j,"frequence_obs"] <- testgam3[j,"total_obs"]/ testgam3[j,"nb_individu"]
+    testgam3[j,"frequence_pred"] <- testgam3[j,"total_pred"]/ testgam3[j,"nb_individu"] 
+  }
+}
+
+plot(testgam3$DrivAge,testgam3$frequence_obs, type = "b")
+lines(testgam3$DrivAge,testgam3$frequence_pred, type = "b", col = "red")
+```
 
 
 
