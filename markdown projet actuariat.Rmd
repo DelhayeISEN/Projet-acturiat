@@ -655,43 +655,6 @@ recap1 <- data.frame(ClaimInd = freMPL2$ClaimInd,
 head(recap1,10)
 recap1[recap1$difference<0.5 & recap1$ClaimInd == 1,]
  # Ce modèle ne fonctionne pas pour prédire les ClaimInd égaux à 1
-
-test1 <- data.frame(
-  DrivAge = levels(freMPL2$DrivAge),
-  nb_individu = rep(0,times = length(levels(freMPL2$DrivAge))),
-  total_obs = rep(0,times = length(levels(freMPL2$DrivAge))),
-  total_pred = rep(0,times = length(levels(freMPL2$DrivAge))),
-  frequence_obs_moyenne = rep(0,times = length(levels(freMPL2$DrivAge))),
-  frequence_pred_moyenne = rep(0,times = length(levels(freMPL2$DrivAge))),
-  frequence_predite_par_groupe = rep(0,times = length(levels(freMPL2$DrivAge))) 
-)
-
-for (i in 1:dim(freMPL2)[1]){
-  groupe_age <- freMPL2$DrivAge[i]
-  test1[test1$DrivAge==groupe_age,"nb_individu"] <- test1[test1$DrivAge==groupe_age,"nb_individu"]+1
-  test1[test1$DrivAge==groupe_age,"total_obs"] <-
-    test1[test1$DrivAge==groupe_age,"total_obs"]+(freMPL2$ClaimInd[i]/freMPL2$Exposure[i])
-  test1[test1$DrivAge==groupe_age,"total_pred"] <-
-    test1[test1$DrivAge==groupe_age,"total_pred"]+(predict1[i]/freMPL2$Exposure[i])
-}
-
-for (j in 1:dim(test1)[1]){
-  if (test1$nb_individu[j]!=0){
-    test1[j,"frequence_obs_moyenne"] <- test1[j,"total_obs"]/ test1[j,"nb_individu"]
-    test1[j,"frequence_pred_moyenne"] <- test1[j,"total_pred"]/ test1[j,"nb_individu"] 
-  }
-}
-
-dt <- data.frame(
-  DrivAge = c(levels(freMPL2$DrivAge),levels(freMPL2$DrivAge)),
-  frequence = c(test1$frequence_obs_moyenne,test1$frequence_pred_moyenne),
-  type = c(rep("frequence_obs_moyenne",times = length(levels(freMPL2$DrivAge))),rep("frequence_pred_moyenne",times = length(levels(freMPL2$DrivAge))))
-)
-
-ggplot(dt) +
-  geom_point(aes(x = DrivAge, y = frequence, color = type))+
-  theme(legend.position="bottom")+
-  theme(legend.title = element_blank())
 ```
 
 
@@ -788,15 +751,166 @@ for (i in 1:length(levels(freMPL2$VehMaxSpeed))){
     coefficient_VehMaxSpeed$coef[i] <- newcoef
   }
 }
+```
 
-# Calcul de E(N)
+```{r}
+# Calcul des différentes fréquences prédites
 
-En <- data.frame(
-  Id_police = seq(1:dim(freMPL2)[1]),
-  E = rep(0, dim(freMPL2)[1])
+# Pour DrivAge
+
+frequence_predite_DrivAge <- data.frame(
+  DrivAge = levels(freMPL2$DrivAge),
+  frequence_predite = rep(exp(as.numeric(glm1$coefficients["(Intercept)"])), length(levels(freMPL2$DrivAge)))
+  )
+
+for (i in 1:length(levels(freMPL2$DrivAge))){
+  frequence_predite_DrivAge$frequence_predite[i] <- frequence_predite_DrivAge$frequence_predite[i]*exp(coefficient_DrivAge$coef[i])  
+}
+
+# Pour VehAge
+
+frequence_predite_VehAge <- data.frame(
+  VehAge = levels(freMPL2$VehAge),
+  frequence_predite = rep(exp(as.numeric(glm1$coefficients["(Intercept)"])), length(levels(freMPL2$VehAge)))
+  )
+
+for (i in 1:length(levels(freMPL2$VehAge))){
+  frequence_predite_VehAge$frequence_predite[i] <- frequence_predite_VehAge$frequence_predite[i]*exp(coefficient_VehAge$coef[i])  
+}
+
+# Pour VehUsage
+
+frequence_predite_VehUsage <- data.frame(
+  VehUsage = levels(freMPL2$VehUsage),
+  frequence_predite = rep(exp(as.numeric(glm1$coefficients["(Intercept)"])), length(levels(freMPL2$VehUsage)))
+  )
+
+for (i in 1:length(levels(freMPL2$VehUsage))){
+  frequence_predite_VehUsage$frequence_predite[i] <- frequence_predite_VehUsage$frequence_predite[i]*exp(coefficient_VehUsage$coef[i])  
+}
+
+# Pour BonusMalus
+
+frequence_predite_BonusMalus <- data.frame(
+  BonusMalus = levels(freMPL2$BonusMalus),
+  frequence_predite = rep(exp(as.numeric(glm1$coefficients["(Intercept)"])), length(levels(freMPL2$BonusMalus)))
+  )
+
+for (i in 1:length(levels(freMPL2$BonusMalus))){
+  frequence_predite_BonusMalus$frequence_predite[i] <- frequence_predite_BonusMalus$frequence_predite[i]*exp(coefficient_BonusMalus$coef[i])  
+}
+
+# Pour VehBody
+
+frequence_predite_VehBody <- data.frame(
+  VehBody = levels(freMPL2$VehBody),
+  frequence_predite = rep(exp(as.numeric(glm1$coefficients["(Intercept)"])), length(levels(freMPL2$VehBody)))
+  )
+
+for (i in 1:length(levels(freMPL2$VehBody))){
+  frequence_predite_VehBody$frequence_predite[i] <- frequence_predite_VehBody$frequence_predite[i]*exp(coefficient_VehBody$coef[i])  
+}
+
+# Pour VehMaxSpeed
+
+frequence_predite_VehMaxSpeed <- data.frame(
+  VehMaxSpeed = levels(freMPL2$VehMaxSpeed),
+  frequence_predite = rep(exp(as.numeric(glm1$coefficients["(Intercept)"])), length(levels(freMPL2$VehMaxSpeed)))
+  )
+
+for (i in 1:length(levels(freMPL2$VehMaxSpeed))){
+  frequence_predite_VehMaxSpeed$frequence_predite[i] <- frequence_predite_VehMaxSpeed$frequence_predite[i]*exp(coefficient_VehMaxSpeed$coef[i])  
+}
+```
+
+```{r}
+# Comparaison résultat et observation
+
+# Pour DrivAge
+
+test1 <- data.frame(
+  DrivAge = levels(freMPL2$DrivAge),
+  nb_individu = rep(0,times = length(levels(freMPL2$DrivAge))),
+  total_obs = rep(0,times = length(levels(freMPL2$DrivAge))),
+  total_pred = rep(0,times = length(levels(freMPL2$DrivAge))),
+  frequence_obs_moyenne = rep(0,times = length(levels(freMPL2$DrivAge))),
+  frequence_pred_moyenne = rep(0,times = length(levels(freMPL2$DrivAge))),
+  frequence_predite_par_groupe = frequence_predite_DrivAge$frequence_predite
 )
 
-head(En,15)
+for (i in 1:dim(freMPL2)[1]){
+  groupe_age <- freMPL2$DrivAge[i]
+  test1[test1$DrivAge==groupe_age,"nb_individu"] <- test1[test1$DrivAge==groupe_age,"nb_individu"]+1
+  test1[test1$DrivAge==groupe_age,"total_obs"] <-
+    test1[test1$DrivAge==groupe_age,"total_obs"]+(freMPL2$ClaimInd[i]/freMPL2$Exposure[i])
+  test1[test1$DrivAge==groupe_age,"total_pred"] <-
+    test1[test1$DrivAge==groupe_age,"total_pred"]+(predict1[i]/freMPL2$Exposure[i])
+}
+
+for (j in 1:dim(test1)[1]){
+  if (test1$nb_individu[j]!=0){
+    test1[j,"frequence_obs_moyenne"] <- test1[j,"total_obs"]/ test1[j,"nb_individu"]
+    test1[j,"frequence_pred_moyenne"] <- test1[j,"total_pred"]/ test1[j,"nb_individu"] 
+  }
+}
+
+
+
+# Pour VehAge
+
+test1_1 <- data.frame(
+  VehAge = levels(freMPL2$VehAge),
+  nb_individu = rep(0,times = length(levels(freMPL2$VehAge))),
+  total_obs = rep(0,times = length(levels(freMPL2$VehAge))),
+  total_pred = rep(0,times = length(levels(freMPL2$VehAge))),
+  frequence_obs_moyenne = rep(0,times = length(levels(freMPL2$VehAge))),
+  frequence_pred_moyenne = rep(0,times = length(levels(freMPL2$VehAge))),
+  frequence_predite_par_groupe = frequence_predite_VehAge$frequence_predite
+)
+
+for (i in 1:dim(freMPL2)[1]){
+  groupe_age <- freMPL2$VehAge[i]
+  test1_1[test1_1$VehAge==groupe_age,"nb_individu"] <- test1_1[test1_1$VehAge==groupe_age,"nb_individu"]+1
+  test1_1[test1_1$VehAge==groupe_age,"total_obs"] <-
+    test1_1[test1_1$VehAge==groupe_age,"total_obs"]+(freMPL2$ClaimInd[i]/freMPL2$Exposure[i])
+  test1_1[test1_1$VehAge==groupe_age,"total_pred"] <-
+    test1_1[test1_1$VehAge==groupe_age,"total_pred"]+(predict1[i]/freMPL2$Exposure[i])
+}
+
+for (j in 1:dim(test1_1)[1]){
+  if (test1_1$nb_individu[j]!=0){
+    test1_1[j,"frequence_obs_moyenne"] <- test1_1[j,"total_obs"]/ test1_1[j,"nb_individu"]
+    test1_1[j,"frequence_pred_moyenne"] <- test1_1[j,"total_pred"]/ test1_1[j,"nb_individu"] 
+  }
+}
+
+
+#########################################
+dt1 <- data.frame(
+  DrivAge = c(levels(freMPL2$DrivAge),levels(freMPL2$DrivAge),levels(freMPL2$DrivAge)),
+  frequence = c(test1$frequence_obs_moyenne,test1$frequence_pred_moyenne,test1$frequence_predite_par_groupe),
+  type = c(rep("frequence_obs_moyenne",times = length(levels(freMPL2$DrivAge))),rep("frequence_pred_moyenne",times = length(levels(freMPL2$DrivAge))),rep("frequence_predite_par_groupe",times = length(levels(freMPL2$DrivAge))))
+)
+
+dt1_1 <- data.frame(
+  VehAge = c(levels(freMPL2$VehAge),levels(freMPL2$VehAge),levels(freMPL2$VehAge)),
+  frequence = c(test1_1$frequence_obs_moyenne,test1_1$frequence_pred_moyenne,test1_1$frequence_predite_par_groupe),
+  type = c(rep("frequence_obs_moyenne",times = length(levels(freMPL2$VehAge))),rep("frequence_pred_moyenne",times = length(levels(freMPL2$VehAge))),rep("frequence_predite_par_groupe",times = length(levels(freMPL2$VehAge))))
+)
+
+ggplot(dt1) +
+  ggtitle("Nombre de sinistres et leur prédiction selon l’âge du conducteur
+")+
+  geom_point(aes(x = DrivAge, y = frequence, color = type))+
+  theme(legend.position="bottom")+
+  theme(legend.title = element_blank())
+
+ggplot(dt1_1) +
+  ggtitle("Nombre de sinistres et leur prédiction selon l’âge du véhicule
+")+
+  geom_point(aes(x = VehAge, y = frequence, color = type))+
+  theme(legend.position="bottom")+
+  theme(legend.title = element_blank())
 ```
                                             
 -------------------------------------------------------------------------------------------------
@@ -826,7 +940,7 @@ head(recap2,10)
 ```{r}
 # neg bin
 library(MASS)
-phi <- 0.1
+phi <- 1
 
 glm3 <- glm(ClaimInd~DrivAge+VehAge+VehUsage+BonusMalus+VehBody+VehMaxSpeed, offset = log(Exposure), family=negative.binomial(phi), data=freMPL2)
 summary(glm3)
@@ -835,7 +949,7 @@ recap3 <- data.frame(ClaimInd = freMPL2$ClaimInd,
                      Predict_ClaimInd = predict3,
                      difference = abs(freMPL2$ClaimInd- predict3))
 head(recap3,10)
-recap3[recap3$difference<0.1 & recap3$ClaimInd == 1,]
+recap3[recap3$difference<0.5 & recap3$ClaimInd == 1,]
  # Ce modèle ne fonctionne pas pour prédire les ClaimInd égaux à 1
 ```
 
@@ -928,16 +1042,7 @@ FORMULE  : E(N/x) = g^(-1) (aX_i+e_i ) avec g la fonction de lien et e l'offset
 Ainsi, pour une loi de Poisson, on a : E(N/x) = exp(aX_i+ln(Exposure))
                                               = Exposure*exp(aX_i)
                                               
-```{r}
-freMPL2[1,c("DrivAge", "VehAge", "VehUsage", "BonusMalus", "VehBody", "VehMaxSpeed", "ClaimAmount","Exposure")]
-```
-```{r}
-summary(glm1)
-```
-
-                      
-
-
+                                              
 
 
 # GAM
@@ -960,35 +1065,42 @@ head(recapgam1,10)
 recapgam1[recapgam1$difference<0.5 & recapgam1$ClaimInd == 1,]
  # Ce modèle ne fonctionne pas pour prédire les ClaimInd égaux à 1
 
-
-testgam1 <- data.frame(
-  DrivAge = c(18:103),
-  nb_individu = rep(0,times = 103-18+1),
-  total_obs = rep(0,times = 103-18+1),
-  total_pred = rep(0,times = 103-18+1),
-  frequence_obs = rep(0,times = 103-18+1),
-  frequence_pred = rep(0,times = 103-18+1)
+test2 <- data.frame(
+  DrivAge = levels(freMPL2$DrivAge),
+  nb_individu = rep(0,times = length(levels(freMPL2$DrivAge))),
+  total_obs = rep(0,times = length(levels(freMPL2$DrivAge))),
+  total_pred = rep(0,times = length(levels(freMPL2$DrivAge))),
+  frequence_obs_moyenne = rep(0,times = length(levels(freMPL2$DrivAge))),
+  frequence_pred_moyenne = rep(0,times = length(levels(freMPL2$DrivAge))),
+  frequence_predite_par_groupe = rep(0,times = length(levels(freMPL2$DrivAge))) 
 )
 
 for (i in 1:dim(freMPL2)[1]){
-  age <- freMPL2$DrivAge[i]
-  testgam1[testgam1$DrivAge==age,"nb_individu"] <- testgam1[testgam1$DrivAge==age,"nb_individu"]+1
-  testgam1[testgam1$DrivAge==age,"total_obs"] <-
-    testgam1[testgam1$DrivAge==age,"total_obs"]+(freMPL2$ClaimInd[i]/freMPL2$Exposure[i])
-  testgam1[testgam1$DrivAge==age,"total_pred"] <-
-    testgam1[testgam1$DrivAge==age,"total_pred"]+(predictgam1[i]/freMPL2$Exposure[i])
+  groupe_age <- freMPL2$DrivAge[i]
+  test2[test2$DrivAge==groupe_age,"nb_individu"] <- test2[test2$DrivAge==groupe_age,"nb_individu"]+1
+  test2[test2$DrivAge==groupe_age,"total_obs"] <-
+    test2[test2$DrivAge==groupe_age,"total_obs"]+(freMPL2$ClaimInd[i]/freMPL2$Exposure[i])
+  test2[test2$DrivAge==groupe_age,"total_pred"] <-
+    test2[test2$DrivAge==groupe_age,"total_pred"]+(predict1[i]/freMPL2$Exposure[i])
 }
 
-
-for (j in 1:dim(testgam1)[1]){
-  if (testgam1$nb_individu[j]!=0){
-    testgam1[j,"frequence_obs"] <- testgam1[j,"total_obs"]/ testgam1[j,"nb_individu"]
-    testgam1[j,"frequence_pred"] <- testgam1[j,"total_pred"]/ testgam1[j,"nb_individu"] 
+for (j in 1:dim(test2)[1]){
+  if (test2$nb_individu[j]!=0){
+    test2[j,"frequence_obs_moyenne"] <- test2[j,"total_obs"]/ test2[j,"nb_individu"]
+    test2[j,"frequence_pred_moyenne"] <- test2[j,"total_pred"]/ test2[j,"nb_individu"] 
   }
 }
 
-plot(testgam1$DrivAge,testgam1$frequence_obs, type = "b")
-lines(testgam1$DrivAge,testgam1$frequence_pred, type = "b", col = "red")
+dt2 <- data.frame(
+  DrivAge = c(levels(freMPL2$DrivAge),levels(freMPL2$DrivAge)),
+  frequence = c(test2$frequence_obs_moyenne,test2$frequence_pred_moyenne),
+  type = c(rep("frequence_obs_moyenne",times = length(levels(freMPL2$DrivAge))),rep("frequence_pred_moyenne",times = length(levels(freMPL2$DrivAge))))
+)
+
+ggplot(dt2) +
+  geom_point(aes(x = DrivAge, y = frequence, color = type))+
+  theme(legend.position="bottom")+
+  theme(legend.title = element_blank())
 ```
 
 quasipoisson
