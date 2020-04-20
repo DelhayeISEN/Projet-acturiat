@@ -113,9 +113,9 @@ knitr::kable(t(head(freMPL2,3)))
 ### Nettoyage de données
 
 Remarquons qu'il serait intéressant de faire un peu de nettoyage de données avant d'effectuer quelconques travaux sur celles-ci.
-Pour cela, nous allons créer une fonction qui servira à nettoyer les 2 dataframes.
+Pour cela, nous allons créer une fonction qui servira à nettoyer les 2 data frames.
 
-Cette fonction (appelée nettoyage_dataframe) prend l'un des deux dataframes en paramètres et effectue les opérations suivantes :
+Cette fonction (appelée nettoyage_dataframe) prend l'un des deux data frames en paramètres et effectue les opérations suivantes :
 
 - Suppression des données des individus assurés moins d'un jour (Exposure)
 - Modification des données des individus ayant un ClaimAmount négatif
@@ -175,11 +175,11 @@ nettoyage_dataframe <- function(dt){
   for (i in 1:dim(dt)[2]){
     # Type de véhicules
     if (colnames(dt)[i]=="VehBody"){
-      levels(dt$VehBody) <- c(levels(dt$VehBody), "autobus", "coupé",
+      levels(dt$VehBody) <- c(levels(dt$VehBody), "autobus", "coupe",
                                      "autre microvan", "berline","SUV", "break",
                                      "camionnette")
       dt$VehBody[dt$VehBody == "bus"]<-"autobus"
-      dt$VehBody[dt$VehBody == "coupe"]<-"coupé"
+      dt$VehBody[dt$VehBody == "coupe"]<-"coupe"
       dt$VehBody[dt$VehBody == "other microvan"]<-"autre microvan"
       dt$VehBody[dt$VehBody == "sedan"]<-"berline"
       dt$VehBody[dt$VehBody == "sport utility vehicle"]<-"SUV"
@@ -196,12 +196,12 @@ nettoyage_dataframe <- function(dt){
       }
     # Utilisation du véhicule
     if (colnames(dt)[i]=="VehUsage"){
-      levels(dt$VehUsage) <- c(levels(dt$VehUsage), "privée", 
-                                      "privée et trajet vers bureau", "professionnel", 
+      levels(dt$VehUsage) <- c(levels(dt$VehUsage), "privee", 
+                                      "privee et trajet vers bureau", "professionnel", 
                                       "trajet professionnel" )
-      dt$VehUsage[dt$VehUsage == "Private"]<-"privée"
+      dt$VehUsage[dt$VehUsage == "Private"]<-"privee"
       dt$VehUsage[dt$VehUsage == "Private+trip to office"]<-
-      "privée et trajet vers bureau"
+      "privee et trajet vers bureau"
       dt$VehUsage[dt$VehUsage == "Professional"]<-"professionnel"
       dt$VehUsage[dt$VehUsage == "Professional run"]<-
       "trajet professionnel"
@@ -241,7 +241,7 @@ nettoyage_dataframe <- function(dt){
 ```
 
 ```{r}
-# nettoyage de nos 2 dataframes : 
+# nettoyage de nos 2 data frames : 
 
 freMPL2 <- nettoyage_dataframe(freMPL2)
 freMPL1 <- nettoyage_dataframe(freMPL1)
@@ -249,31 +249,50 @@ freMPL1 <- nettoyage_dataframe(freMPL1)
 
 ### Statistiques descriptives 
 
-Regardons maintenant plus précisement les valeurs particulières de ces colonnes (valeurs minimum et maximum, moyenne, médiane,quantiles, ...)
 
-```{r, eval = FALSE}
-summary(freMPL2)
+Regardons maintenant plus précisement les valeurs particulières de ces colonnes (valeurs minimum et maximum, moyenne, médiane,quantiles, ...). Pour cela, on exécute l'instruction **summary(freMPLx)** (et plus précisement **dfSummary(freMPLx)** du package summarytools pour l'affichage) ce qui donne les résultats suivants : 
+
+- Pour **freMPL1** :
+
+```{r , results='asis'}
+#install.packages("summarytools")
+library(summarytools)
+dfSummary(freMPL1, plain.ascii = FALSE,style = "grid", headings = FALSE, 
+          graph.col = FALSE, valid.col = FALSE, lang = 'fr', dfSummary.silent = TRUE)
 ```
-On remarquera qu'il existe des données manquantes dans la colonne RecEnd, ce qui signifie que les individus concernés sont toujours assurés. 
 
-On peut aussi utiliser la méthode describe du package Hmisc pour avoir un aperçu de la dispersion des données.
+On constate ainsi que, pour ce data frame, l'âge moyen du conducteur est de 46,3 ans avec pour écart-type 14,9 ans. Le plus jeune conducteur a 18 ans(âge minimum légale pour conduire en France) et le plus âgé a 97 ans. L'écart interquartile (IQR), c'est-à-dire la mesure de dispersion qui s'obtient en faisant la différence entre le premier (25% des valeurs du data frame sont inférieures à ce quartile) et le troisième quartile(75 %), est de 23. Autrement dit, 50% des âges des conducteurs est compris entre 35 et 58 ans. Le coefficient de variation (CV), le rapport entre l'écart-type et la moyenne, est égale à 3. 
+De même, en ce qui concerne l'usage du véhicule par son propriétaire, on remarquera que la plupart des personnes renseignées utilise leur véhicule pour les trajets privés et pour se rendre à leur bureau (44,1%).  
 
-```{r, eval = FALSE}
+- Pour **freMPL2** :
+
+```{r, results='asis'}
+dfSummary(freMPL2, plain.ascii = FALSE, style = "grid", headings = FALSE, 
+          graph.col = FALSE, valid.col = FALSE, lang = 'fr', dfSummary.silent = TRUE)
+```
+
+Pour ce data frame, l'âge moyen du conducteur est de 46,3 ans avec pour écart-type 14,9 ans. Le plus jeune conducteur a 18 ans(âge minimum légale pour conduire en France) et le plus âgé a 97 ans. L'écart interquartile (IQR), c'est-à-dire la mesure de dispersion qui s'obtient en faisant la différence entre le premier (25% des valeurs du data frame sont inférieures à ce quartile) et le troisième quartile(75 %), est de 23. Autrement dit, 50% des âges des conducteurs est compris entre 35 et 58 ans. Le coefficient de variation (CV), le rapport entre l'écart-type et la moyenne, est égale à 3. 
+De même, en ce qui concerne l'usage du véhicule par son propriétaire, on remarquera que la plupart des personnes renseignées utilise leur véhicule pour les trajets privés et pour se rendre à leur bureau (44,1%).
+
+
+On remarquera également qu'il existe des données manquantes, pour les 2 tableaux de données, dans la colonne RecEnd, ce qui signifie que les individus concernés sont toujours assurés.
+
+On peut aussi utiliser la fonction **describe()** du package Hmisc pour avoir un aperçu de la dispersion des données. En effet, cette fonction détermine le type de la variable (character, factor, numeric,...) et affiche un "résumé" concis en fonction de chacun. Vous trouvez un exemple d'exécution de la focntion describe en annexe. 
+
+```{r}
 library("Hmisc")
-#describe(freMPL2)
+describe_freMPL2 <- describe(freMPL2)
 ```
-Mais cela ne vaut pas une représentation graphique.
 
-### Représentations graphiques des données
+
+#### Représentations graphiques des données
+
+Dans cette partie, vous allez voir des représentations graphiques des colonnes les plus importantes de nos data frames. L'ensemble des graphiques est cependant disponible dans les annexes de ce rapport. 
 
 ```{r}
 # On met les colonnes dans le même ordre
 
 freMPL1 <- freMPL1[,c(1:17,19,18,20:21)]
-```
-
-
-```{r}
 library("ggplot2")
 library("dplyr") 
 library("cowplot")
@@ -466,18 +485,24 @@ representation_graphique(freMPL1,colnames(freMPL2)[21])
 dev.off()
 ```
 
+Nous allons maintenant rentrer dans des méthodes d'analyse descriptives plus complètes pour nous permettre d'établir nos modèles linéaires. Pour cela, nous allons appliquer les méthodes d'analyse en composantes principales (ACP) et d'analyse factorielle des correspondances (AFC). Le but de ces méthodes est de définir les informations les plus significatives de nos data frames et de découvrir si oui ou non il existe certaines similitudes entre nos différentes informations pour pouvoir obtenir un data frame optimisé sur lequel on appliquera nos 2 modèles linéaires (GLM, GAM).
 
-### ACP 
+#### Analyse en composantes principales (ACP) 
 
 L'ACP permet d’analyser et de visualiser un jeu de données contenant des individus décrits par plusieurs variables quantitatives.
 C’est une méthode statistique qui permet d’explorer des données dites multivariées (données avec plusieurs variables). Chaque variable pourrait être considérée comme une dimension différente.
 L’analyse en composantes principales est utilisée pour extraire et de visualiser les informations importantes contenues dans une table de données multivariées. L’ACP synthétise cette information en seulement quelques nouvelles variables appelées composantes principales. Ces nouvelles variables correspondent à une combinaison linéaire des variables originels. Le nombre de composantes principales est inférieur ou égal au nombre de variables d’origine.
 
-#### Exécution sur nos données freMPL2
+Pour réaliser le calcul de l'ACP, plusieurs fonctions, de différents packages, sont disponibles dans le logiciel R :
 
-Attention, les valeurs doivent être numériques.
+- *prcomp()* et *princomp()* issus du package *stats*
+- *PCA()* issu du package *FactoMineR*
+- *dudi.pca()* issu du package *ade4*
+- *epPCA()*  issu du package *ExPosition*.
 
-On va donc convertir nos valeurs en numérique :
+Parmi ces fonctions, nous avons decider d'utiliser la fonction **PCA()** du package **FactoMineR** car ce package nous permettra également de réaliser notre seconde analyse. Enfin, pour extraire et visualiser les résultats, nous allons utiliser les fonctions R fournies par le package **factoextra**.
+
+Nous allons donc exécuter l'ACP sur notre tableau freMPL2 en prenant à ce que l'ensemble des valeurs que nous utilisons soit de type numérique (quitte à réaliser une conversion sur certaines de nos colonnes).  
 ```{r}
 freMPL2$LicAge <- as.numeric(freMPL2$LicAge)
 freMPL2$DrivAge <- as.numeric(freMPL2$DrivAge)
@@ -487,32 +512,42 @@ freMPL2$RiskVar <- as.numeric(freMPL2$RiskVar)
 freMPL2$ClaimAmount <- as.numeric(freMPL2$ClaimAmount)
 freMPL2$ClaimInd <- as.numeric(freMPL2$ClaimInd)
 ```
+--------------------
+(Certaines colonnes sont catégorisés et pourraient nous être utiles pour éxécuter notre ACP.
+Il n'est cependant pas judicieux d'appliquer une conversion numérique à ces colonnes puisqu'on leur attribue une valeur arbitraire nous faisant penser à une classification des différents facteurs possibles. Pour éviter cela, on va donc utiliser la méthode model.matrix() qui crée une matrice binaire spécifiant à quel facteur correspond une ligne du data frame.)
+----------------
 
-Certaines colonnes sont catégorisés et pourraient nous être utiles pour éxécuter notre ACP.
-Il n'est cependant pas judicieux d'appliquer une conversion numérique à ces colonnes puisqu'on leur attribue une valeur arbitraire nous faisant penser à une classification des différents facteurs possibles. Pour éviter cela, on va donc utiliser la méthode model.matrix() qui crée une matrice binaire spécifiant à quel facteur correspond une ligne du dataframe.
-
-```{r}
-#head(model.matrix(~VehAge, data = freMPL2))
-#head(model.matrix(~MariStat, data = freMPL2))
-```
-
-
-
+Une fois que nos données ont été converties, il faut veiller à la *standardisation des données*. Pour cela, on normalise nos variables afin que le résultat de l'ACP obtenue ne soient pas affecté (par exemple, par des différences d'unités). 
+Ainsi, l'objectif est de rendre les variables comparables en les normalisant généralement de manière à ce qu'elles aient un écart type égal à 1 et une moyenne nulle.
+L'approche consiste à transformer les données en soustrayant à chaque valeur une valeur de référence (la moyenne de la variable) et en la divisant par l’écart type.
+Pour normaliser les données, il est possible d'utiliser la fonction *scale()*. Cependant, par défaut, le fonction PCA() normalise automatiquement les données. Nous n'avons pas eu besoin de faire cette transformation. 
 
 ```{r}
 library("FactoMineR")
 library("factoextra") # Pour la visualisation 
-```
 
-```{r}
 freMPL2.active <- freMPL2[,c(1:2,9:11, 18:19,21)]
-freMPL2.pca <- PCA(freMPL2.active, graph = FALSE)
 ```
 
-Affichage du résultat : 
+Réalisons maintenant notre Analyse en Composantes Principales. Pour cela, il faut exécuter la commande suivante : 
+
+```{r, echo = TRUE}
+freMPL2.pca <- PCA(freMPL2.active, ncp = 3, graph = FALSE)
+```
+
+Notre fonction PCA() prend en compte un data frame freMPL2.active qui correspond aux colonnes du dataframe freMPL2 qui sont de type numérique et que l'on souhaite analyser, un paramètre ncp qui correspond au nombre de dimensions conservées dans les résultats finaux (par défaut, ce nombre est égal à 3) et un paramètre logique graph qui précise si oui (graph = TRUE) ou non (graph = FALSE) nous voulons qu'un graphique du résultat s'affiche.
+
+La fonction PCA() crée un objet contenant de nombreuses informations comme les valeurs propres (la variance du facteur correspondant où un facteur est une combinaison linéaire des variables initiales), la moyenne et l'écart type des variables, le poids de ces variables, ... 
+
+Regardons d'abord les **valeurs propres**. Elles mesurent la quantité de variance expliquée par chaque axe prinicipal.
+
+Examinons donc ces valeurs propres afin de déterminer le nombre de composantes principales à prendre en considération. Les valeurs propres et la proportion de variances retenues par les composantes principales peuvent être extraites à l'aide de la fonction *get_eignevalue()* du package *factoextra*.  
 
 ```{r}
 get_eigenvalue(freMPL2.pca)
+```
+
+```{r}
 fviz_eig(freMPL2.pca)
 ```
 
@@ -543,7 +578,7 @@ freMPL2.desc <- dimdesc(freMPL2.pca, axes = c(1,2), proba = 0.05)
 head(freMPL2.desc)
 ```
 
-### AFC 
+#### Analyse factorielle des correspondances (AFC)
 
 L’ analyse factorielle des correspondances est une extension de l’analyse en composantes principales pour analyser l’association entre deux variables qualitatives (ou catégorielles).
 L’AFC permet de résumer et de visualiser l’information contenue dans le tableau de contingence formé par les deux variables catégorielles. Le tableau de contingence contient les fréquences formées par les deux variables.
@@ -580,70 +615,23 @@ Les lois les plus utilisées sont :
 
 ### Présentation des lois utilisables
 
-#### la loi de Poisson
-
-```{r}
-x_dpois <- seq(0, 30, by = 1) 
-par(mfcol = c(1,3))
-y_dpois1 <- dpois(x_dpois, lambda = 5)
-y_dpois2 <- dpois(x_dpois, lambda = 10) 
-y_dpois3 <- dpois(x_dpois, lambda = 15) 
-plot(y_dpois1, type = "b", col = "blue", main =" lambda = 5", xlab = "x", ylab = "p(x)", ylim = c(0,0.2))
-plot(y_dpois2, type = "b", col = "red", main =" lambda = 10", xlab = "x", ylab = "p(x)", ylim = c(0,0.2))
-plot(y_dpois3, type = "b", col = "green", main =" lambda = 15", xlab = "x", ylab = "p(x)", ylim = c(0,0.2))
-```
-
-#### la loi binomiale négative
-
-```{r}
-x_dnbinom <- seq(0, 30, by = 1)
-y_dnbinom1 <- dnbinom(x_dnbinom, size=5, prob=.5)
-y_dnbinom2 <- dnbinom(x_dnbinom, size=10, prob=.5)
-y_dnbinom3 <- dnbinom(x_dnbinom, size=15, prob=.5)
-y_dnbinom4 <- dnbinom(x_dnbinom, size=10, prob=.25)
-y_dnbinom5 <- dnbinom(x_dnbinom, size=10, prob=.75)
-
-plot(x_dnbinom, y_dnbinom1, type = "b", xlab = "x", ylab = "p(x)", col = "red", ylim = c(0,0.2), main ="Quelques exemples de loi binomiale négative") 
-lines(x_dnbinom, y_dnbinom2, type = "b", col = "orange", ylim = c(0,0.2))
-lines(x_dnbinom, y_dnbinom3, type = "b", col = "yellow", ylim = c(0,0.2))
-lines(x_dnbinom, y_dnbinom4, type = "b", col = "blue", ylim = c(0,0.2))
-lines(x_dnbinom, y_dnbinom5, type = "b", col = "dark green", ylim = c(0,0.2))
-
-legend("topright", legend = c("n = 5 et p = 0,5", "n = 10 et p = 0,5", "n = 15 et p = 0,5", "n = 10 et p = 0,25", "n = 10 et p = 0,75"),lty = 1, col = c("red", "orange", "yellow", "blue", "dark green"))
-```
-
-
-
-comparaison binomiale et binomiale négative : 
-
-```{r}
-y_dbinom <- dbinom(x_dnbinom, size=15, prob=.5)
-
-plot(x_dnbinom, y_dnbinom3, type = "b", xlab = "x", ylab = "p(x)", col = "red", ylim = c(0,0.2), main = "Comparaison entre loi binomiale et loi binomiale négative")
-lines(x_dnbinom, y_dbinom, type = "b", col = "orange", ylim = c(0,0.2))
-legend("topright",title ="Pour n = 15 et p = 0.5", c("binomiale", "binomiale négative"),lty = 1, col = c("red", "orange"))
-
-```
-
-
-
+### Exécution du GLM sur notre tableau freMPL2
 ```{r}
 # Modification faite sur les données DrivAge et BonusMalus
 
 freMPL2$DrivAge <- cut(freMPL2$DrivAge, breaks = c(17, 4:16*5,104))
-freMPL2$BonusMalus <- cut(freMPL2$BonusMalus, breaks = c(49,100,351))
+freMPL2$BonusMalus <- cut(freMPL2$BonusMalus, breaks = c(49,100,350))
 
 ```
 
--------------------------------------------------------------------------------------------------
 Test du modèle GLM avec la loi de Poisson : 
 
 ```{r, echo = TRUE}
 
-
 #calibration d’une loi de Poisson
 glm1 <- glm(ClaimInd~DrivAge+VehAge+VehUsage+BonusMalus+VehBody+VehMaxSpeed, offset = log(Exposure), family=poisson("log"), data=freMPL2)
 summary(glm1)
+
 #glm1$aic
 #glm1$null.deviance
 #glm1$deviance
@@ -656,7 +644,6 @@ head(recap1,10)
 recap1[recap1$difference<0.5 & recap1$ClaimInd == 1,]
  # Ce modèle ne fonctionne pas pour prédire les ClaimInd égaux à 1
 ```
-
 
 ### Calcul de l'espérance E(N)
 
@@ -912,49 +899,7 @@ ggplot(dt1_1) +
   theme(legend.position="bottom")+
   theme(legend.title = element_blank())
 ```
-                                            
--------------------------------------------------------------------------------------------------
-Quasipoisson: 
-
-
-
-SurDispersion????
-
-```{r}
-#calibration d’une loi de quasipoisson
-glm2 <- glm(ClaimInd~DrivAge+VehAge+VehUsage+BonusMalus+VehBody+VehMaxSpeed, offset = log(Exposure), family=quasipoisson("log"), data=freMPL2)
-summary(glm2)
-#glm2$aic
-#glm2$null.deviance
-#glm2$deviance
-#glm2$iter
-predict2 <- predict(glm2, freMPL2, type = 'response')
-recap2 <- data.frame(ClaimInd = freMPL2$ClaimInd,
-                     Predict_ClaimInd = predict2,
-                     difference = abs(freMPL2$ClaimInd- predict2))
-head(recap2,10)
-#recap2[recap2$difference<0.5 & recap2$ClaimInd == 1,]
- # Ce modèle ne fonctionne pas pour prédire les ClaimInd égaux à 1
-```
-
-```{r}
-# neg bin
-library(MASS)
-phi <- 1
-
-glm3 <- glm(ClaimInd~DrivAge+VehAge+VehUsage+BonusMalus+VehBody+VehMaxSpeed, offset = log(Exposure), family=negative.binomial(phi), data=freMPL2)
-summary(glm3)
-predict3 <- predict(glm3, freMPL2, type = 'response')
-recap3 <- data.frame(ClaimInd = freMPL2$ClaimInd,
-                     Predict_ClaimInd = predict3,
-                     difference = abs(freMPL2$ClaimInd- predict3))
-head(recap3,10)
-recap3[recap3$difference<0.5 & recap3$ClaimInd == 1,]
- # Ce modèle ne fonctionne pas pour prédire les ClaimInd égaux à 1
-```
-
-*Ce modèle binomiale négative semble intéressant. Reste à savoir comment déterminer le coefficient phi. Et si nos paramètres sont les bons.*
-
+                                      
 Le résumé de notre modèle révèle des informations intéressantes. La performance d'une régression logistique est évaluée avec des métriques clés spécifiques :
 - AIC (Critère d'information d'Akaike): Il mesure l'ajustement lorsqu'une pénalité est appliquée au nombre de paramètres. Des valeurs AIC plus petites indiquent que le modèle est plus proche de la vérité. 
 - Null deviance : Il s'agit de la déviance du modèle nul, c'est-à-dire qu'il 'est caractérisé par aucun facteur.
@@ -988,7 +933,7 @@ lines(x_dgamma, y_dgamma7, col = "purple")
 legend("topright", legend = c("alpha = 1 et beta = 2", "alpha = 2 et beta = 2", "alpha = 3 et beta = 2","alpha = 5 et beta = 1", "alpha = 9 et beta = 0.5", "alpha = 7.5 et beta = 1", "alpha = 0.5 et beta = 1"),lty = 1, col = c("red", "orange", "yellow", "green", "black", "blue", "purple"))
 ```
 
-### Inverse gauss
+#### Inverse gauss
 
 ```{r}
 #install.packages("statmod")
@@ -1015,8 +960,6 @@ recap4 <- data.frame(ClaimAmount = freMPL2$ClaimAmount,
 head(recap4,10)
 ```
 
-
-
 ### Calcul de la prime pure
 
 Soit X le coût monétaire au risque
@@ -1042,164 +985,59 @@ FORMULE  : E(N/x) = g^(-1) (aX_i+e_i ) avec g la fonction de lien et e l'offset
 Ainsi, pour une loi de Poisson, on a : E(N/x) = exp(aX_i+ln(Exposure))
                                               = Exposure*exp(aX_i)
                                               
-                                              
-
-
-# GAM
-
 ```{r}
-#install.packages("gam")
-library("gam")
-```
+# création du data frame résumant nos résultats de calcul pour nos modèles GLM (fréquence et sévérité)
 
-Poisson
-
-```{r}
-gam1 <- gam(ClaimInd~DrivAge+VehAge+VehUsage+BonusMalus+VehBody+VehMaxSpeed+ClaimAmount+offset(log(Exposure)), family=poisson("log"), data=freMPL2)
-summary(gam1)
-predictgam1 <- predict(gam1, freMPL2, type = 'response')
-recapgam1 <- data.frame(ClaimInd = freMPL2$ClaimInd,
-                     Predict_ClaimInd = predictgam1,
-                     difference = abs(freMPL2$ClaimInd- predictgam1))
-head(recapgam1,10)
-recapgam1[recapgam1$difference<0.5 & recapgam1$ClaimInd == 1,]
- # Ce modèle ne fonctionne pas pour prédire les ClaimInd égaux à 1
-
-test2 <- data.frame(
-  DrivAge = levels(freMPL2$DrivAge),
-  nb_individu = rep(0,times = length(levels(freMPL2$DrivAge))),
-  total_obs = rep(0,times = length(levels(freMPL2$DrivAge))),
-  total_pred = rep(0,times = length(levels(freMPL2$DrivAge))),
-  frequence_obs_moyenne = rep(0,times = length(levels(freMPL2$DrivAge))),
-  frequence_pred_moyenne = rep(0,times = length(levels(freMPL2$DrivAge))),
-  frequence_predite_par_groupe = rep(0,times = length(levels(freMPL2$DrivAge))) 
+calcul_prime_glm <- data.frame(
+  Id_police = 1:dim(freMPL2)[1],
+  E_N = rep(0, times = dim(freMPL2)[1]),
+  E_B = rep(0, times = dim(freMPL2)[1]),
+  prime_pure = rep(0, times = dim(freMPL2)[1])
 )
 
-for (i in 1:dim(freMPL2)[1]){
-  groupe_age <- freMPL2$DrivAge[i]
-  test2[test2$DrivAge==groupe_age,"nb_individu"] <- test2[test2$DrivAge==groupe_age,"nb_individu"]+1
-  test2[test2$DrivAge==groupe_age,"total_obs"] <-
-    test2[test2$DrivAge==groupe_age,"total_obs"]+(freMPL2$ClaimInd[i]/freMPL2$Exposure[i])
-  test2[test2$DrivAge==groupe_age,"total_pred"] <-
-    test2[test2$DrivAge==groupe_age,"total_pred"]+(predict1[i]/freMPL2$Exposure[i])
+# Remplissage de la colonne E_N
+
+# calcul pour un individu
+
+calcul_E_N <- function(ligne){
+  # Récupération des données nécessaires au calcul
+  exposure <- ligne$Exposure
+  driver_age <- ligne$DrivAge
+  veh_age <- ligne$VehAge
+  vehusage <- ligne$VehUsage
+  bonusmalus <- ligne$BonusMalus
+  veh_body <- ligne$VehBody
+  veh_max_speed <- ligne$VehMaxSpeed
+  # calcul
+  e_n <- exposure*exp(as.numeric(glm1$coefficients["(Intercept)"]))
+  e_n <- e_n*exp(coefficient_DrivAge[coefficient_DrivAge$DrivAge==driver_age,"coef"])
+  e_n <- e_n*exp(coefficient_VehAge[coefficient_VehAge$VehAge==veh_age,"coef"])
+  e_n <- e_n*exp(coefficient_VehUsage[coefficient_VehUsage$VehUsage==vehusage,"coef"])
+  e_n <- e_n*exp(coefficient_BonusMalus[coefficient_BonusMalus$BonusMalus==bonusmalus,"coef"])
+  e_n <- e_n*exp(coefficient_VehBody[coefficient_VehBody$VehBody==veh_body,"coef"])
+  e_n <- e_n*exp(coefficient_VehMaxSpeed[coefficient_VehMaxSpeed$VehMaxSpeed==veh_max_speed,"coef"])
+  return (e_n)
 }
 
-for (j in 1:dim(test2)[1]){
-  if (test2$nb_individu[j]!=0){
-    test2[j,"frequence_obs_moyenne"] <- test2[j,"total_obs"]/ test2[j,"nb_individu"]
-    test2[j,"frequence_pred_moyenne"] <- test2[j,"total_pred"]/ test2[j,"nb_individu"] 
+remplissage_tab_avec_E_N <- function(tableau){
+  for (i in 1:dim(tableau)[1]){
+    tableau$E_N[i] <- calcul_E_N(freMPL2[i,])
   }
+  return (tableau)
 }
 
-dt2 <- data.frame(
-  DrivAge = c(levels(freMPL2$DrivAge),levels(freMPL2$DrivAge)),
-  frequence = c(test2$frequence_obs_moyenne,test2$frequence_pred_moyenne),
-  type = c(rep("frequence_obs_moyenne",times = length(levels(freMPL2$DrivAge))),rep("frequence_pred_moyenne",times = length(levels(freMPL2$DrivAge))))
-)
 
-ggplot(dt2) +
-  geom_point(aes(x = DrivAge, y = frequence, color = type))+
-  theme(legend.position="bottom")+
-  theme(legend.title = element_blank())
+calcul_prime_glm <- remplissage_tab_avec_E_N(calcul_prime_glm)
 ```
-
-quasipoisson
-
-
-```{r}
-gam2 <- gam(ClaimInd~DrivAge+VehAge+VehUsage+BonusMalus+VehBody+VehMaxSpeed+ClaimAmount+offset(log(Exposure)), family=quasipoisson("log"), data=freMPL2)
-summary(gam2)
-predictgam2 <- predict(gam2, freMPL2, type = 'response')
-recapgam2 <- data.frame(ClaimInd = freMPL2$ClaimInd,
-                     Predict_ClaimInd = predictgam2,
-                     difference = abs(freMPL2$ClaimInd- predictgam2))
-head(recapgam2,10)
-recapgam2[recapgam2$difference<0.5 & recapgam2$ClaimInd == 1,]
- # Ce modèle ne fonctionne pas pour prédire les ClaimInd égaux à 1
-
-
-testgam2 <- data.frame(
-  DrivAge = c(18:103),
-  nb_individu = rep(0,times = 103-18+1),
-  total_obs = rep(0,times = 103-18+1),
-  total_pred = rep(0,times = 103-18+1),
-  frequence_obs = rep(0,times = 103-18+1),
-  frequence_pred = rep(0,times = 103-18+1)
-)
-
-for (i in 1:dim(freMPL2)[1]){
-  age <- freMPL2$DrivAge[i]
-  testgam2[testgam2$DrivAge==age,"nb_individu"] <- testgam2[testgam2$DrivAge==age,"nb_individu"]+1
-  testgam2[testgam2$DrivAge==age,"total_obs"] <-
-    testgam2[testgam2$DrivAge==age,"total_obs"]+(freMPL2$ClaimInd[i]/freMPL2$Exposure[i])
-  testgam2[testgam2$DrivAge==age,"total_pred"] <-
-    testgam2[testgam2$DrivAge==age,"total_pred"]+(predictgam2[i]/freMPL2$Exposure[i])
-}
-
-
-for (j in 1:dim(testgam2)[1]){
-  if (testgam2$nb_individu[j]!=0){
-    testgam2[j,"frequence_obs"] <- testgam2[j,"total_obs"]/ testgam2[j,"nb_individu"]
-    testgam2[j,"frequence_pred"] <- testgam2[j,"total_pred"]/ testgam2[j,"nb_individu"] 
-  }
-}
-
-plot(testgam2$DrivAge,testgam2$frequence_obs, type = "b")
-lines(testgam2$DrivAge,testgam2$frequence_pred, type = "b", col = "red")
-```
-
-binomiale negative
-
-```{r}
-library(MASS)
-phi <- 1
-
-gam3 <- gam(ClaimInd~DrivAge+VehAge+VehUsage+BonusMalus+VehBody+VehMaxSpeed+ClaimAmount+offset(log(Exposure)), family=negative.binomial(phi), data=freMPL2)
-summary(gam3)
-predictgam3 <- predict(gam3, freMPL2, type = 'response')
-recapgam3 <- data.frame(ClaimInd = freMPL2$ClaimInd,
-                     Predict_ClaimInd = predictgam3,
-                     difference = abs(freMPL2$ClaimInd- predictgam3))
-head(recapgam3,10)
-recapgam3[recapgam3$difference<0.1 & recapgam3$ClaimInd == 1,]
- # Ce modèle ne fonctionne pas pour prédire les ClaimInd égaux à 1
-
-
-testgam3 <- data.frame(
-  DrivAge = c(18:103),
-  nb_individu = rep(0,times = 103-18+1),
-  total_obs = rep(0,times = 103-18+1),
-  total_pred = rep(0,times = 103-18+1),
-  frequence_obs = rep(0,times = 103-18+1),
-  frequence_pred = rep(0,times = 103-18+1)
-)
-
-for (i in 1:dim(freMPL2)[1]){
-  age <- freMPL2$DrivAge[i]
-  testgam3[testgam3$DrivAge==age,"nb_individu"] <- testgam3[testgam3$DrivAge==age,"nb_individu"]+1
-  testgam3[testgam3$DrivAge==age,"total_obs"] <-
-    testgam3[testgam3$DrivAge==age,"total_obs"]+(freMPL2$ClaimInd[i]/freMPL2$Exposure[i])
-  testgam3[testgam3$DrivAge==age,"total_pred"] <-
-    testgam3[testgam3$DrivAge==age,"total_pred"]+(predictgam3[i]/freMPL2$Exposure[i])
-}
-
-
-for (j in 1:dim(testgam3)[1]){
-  if (testgam3$nb_individu[j]!=0){
-    testgam3[j,"frequence_obs"] <- testgam3[j,"total_obs"]/ testgam3[j,"nb_individu"]
-    testgam3[j,"frequence_pred"] <- testgam3[j,"total_pred"]/ testgam3[j,"nb_individu"] 
-  }
-}
-
-plot(testgam3$DrivAge,testgam3$frequence_obs, type = "b")
-lines(testgam3$DrivAge,testgam3$frequence_pred, type = "b", col = "red")
-```
-
-
-
 
 # Bibliographie
 
+## Internet
+
+- Pour l'analyse des composantes prinicipales : 
+  - <http://www.sthda.com/french/articles/38-methodes-des-composantes-principales-dans-r-guide-pratique/73-acp-analyse-en-composantes-principales-avec-r-l-essentiel/>
+  
+## Littérature
 
 
 # Annexes
@@ -1259,11 +1097,11 @@ nettoyage_dataframe <- function(dt){
   for (i in 1:dim(dt)[2]){
     # Type de véhicules
     if (colnames(dt)[i]=="VehBody"){
-      levels(dt$VehBody) <- c(levels(dt$VehBody), "autobus", "coupé",
+      levels(dt$VehBody) <- c(levels(dt$VehBody), "autobus", "coupe",
                                      "autre microvan", "berline","SUV", "break",
                                      "camionnette")
       dt$VehBody[dt$VehBody == "bus"]<-"autobus"
-      dt$VehBody[dt$VehBody == "coupe"]<-"coupé"
+      dt$VehBody[dt$VehBody == "coupe"]<-"coupe"
       dt$VehBody[dt$VehBody == "other microvan"]<-"autre microvan"
       dt$VehBody[dt$VehBody == "sedan"]<-"berline"
       dt$VehBody[dt$VehBody == "sport utility vehicle"]<-"SUV"
@@ -1280,12 +1118,12 @@ nettoyage_dataframe <- function(dt){
       }
     # Utilisation du véhicule
     if (colnames(dt)[i]=="VehUsage"){
-      levels(dt$VehUsage) <- c(levels(dt$VehUsage), "privée", 
-                                      "privée et trajet vers bureau", "professionnel", 
+      levels(dt$VehUsage) <- c(levels(dt$VehUsage), "privee", 
+                                      "privee et trajet vers bureau", "professionnel", 
                                       "trajet professionnel" )
-      dt$VehUsage[dt$VehUsage == "Private"]<-"privée"
+      dt$VehUsage[dt$VehUsage == "Private"]<-"privee"
       dt$VehUsage[dt$VehUsage == "Private+trip to office"]<-
-      "privée et trajet vers bureau"
+      "privee et trajet vers bureau"
       dt$VehUsage[dt$VehUsage == "Professional"]<-"professionnel"
       dt$VehUsage[dt$VehUsage == "Professional run"]<-
       "trajet professionnel"
@@ -1322,6 +1160,11 @@ nettoyage_dataframe <- function(dt){
   }
   return (dt)
 }
+```
+## Affichage d'un exemple d'exécution de la fonction describe du package Hmisc
+
+```{r}
+describe_freMPL2
 ```
 
 
