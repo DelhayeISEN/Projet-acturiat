@@ -24,6 +24,7 @@ knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE)
 #install.packages("Hmisc")
 #install.packages(c("FactoMineR", "factoextra"))
 #install.packages("cowplot")
+#install.packages("summarytools")
 
 # Installation du package CASdatasets contenant les 2 jeux de données sur lesquels nous allons travaillés
 
@@ -110,7 +111,7 @@ et aussi les premiers éléments composants **freMPL2**:
 knitr::kable(t(head(freMPL2,3)))
 ```
 
-### Nettoyage de données
+## Nettoyage de données
 
 Remarquons qu'il serait intéressant de faire un peu de nettoyage de données avant d'effectuer quelconques travaux sur celles-ci.
 Pour cela, nous allons créer une fonction qui servira à nettoyer les 2 data frames.
@@ -175,11 +176,11 @@ nettoyage_dataframe <- function(dt){
   for (i in 1:dim(dt)[2]){
     # Type de véhicules
     if (colnames(dt)[i]=="VehBody"){
-      levels(dt$VehBody) <- c(levels(dt$VehBody), "autobus", "coupe",
+      levels(dt$VehBody) <- c(levels(dt$VehBody), "autobus", "coupé",
                                      "autre microvan", "berline","SUV", "break",
                                      "camionnette")
       dt$VehBody[dt$VehBody == "bus"]<-"autobus"
-      dt$VehBody[dt$VehBody == "coupe"]<-"coupe"
+      dt$VehBody[dt$VehBody == "coupe"]<-"coupé"
       dt$VehBody[dt$VehBody == "other microvan"]<-"autre microvan"
       dt$VehBody[dt$VehBody == "sedan"]<-"berline"
       dt$VehBody[dt$VehBody == "sport utility vehicle"]<-"SUV"
@@ -196,12 +197,12 @@ nettoyage_dataframe <- function(dt){
       }
     # Utilisation du véhicule
     if (colnames(dt)[i]=="VehUsage"){
-      levels(dt$VehUsage) <- c(levels(dt$VehUsage), "privee", 
-                                      "privee et trajet vers bureau", "professionnel", 
+      levels(dt$VehUsage) <- c(levels(dt$VehUsage), "privée", 
+                                      "privée et trajet vers bureau", "professionnel", 
                                       "trajet professionnel" )
-      dt$VehUsage[dt$VehUsage == "Private"]<-"privee"
+      dt$VehUsage[dt$VehUsage == "Private"]<-"privée"
       dt$VehUsage[dt$VehUsage == "Private+trip to office"]<-
-      "privee et trajet vers bureau"
+      "privée et trajet vers bureau"
       dt$VehUsage[dt$VehUsage == "Professional"]<-"professionnel"
       dt$VehUsage[dt$VehUsage == "Professional run"]<-
       "trajet professionnel"
@@ -247,15 +248,13 @@ freMPL2 <- nettoyage_dataframe(freMPL2)
 freMPL1 <- nettoyage_dataframe(freMPL1)
 ```
 
-### Statistiques descriptives 
-
+## Statistiques descriptives 
 
 Regardons maintenant plus précisement les valeurs particulières de ces colonnes (valeurs minimum et maximum, moyenne, médiane,quantiles, ...). Pour cela, on exécute l'instruction **summary(freMPLx)** (et plus précisement **dfSummary(freMPLx)** du package summarytools pour l'affichage) ce qui donne les résultats suivants : 
 
 - Pour **freMPL1** :
 
 ```{r , results='asis'}
-#install.packages("summarytools")
 library(summarytools)
 dfSummary(freMPL1, plain.ascii = FALSE,style = "grid", headings = FALSE, 
           graph.col = FALSE, valid.col = FALSE, lang = 'fr', dfSummary.silent = TRUE)
@@ -285,7 +284,7 @@ describe_freMPL2 <- describe(freMPL2)
 ```
 
 
-#### Représentations graphiques des données
+### Représentations graphiques des données
 
 Dans cette partie, vous allez voir des représentations graphiques des colonnes les plus importantes de nos data frames. L'ensemble des graphiques est cependant disponible dans les annexes de ce rapport. 
 
@@ -367,7 +366,7 @@ representation_graphique <- function(dataframe, col){
 }
 ```
 
-```{r, results = 'hide'}
+```{r, eval = FALSE}
 png(file = "graphique/Exposure1.png", width = 800, height = 700)
 representation_graphique(freMPL1,colnames(freMPL1)[1])
 dev.off()
@@ -487,7 +486,7 @@ dev.off()
 
 Nous allons maintenant rentrer dans des méthodes d'analyse descriptives plus complètes pour nous permettre d'établir nos modèles linéaires. Pour cela, nous allons appliquer les méthodes d'analyse en composantes principales (ACP) et d'analyse factorielle des correspondances (AFC). Le but de ces méthodes est de définir les informations les plus significatives de nos data frames et de découvrir si oui ou non il existe certaines similitudes entre nos différentes informations pour pouvoir obtenir un data frame optimisé sur lequel on appliquera nos 2 modèles linéaires (GLM, GAM).
 
-#### Analyse en composantes principales (ACP) 
+### Analyse en composantes principales (ACP) 
 
 L'ACP permet d’analyser et de visualiser un jeu de données contenant des individus décrits par plusieurs variables quantitatives.
 C’est une méthode statistique qui permet d’explorer des données dites multivariées (données avec plusieurs variables). Chaque variable pourrait être considérée comme une dimension différente.
@@ -503,6 +502,7 @@ Pour réaliser le calcul de l'ACP, plusieurs fonctions, de différents packages,
 Parmi ces fonctions, nous avons decider d'utiliser la fonction **PCA()** du package **FactoMineR** car ce package nous permettra également de réaliser notre seconde analyse. Enfin, pour extraire et visualiser les résultats, nous allons utiliser les fonctions R fournies par le package **factoextra**.
 
 Nous allons donc exécuter l'ACP sur notre tableau freMPL2 en prenant à ce que l'ensemble des valeurs que nous utilisons soit de type numérique (quitte à réaliser une conversion sur certaines de nos colonnes).  
+
 ```{r}
 freMPL2$LicAge <- as.numeric(freMPL2$LicAge)
 freMPL2$DrivAge <- as.numeric(freMPL2$DrivAge)
@@ -512,10 +512,6 @@ freMPL2$RiskVar <- as.numeric(freMPL2$RiskVar)
 freMPL2$ClaimAmount <- as.numeric(freMPL2$ClaimAmount)
 freMPL2$ClaimInd <- as.numeric(freMPL2$ClaimInd)
 ```
---------------------
-(Certaines colonnes sont catégorisés et pourraient nous être utiles pour éxécuter notre ACP.
-Il n'est cependant pas judicieux d'appliquer une conversion numérique à ces colonnes puisqu'on leur attribue une valeur arbitraire nous faisant penser à une classification des différents facteurs possibles. Pour éviter cela, on va donc utiliser la méthode model.matrix() qui crée une matrice binaire spécifiant à quel facteur correspond une ligne du data frame.)
-----------------
 
 Une fois que nos données ont été converties, il faut veiller à la *standardisation des données*. Pour cela, on normalise nos variables afin que le résultat de l'ACP obtenue ne soient pas affecté (par exemple, par des différences d'unités). 
 Ainsi, l'objectif est de rendre les variables comparables en les normalisant généralement de manière à ce qu'elles aient un écart type égal à 1 et une moyenne nulle.
@@ -525,7 +521,6 @@ Pour normaliser les données, il est possible d'utiliser la fonction *scale()*. 
 ```{r}
 library("FactoMineR")
 library("factoextra") # Pour la visualisation 
-
 freMPL2.active <- freMPL2[,c(1:2,9:11, 18:19,21)]
 ```
 
@@ -541,17 +536,72 @@ La fonction PCA() crée un objet contenant de nombreuses informations comme les 
 
 Regardons d'abord les **valeurs propres**. Elles mesurent la quantité de variance expliquée par chaque axe prinicipal.
 
-Examinons donc ces valeurs propres afin de déterminer le nombre de composantes principales à prendre en considération. Les valeurs propres et la proportion de variances retenues par les composantes principales peuvent être extraites à l'aide de la fonction *get_eignevalue()* du package *factoextra*.  
+Examinons donc ces valeurs propres (eigenvalue en anglais) afin de déterminer le nombre de composantes principales à prendre en considération. Les valeurs propres et la proportion de variances retenues par les composantes principales peuvent être extraites à l'aide de la fonction *get_eignevalue()* du package *factoextra*.
+
+Voici le résultat que l'on obtient :
 
 ```{r}
-get_eigenvalue(freMPL2.pca)
+knitr::kable(get_eigenvalue(freMPL2.pca))
 ```
+
+Dans ce tableau, nous avons les valeurs propres de chacune des 8 colonnes du dataframe freMPL2.active (Exposure, LicAge, DrivAge, HasKmLimit, BonusMalus, RiskVar, ClaimAmount, ClaimInd), la proportion de variance associée et la variance cumulée.
+
+La somme de toutes les valeurs propres donne une variance total de 8 (le nombre de dimensions). Pour obtenir la proportion de variance de la deuxième colonne, il suffit de prendre la valeur propre associée, de diviser cette valeur par le nombre de dimensions et de le mettre en pourcentage. Par exemple, pour la dimension 1, 2,3406825 divisé par 8 donne 0,29258531, ce qui donne 29,2585314% de la variance. Enfin, la dernière colonne correspond à la somme cumulée des variances. Par exemple, 59.02856 correspond à la somme de 12.7801347 avec 16.9898931 et 29.2585314. 
+
+On notera ainsi qu'environ 46,25% de la variance totale est expliquée par nos 2 premières dimensions.
+
+On peut utiliser ses valeurs propres pour déterminer le nombre d'axes principaux à conserver après l'ACP :
+
+- Une valeur propre > 1 indique que la composante principale  concernée représente plus de variance par rapport à une seule variable d’origine, lorsque les données sont standardisées. Ceci est généralement utilisé comme seuil à partir duquel les PC sont conservés (Dans ce cas, on aurait 3 composantes principales).
+- On peut également limiter le nombre d’axes à un nombre qui représente une certaine fraction de la variance totale. Par exemple, si vous êtes satisfaits avec 70% de la variance totale expliquée, utilisez le nombre d’axes pour y parvenir (Dans ce cas, on aurait 4 dimensions).
+
+Une autre méthode pour déterminer le nombre de composantes principales est de regarder le graphique des valeurs propres (appelé **scree plot**). Le nombre d’axes est déterminé par le point, au-delà duquel les valeurs propres restantes sont toutes relativement petites et de tailles comparables. 
+
+Le graphique des valeurs propres peut être généré à l’aide de la fonction *fviz_eig()* ou *fviz_screeplot()* du package *factoextra*.
 
 ```{r}
-fviz_eig(freMPL2.pca)
+fviz_eig(freMPL2.pca, addlabels = TRUE, ylim = c(0,33))
 ```
 
-utilisation de cos2 pour juger de la qualité de la représentation :
+Du graphique ci-dessus, nous pourrions vouloir nous arrêter à la cinquième composante principale puisque environ 83% des informations contenues dans les données sont conservées par les cinq premières composantes principales.
+
+Pour extraire les résultats pour les variables, à partir de l'ACP, il est possible d'utiliser la fonction *get_pca_var()*. Cette fonction retourne une liste d'éléments contenant tous les résultats pour les variables actives (coordonnées, corrélation entre les variables et les axes, cosinus-carré et contributions).
+
+Les composants de get_pca_var() peuvent être utilisés dans le graphique des variables comme suit :
+
+- *get_pca_var()$coord* : coordonnées des variables pour créer un nuage de points.
+- *get_pca_var()$cos2* (cosinus carré des variables) : Représente la qualité de représentation des variables sur le graphique de l'ACP. Il est calculé comme étant les coordonnées au carré.
+- *get_pca_var()$contrib* : contient les contributions des variables aux composantes principales. 
+
+Dans ce qui va suivre, nous allons visualiser les variables et tirer des conclusions à propos de leurs corrélations.
+
+La corrélation entre une variable et une composante principale est utilisée comme coordonnées de la variable sur la composante principale. La représentation des variables diffère de celle des observations : les observations sont représentées par leurs projections, mais les variables sont représentées par leurs corrélations. 
+
+Visualisons d'abord les variables :
+
+```{r}
+fviz_pca_var(freMPL2.pca)
+```
+
+Le graphique ci-dessus est également connu sous le nom de **graphique de corrélation des variables**. Il montre les relations entre toutes les variables. Il peut être interprété comme suit:
+
+- Les variables positivement corrélées sont regroupées.
+- Les variables négativement corrélées sont positionnées sur les côtés opposés de l’origine du graphique (quadrants opposés).
+- La distance entre les variables et l’origine mesure la qualité de représentation des variables. Les variables qui sont loin de l’origine sont bien représentées par l’ACP.
+
+Pour visualiser la qualité de la représentation des variables sur la carte de l'ACP, nous allons utiliser le cosinus carré (*cos2*). Visualisons d'abord le cosinus carré des variables sur toutes les dimensions en utilisant le package *corrplot*. Voici le résultat : 
+
+```{r}
+library("corrplot")
+corrplot(get_pca_var(freMPL2.pca)$cos2, is.corr=FALSE)
+```
+
+Pour visualiser le cosinus carré, nous aurions pu utiliser aussi la fonction *fviz_cos2()* du package *factoextra* pour créer un diagramme bâton du cosinus carré des variables. 
+
+Plus la valeur du cosinus carré est élévée, plus la réprésentation de la variable sur les axes prinicipaux pris en considération est bonne. Dans ce cas-là, la variable est positionnée à proximité de la circonférence du cercle de corrélation et le point associé dans le tableau de corrélation est gros et de couleur foncé.
+Inversement, un faible cosinus carré indique que la variable n’est pas parfaitement représentée par les axes principaux. Dans ce cas, la variable est proche du centre du cercle et le point du tableau de corrélation est petit (voir inexistant). 
+
+Il est également possible de colorer les variables en fonction de la valeur de leurs cosinus carré.  
 
 ```{r}
 fviz_pca_var(freMPL2.pca, col.var = "cos2",
@@ -560,7 +610,38 @@ fviz_pca_var(freMPL2.pca, col.var = "cos2",
              )
 ```
 
-contribution des colonnes aux dimensions : 
+On remarquera donc que les variables DrivAge et LicAge sont bien représentées par nos axes principaux tandis que la variable RiskVar n'est pas bien représenté par nos axes. 
+
+Observons maintenant la contribution des variables aux axes principaux. 
+
+Les contributions des variables dans la définition d'un axe principal donné sont exprimées en pourcentage :
+
+- Les variables corrélées par nos deux premiers axes sont les plus importantes pour expliquer la variabilité dans le jeu de données. 
+- Les variables qui ne sont pas en corrélation avec un axe ou qui sont corrélées avec les derniers axes sont des variables à faible apport et peuvent être supprimées pour simplifier l’analyse globale.
+
+Comme pour la visualisation du cosinus carré, il est possible d’utiliser la fonction *corrplot()* pour mettre en évidence les variables les plus contributives pour chaque dimension:
+
+```{r}
+corrplot(get_pca_var(freMPL2.pca)$contrib, is.corr=FALSE) 
+```
+
+La fonction fviz_contrib() [package factoextra] peut être utilisée pour créer un bar plot de la contribution des variables. Si vos données contiennent de nombreuses variables, vous pouvez décider de ne montrer que les principales variables contributives.
+
+```{r}
+fviz_contrib(freMPL2.pca, choice = "var", axes = 1)
+fviz_contrib(freMPL2.pca, choice = "var", axes = 2)
+fviz_contrib(freMPL2.pca, choice = "var", axes = 3)
+```
+
+On peut également visualiser la contribution totale aux deux premiers axes. 
+
+```{r}
+fviz_contrib(freMPL2.pca, choice = "var", axes = 1:2)
+```
+
+La ligne en pointillé rouge, sur le graphique ci-dessus, indique la contribution moyenne attendue. Pour une composante donnée, une variable avec une contribution supérieure à ce seuil pourrait être considérée comme importante pour contribuer à la composante.
+
+Enfin, on peut mettre en évidence les variables les plus importantes sur le graphe de corrélation. 
 
 ```{r}
 fviz_pca_var(freMPL2.pca, col.var = "contrib",
@@ -578,7 +659,7 @@ freMPL2.desc <- dimdesc(freMPL2.pca, axes = c(1,2), proba = 0.05)
 head(freMPL2.desc)
 ```
 
-#### Analyse factorielle des correspondances (AFC)
+### Analyse factorielle des correspondances (AFC)
 
 L’ analyse factorielle des correspondances est une extension de l’analyse en composantes principales pour analyser l’association entre deux variables qualitatives (ou catégorielles).
 L’AFC permet de résumer et de visualiser l’information contenue dans le tableau de contingence formé par les deux variables catégorielles. Le tableau de contingence contient les fréquences formées par les deux variables.
@@ -645,261 +726,6 @@ recap1[recap1$difference<0.5 & recap1$ClaimInd == 1,]
  # Ce modèle ne fonctionne pas pour prédire les ClaimInd égaux à 1
 ```
 
-### Calcul de l'espérance E(N)
-
-FORMULE  : E(N/x) = g^(-1) (aX_i+e_i ) avec g la fonction de lien et e l'offset
-
-Ainsi, pour une loi de Poisson, on a : E(N/x) = exp(aX_i+ln(Exposure))
-                                              = Exposure*exp(aX_i)
-                                              
-```{r}
-# Récupération des différents coefficients
-
-# Pour DrivAge 
-
-coefficient_DrivAge <- data.frame(
-  DrivAge = levels(freMPL2$DrivAge),
-  coef = rep(0, length(levels(freMPL2$DrivAge)))
-  )
-
-for (i in 1:length(levels(freMPL2$DrivAge))){
-  newcoef <- as.numeric(glm1$coefficients[paste("DrivAge",levels(freMPL2$DrivAge)[i], sep = "")])
-  if (!is.na(newcoef)){
-    coefficient_DrivAge$coef[i] <- newcoef
-  }
-}
-
-# Pour VehAge : 
-
-coefficient_VehAge <- data.frame(
-  VehAge = levels(freMPL2$VehAge),
-  coef = rep(0, length(levels(freMPL2$VehAge)))
-  )
-
-for (i in 1:length(levels(freMPL2$VehAge))){
-  newcoef <- as.numeric(glm1$coefficients[paste("VehAge",levels(freMPL2$VehAge)[i], sep = "")])
-  if (!is.na(newcoef)){
-    coefficient_VehAge$coef[i] <- newcoef
-  }
-}
-
-# Pour VehUsage : 
-
-coefficient_VehUsage <- data.frame(
-  VehUsage = levels(freMPL2$VehUsage),
-  coef = rep(0, length(levels(freMPL2$VehUsage)))
-  )
-
-for (i in 1:length(levels(freMPL2$VehUsage))){
-  newcoef <- as.numeric(glm1$coefficients[paste("VehUsage",levels(freMPL2$VehUsage)[i], sep = "")])
-  if (!is.na(newcoef)){
-    coefficient_VehUsage$coef[i] <- newcoef
-  }
-}
-
-# Pour BonusMalus : 
-
-coefficient_BonusMalus <- data.frame(
-  BonusMalus = levels(freMPL2$BonusMalus),
-  coef = rep(0, length(levels(freMPL2$BonusMalus)))
-  )
-
-for (i in 1:length(levels(freMPL2$BonusMalus))){
-  newcoef <- as.numeric(glm1$coefficients[paste("BonusMalus",levels(freMPL2$BonusMalus)[i], sep = "")])
-  if (!is.na(newcoef)){
-    coefficient_BonusMalus$coef[i] <- newcoef
-  }
-}
-
-# Pour VehBody : 
-
-coefficient_VehBody <- data.frame(
-  VehBody = levels(freMPL2$VehBody),
-  coef = rep(0, length(levels(freMPL2$VehBody)))
-  )
-
-for (i in 1:length(levels(freMPL2$VehBody))){
-  newcoef <- as.numeric(glm1$coefficients[paste("VehBody",levels(freMPL2$VehBody)[i], sep = "")])
-  if (!is.na(newcoef)){
-    coefficient_VehBody$coef[i] <- newcoef
-  }
-}
-
-# Pour VehMaxSpeed : 
-
-coefficient_VehMaxSpeed <- data.frame(
-  VehMaxSpeed = levels(freMPL2$VehMaxSpeed),
-  coef = rep(0, length(levels(freMPL2$VehMaxSpeed)))
-  )
-
-for (i in 1:length(levels(freMPL2$VehMaxSpeed))){
-  newcoef <- as.numeric(glm1$coefficients[paste("VehMaxSpeed",levels(freMPL2$VehMaxSpeed)[i], sep = "")])
-  if (!is.na(newcoef)){
-    coefficient_VehMaxSpeed$coef[i] <- newcoef
-  }
-}
-```
-
-```{r}
-# Calcul des différentes fréquences prédites
-
-# Pour DrivAge
-
-frequence_predite_DrivAge <- data.frame(
-  DrivAge = levels(freMPL2$DrivAge),
-  frequence_predite = rep(exp(as.numeric(glm1$coefficients["(Intercept)"])), length(levels(freMPL2$DrivAge)))
-  )
-
-for (i in 1:length(levels(freMPL2$DrivAge))){
-  frequence_predite_DrivAge$frequence_predite[i] <- frequence_predite_DrivAge$frequence_predite[i]*exp(coefficient_DrivAge$coef[i])  
-}
-
-# Pour VehAge
-
-frequence_predite_VehAge <- data.frame(
-  VehAge = levels(freMPL2$VehAge),
-  frequence_predite = rep(exp(as.numeric(glm1$coefficients["(Intercept)"])), length(levels(freMPL2$VehAge)))
-  )
-
-for (i in 1:length(levels(freMPL2$VehAge))){
-  frequence_predite_VehAge$frequence_predite[i] <- frequence_predite_VehAge$frequence_predite[i]*exp(coefficient_VehAge$coef[i])  
-}
-
-# Pour VehUsage
-
-frequence_predite_VehUsage <- data.frame(
-  VehUsage = levels(freMPL2$VehUsage),
-  frequence_predite = rep(exp(as.numeric(glm1$coefficients["(Intercept)"])), length(levels(freMPL2$VehUsage)))
-  )
-
-for (i in 1:length(levels(freMPL2$VehUsage))){
-  frequence_predite_VehUsage$frequence_predite[i] <- frequence_predite_VehUsage$frequence_predite[i]*exp(coefficient_VehUsage$coef[i])  
-}
-
-# Pour BonusMalus
-
-frequence_predite_BonusMalus <- data.frame(
-  BonusMalus = levels(freMPL2$BonusMalus),
-  frequence_predite = rep(exp(as.numeric(glm1$coefficients["(Intercept)"])), length(levels(freMPL2$BonusMalus)))
-  )
-
-for (i in 1:length(levels(freMPL2$BonusMalus))){
-  frequence_predite_BonusMalus$frequence_predite[i] <- frequence_predite_BonusMalus$frequence_predite[i]*exp(coefficient_BonusMalus$coef[i])  
-}
-
-# Pour VehBody
-
-frequence_predite_VehBody <- data.frame(
-  VehBody = levels(freMPL2$VehBody),
-  frequence_predite = rep(exp(as.numeric(glm1$coefficients["(Intercept)"])), length(levels(freMPL2$VehBody)))
-  )
-
-for (i in 1:length(levels(freMPL2$VehBody))){
-  frequence_predite_VehBody$frequence_predite[i] <- frequence_predite_VehBody$frequence_predite[i]*exp(coefficient_VehBody$coef[i])  
-}
-
-# Pour VehMaxSpeed
-
-frequence_predite_VehMaxSpeed <- data.frame(
-  VehMaxSpeed = levels(freMPL2$VehMaxSpeed),
-  frequence_predite = rep(exp(as.numeric(glm1$coefficients["(Intercept)"])), length(levels(freMPL2$VehMaxSpeed)))
-  )
-
-for (i in 1:length(levels(freMPL2$VehMaxSpeed))){
-  frequence_predite_VehMaxSpeed$frequence_predite[i] <- frequence_predite_VehMaxSpeed$frequence_predite[i]*exp(coefficient_VehMaxSpeed$coef[i])  
-}
-```
-
-```{r}
-# Comparaison résultat et observation
-
-# Pour DrivAge
-
-test1 <- data.frame(
-  DrivAge = levels(freMPL2$DrivAge),
-  nb_individu = rep(0,times = length(levels(freMPL2$DrivAge))),
-  total_obs = rep(0,times = length(levels(freMPL2$DrivAge))),
-  total_pred = rep(0,times = length(levels(freMPL2$DrivAge))),
-  frequence_obs_moyenne = rep(0,times = length(levels(freMPL2$DrivAge))),
-  frequence_pred_moyenne = rep(0,times = length(levels(freMPL2$DrivAge))),
-  frequence_predite_par_groupe = frequence_predite_DrivAge$frequence_predite
-)
-
-for (i in 1:dim(freMPL2)[1]){
-  groupe_age <- freMPL2$DrivAge[i]
-  test1[test1$DrivAge==groupe_age,"nb_individu"] <- test1[test1$DrivAge==groupe_age,"nb_individu"]+1
-  test1[test1$DrivAge==groupe_age,"total_obs"] <-
-    test1[test1$DrivAge==groupe_age,"total_obs"]+(freMPL2$ClaimInd[i]/freMPL2$Exposure[i])
-  test1[test1$DrivAge==groupe_age,"total_pred"] <-
-    test1[test1$DrivAge==groupe_age,"total_pred"]+(predict1[i]/freMPL2$Exposure[i])
-}
-
-for (j in 1:dim(test1)[1]){
-  if (test1$nb_individu[j]!=0){
-    test1[j,"frequence_obs_moyenne"] <- test1[j,"total_obs"]/ test1[j,"nb_individu"]
-    test1[j,"frequence_pred_moyenne"] <- test1[j,"total_pred"]/ test1[j,"nb_individu"] 
-  }
-}
-
-
-
-# Pour VehAge
-
-test1_1 <- data.frame(
-  VehAge = levels(freMPL2$VehAge),
-  nb_individu = rep(0,times = length(levels(freMPL2$VehAge))),
-  total_obs = rep(0,times = length(levels(freMPL2$VehAge))),
-  total_pred = rep(0,times = length(levels(freMPL2$VehAge))),
-  frequence_obs_moyenne = rep(0,times = length(levels(freMPL2$VehAge))),
-  frequence_pred_moyenne = rep(0,times = length(levels(freMPL2$VehAge))),
-  frequence_predite_par_groupe = frequence_predite_VehAge$frequence_predite
-)
-
-for (i in 1:dim(freMPL2)[1]){
-  groupe_age <- freMPL2$VehAge[i]
-  test1_1[test1_1$VehAge==groupe_age,"nb_individu"] <- test1_1[test1_1$VehAge==groupe_age,"nb_individu"]+1
-  test1_1[test1_1$VehAge==groupe_age,"total_obs"] <-
-    test1_1[test1_1$VehAge==groupe_age,"total_obs"]+(freMPL2$ClaimInd[i]/freMPL2$Exposure[i])
-  test1_1[test1_1$VehAge==groupe_age,"total_pred"] <-
-    test1_1[test1_1$VehAge==groupe_age,"total_pred"]+(predict1[i]/freMPL2$Exposure[i])
-}
-
-for (j in 1:dim(test1_1)[1]){
-  if (test1_1$nb_individu[j]!=0){
-    test1_1[j,"frequence_obs_moyenne"] <- test1_1[j,"total_obs"]/ test1_1[j,"nb_individu"]
-    test1_1[j,"frequence_pred_moyenne"] <- test1_1[j,"total_pred"]/ test1_1[j,"nb_individu"] 
-  }
-}
-
-
-#########################################
-dt1 <- data.frame(
-  DrivAge = c(levels(freMPL2$DrivAge),levels(freMPL2$DrivAge),levels(freMPL2$DrivAge)),
-  frequence = c(test1$frequence_obs_moyenne,test1$frequence_pred_moyenne,test1$frequence_predite_par_groupe),
-  type = c(rep("frequence_obs_moyenne",times = length(levels(freMPL2$DrivAge))),rep("frequence_pred_moyenne",times = length(levels(freMPL2$DrivAge))),rep("frequence_predite_par_groupe",times = length(levels(freMPL2$DrivAge))))
-)
-
-dt1_1 <- data.frame(
-  VehAge = c(levels(freMPL2$VehAge),levels(freMPL2$VehAge),levels(freMPL2$VehAge)),
-  frequence = c(test1_1$frequence_obs_moyenne,test1_1$frequence_pred_moyenne,test1_1$frequence_predite_par_groupe),
-  type = c(rep("frequence_obs_moyenne",times = length(levels(freMPL2$VehAge))),rep("frequence_pred_moyenne",times = length(levels(freMPL2$VehAge))),rep("frequence_predite_par_groupe",times = length(levels(freMPL2$VehAge))))
-)
-
-ggplot(dt1) +
-  ggtitle("Nombre de sinistres et leur prédiction selon l’âge du conducteur
-")+
-  geom_point(aes(x = DrivAge, y = frequence, color = type))+
-  theme(legend.position="bottom")+
-  theme(legend.title = element_blank())
-
-ggplot(dt1_1) +
-  ggtitle("Nombre de sinistres et leur prédiction selon l’âge du véhicule
-")+
-  geom_point(aes(x = VehAge, y = frequence, color = type))+
-  theme(legend.position="bottom")+
-  theme(legend.title = element_blank())
-```
-                                      
 Le résumé de notre modèle révèle des informations intéressantes. La performance d'une régression logistique est évaluée avec des métriques clés spécifiques :
 - AIC (Critère d'information d'Akaike): Il mesure l'ajustement lorsqu'une pénalité est appliquée au nombre de paramètres. Des valeurs AIC plus petites indiquent que le modèle est plus proche de la vérité. 
 - Null deviance : Il s'agit de la déviance du modèle nul, c'est-à-dire qu'il 'est caractérisé par aucun facteur.
@@ -973,69 +799,17 @@ Autrement dit, N représente la fréquence (variable discrète) et Bk la sévér
 
 En admettant que la fréquence n'a pas d'influence sur la sévérité et que les montants des sinistres ont le même comportement aléatoire, on a : E(X) = E(N).E(B)   (prime pure). 
 
-
-
 Comment calculer E(N)? Comment calculer E(B)?
-
-
-### Calcul de l'espérance E(N)
-
-FORMULE  : E(N/x) = g^(-1) (aX_i+e_i ) avec g la fonction de lien et e l'offset
-
-Ainsi, pour une loi de Poisson, on a : E(N/x) = exp(aX_i+ln(Exposure))
-                                              = Exposure*exp(aX_i)
-                                              
-```{r}
-# création du data frame résumant nos résultats de calcul pour nos modèles GLM (fréquence et sévérité)
-
-calcul_prime_glm <- data.frame(
-  Id_police = 1:dim(freMPL2)[1],
-  E_N = rep(0, times = dim(freMPL2)[1]),
-  E_B = rep(0, times = dim(freMPL2)[1]),
-  prime_pure = rep(0, times = dim(freMPL2)[1])
-)
-
-# Remplissage de la colonne E_N
-
-# calcul pour un individu
-
-calcul_E_N <- function(ligne){
-  # Récupération des données nécessaires au calcul
-  exposure <- ligne$Exposure
-  driver_age <- ligne$DrivAge
-  veh_age <- ligne$VehAge
-  vehusage <- ligne$VehUsage
-  bonusmalus <- ligne$BonusMalus
-  veh_body <- ligne$VehBody
-  veh_max_speed <- ligne$VehMaxSpeed
-  # calcul
-  e_n <- exposure*exp(as.numeric(glm1$coefficients["(Intercept)"]))
-  e_n <- e_n*exp(coefficient_DrivAge[coefficient_DrivAge$DrivAge==driver_age,"coef"])
-  e_n <- e_n*exp(coefficient_VehAge[coefficient_VehAge$VehAge==veh_age,"coef"])
-  e_n <- e_n*exp(coefficient_VehUsage[coefficient_VehUsage$VehUsage==vehusage,"coef"])
-  e_n <- e_n*exp(coefficient_BonusMalus[coefficient_BonusMalus$BonusMalus==bonusmalus,"coef"])
-  e_n <- e_n*exp(coefficient_VehBody[coefficient_VehBody$VehBody==veh_body,"coef"])
-  e_n <- e_n*exp(coefficient_VehMaxSpeed[coefficient_VehMaxSpeed$VehMaxSpeed==veh_max_speed,"coef"])
-  return (e_n)
-}
-
-remplissage_tab_avec_E_N <- function(tableau){
-  for (i in 1:dim(tableau)[1]){
-    tableau$E_N[i] <- calcul_E_N(freMPL2[i,])
-  }
-  return (tableau)
-}
-
-
-calcul_prime_glm <- remplissage_tab_avec_E_N(calcul_prime_glm)
-```
 
 # Bibliographie
 
 ## Internet
 
-- Pour l'analyse des composantes prinicipales : 
-  - <http://www.sthda.com/french/articles/38-methodes-des-composantes-principales-dans-r-guide-pratique/73-acp-analyse-en-composantes-principales-avec-r-l-essentiel/>
+- Pour la documantation R : <https://www.rdocumentation.org/>
+
+- Pour l'analyse en composantes prinicipales : <http://www.sthda.com/french/articles/38-methodes-des-composantes-principales-dans-r-guide-pratique/73-acp-analyse-en-composantes-principales-avec-r-l-essentiel/>
+
+- Pour l'analyse factorielle des correspondances : <http://www.sthda.com/french/articles/38-methodes-des-composantes-principales-dans-r-guide-pratique/74-afc-analyse-factorielle-des-correspondances-avec-r-l-essentiel/>
   
 ## Littérature
 
@@ -1097,11 +871,11 @@ nettoyage_dataframe <- function(dt){
   for (i in 1:dim(dt)[2]){
     # Type de véhicules
     if (colnames(dt)[i]=="VehBody"){
-      levels(dt$VehBody) <- c(levels(dt$VehBody), "autobus", "coupe",
+      levels(dt$VehBody) <- c(levels(dt$VehBody), "autobus", "coupé",
                                      "autre microvan", "berline","SUV", "break",
                                      "camionnette")
       dt$VehBody[dt$VehBody == "bus"]<-"autobus"
-      dt$VehBody[dt$VehBody == "coupe"]<-"coupe"
+      dt$VehBody[dt$VehBody == "coupe"]<-"coupé"
       dt$VehBody[dt$VehBody == "other microvan"]<-"autre microvan"
       dt$VehBody[dt$VehBody == "sedan"]<-"berline"
       dt$VehBody[dt$VehBody == "sport utility vehicle"]<-"SUV"
@@ -1118,12 +892,12 @@ nettoyage_dataframe <- function(dt){
       }
     # Utilisation du véhicule
     if (colnames(dt)[i]=="VehUsage"){
-      levels(dt$VehUsage) <- c(levels(dt$VehUsage), "privee", 
-                                      "privee et trajet vers bureau", "professionnel", 
+      levels(dt$VehUsage) <- c(levels(dt$VehUsage), "privée", 
+                                      "privée et trajet vers bureau", "professionnel", 
                                       "trajet professionnel" )
-      dt$VehUsage[dt$VehUsage == "Private"]<-"privee"
+      dt$VehUsage[dt$VehUsage == "Private"]<-"privée"
       dt$VehUsage[dt$VehUsage == "Private+trip to office"]<-
-      "privee et trajet vers bureau"
+      "privée et trajet vers bureau"
       dt$VehUsage[dt$VehUsage == "Professional"]<-"professionnel"
       dt$VehUsage[dt$VehUsage == "Professional run"]<-
       "trajet professionnel"
