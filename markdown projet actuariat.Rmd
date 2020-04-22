@@ -776,9 +776,33 @@ Comme pour l'ACP, on constate que 5 variables sont plutôt bien représentés. E
 
 # GLM 
 
-Les lois les plus utilisées sont :
-- Poisson ou binomiale négative pour les fréquences des sinistres
-- Gamma et Inverse gauss pour la sévérité des sinistres
+Les modèles linéaires généralisés aussi appelés GLM sont une extension des modèles linéaires classiques. 
+
+Cependant les modèles linéaires classiques sont utilisés uniquement lorsque la variable réponse est de type numérique continue. Or dans le cas que nous étudions, nous allons principalement utiliser des variables binaires avec lesquelles nous devrons utiliser la loi de Bernouilli.
+De ce fait l’erreur qui résulte de notre modèle linéaire classique ne peut donc pas suivre une loi normale de moyenne nulle et de variance constante, nos résultats étant soit 0 ou 1.
+
+Un GLM est composé de trois éléments :
+1.	Un prédicteur linéaire
+2.	Une fonction de lien
+3.	Une structure des erreurs
+
+Les prédicteurs linéaires sont un ensemble de variables prédictives induisant une variable dépendante que l’on nomme réponse.
+$$\eta \; = \sum_{j=1}^{p} \beta_j\;X_{ij}$$
+
+La fonction de lien est une transformation par une fonction mathématique de la prédiction moyenne. Il s’agit donc d’une fonction qui transforme les valeurs du prédicteur linéaire. G étant ici notre fonction lien
+$$g(µ_y) =\sum_{j=1}^{p} \beta_j\;X_{ij}$$
+
+Le but d’une fonction de lien est primordial dans notre exemple, celle-ci va contraindre les valeurs prédites dans l’échelle des valeurs observées. On comprendra alors que cette fonction lien nous est nécessaire pour pouvoir analyser nos variables binaires.
+
+Enfin la structure des erreurs va donc devoir être adaptée par rapport à nos modèles linéaires classique afin qu’ils puissent correspondre à nos nouvelles données. Pour cela il existe plusieurs lois comme la loi de Poisson ou la loi Binomiale nous offrant une distribution des erreurs et des réponses qui seront différents.
+
+La loi de Poisson est principalement utilisée lorsqu’il s’agit de problèmes de comptage (nombre de poissons dans une rivière, nombre de buts marqués dans une saison etc.)
+
+Lorsque les données sont continues, nous pouvons donc utiliser une distribution Gaussienne, mais il existe également des distributions Binomiales négatives qui a pour but de modéliser des variables de comptage lorsque celles-ci sont sur-dispersées
+
+Ainsi, dans notre cas les distribution de Poisson ou binomiale négative peuvent être utiliser pour représenter les fréquences des sinistres
+
+Et Gamma et Inverse gauss pour représenter la sévérité des sinistres
 
 ## Fréquence des sinistres
 
