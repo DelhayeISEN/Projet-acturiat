@@ -100,13 +100,16 @@ Les noms des caractéristiques des jeux de données sont les mêmes. es différe
 - **`r colnames_freMPL2[21]`** : il s'agit du type de garage auquel se rend l'assuré.
 - **`r colnames_freMPL2[22]`** : c'est un indicateur précisant si oui ou non l'assuré peut prétendre à une garantie.
 
-Regardons maintenant les premiers éléments composant le jeu de données **freMPL1**:
+
+
+Regardons maintenant les premiers éléments composant le jeu de données **freMPL1** :
 
 ```{r}
 knitr::kable(t(head(freMPL1,3)))
 ```
 
-et aussi les premiers éléments composants **freMPL2**: 
+et aussi les premiers éléments composants **freMPL2** : 
+
 ```{r}
 knitr::kable(t(head(freMPL2,3)))
 ```
@@ -263,6 +266,7 @@ dfSummary(freMPL1, plain.ascii = FALSE,style = "grid", headings = FALSE,
 On constate ainsi que, pour ce data frame, l'âge moyen du conducteur est de 46,3 ans avec pour écart-type 14,9 ans. Le plus jeune conducteur a 18 ans(âge minimum légale pour conduire en France) et le plus âgé a 97 ans. L'écart interquartile (IQR), c'est-à-dire la mesure de dispersion qui s'obtient en faisant la différence entre le premier (25% des valeurs du data frame sont inférieures à ce quartile) et le troisième quartile(75 %), est de 23. Autrement dit, 50% des âges des conducteurs est compris entre 35 et 58 ans. Le coefficient de variation (CV), le rapport entre l'écart-type et la moyenne, est égale à 3. 
 De même, en ce qui concerne l'usage du véhicule par son propriétaire, on remarquera que la plupart des personnes renseignées utilise leur véhicule pour les trajets privés et pour se rendre à leur bureau (44,1%).  
 
+
 - Pour **freMPL2** :
 
 ```{r, results='asis'}
@@ -270,8 +274,8 @@ dfSummary(freMPL2, plain.ascii = FALSE, style = "grid", headings = FALSE,
           graph.col = FALSE, valid.col = FALSE, lang = 'fr', dfSummary.silent = TRUE)
 ```
 
-Pour ce data frame, l'âge moyen du conducteur est de 46,3 ans avec pour écart-type 14,9 ans. Le plus jeune conducteur a 18 ans(âge minimum légale pour conduire en France) et le plus âgé a 97 ans. L'écart interquartile (IQR), c'est-à-dire la mesure de dispersion qui s'obtient en faisant la différence entre le premier (25% des valeurs du data frame sont inférieures à ce quartile) et le troisième quartile(75 %), est de 23. Autrement dit, 50% des âges des conducteurs est compris entre 35 et 58 ans. Le coefficient de variation (CV), le rapport entre l'écart-type et la moyenne, est égale à 3. 
-De même, en ce qui concerne l'usage du véhicule par son propriétaire, on remarquera que la plupart des personnes renseignées utilise leur véhicule pour les trajets privés et pour se rendre à leur bureau (44,1%).
+Pour ce data frame, l'âge moyen du conducteur est de 44,5 ans avec pour écart-type 14,7 ans. Le plus jeune conducteur a 18 ans(âge minimum légale pour conduire en France) et le plus âgé a 103 ans. L'écart interquartile (IQR) est de 23 ce qui veut dire que 50% des conducteurs ont un âge compris entre 33 et 56 ans. Le coefficient de variation (CV) est égale à 3. 
+De même, en ce qui concerne l'usage du véhicule par son propriétaire, on remarquera que la plupart des personnes renseignées utilise leur véhicule pour les trajets privés et pour se rendre à leur bureau (46,4%).
 
 
 On remarquera également qu'il existe des données manquantes, pour les 2 tableaux de données, dans la colonne RecEnd, ce qui signifie que les individus concernés sont toujours assurés.
@@ -284,7 +288,7 @@ describe_freMPL2 <- describe(freMPL2)
 ```
 
 
-### Représentations graphiques des données
+## Représentations graphiques des données
 
 Dans cette partie, vous allez voir des représentations graphiques des colonnes les plus importantes de nos data frames. L'ensemble des graphiques est cependant disponible dans les annexes de ce rapport. 
 
@@ -484,6 +488,13 @@ representation_graphique(freMPL1,colnames(freMPL2)[21])
 dev.off()
 ```
 
+
+
+
+
+
+## Méthodes des composantes principales
+
 Nous allons maintenant rentrer dans des méthodes d'analyse descriptives plus complètes pour nous permettre d'établir nos modèles linéaires. Pour cela, nous allons appliquer les méthodes d'analyse en composantes principales (ACP) et d'analyse factorielle des correspondances (AFC). Le but de ces méthodes est de définir les informations les plus significatives de nos data frames et de découvrir si oui ou non il existe certaines similitudes entre nos différentes informations pour pouvoir obtenir un data frame optimisé sur lequel on appliquera nos 2 modèles linéaires (GLM, GAM).
 
 ### Analyse en composantes principales (ACP) 
@@ -491,6 +502,8 @@ Nous allons maintenant rentrer dans des méthodes d'analyse descriptives plus co
 L'ACP permet d’analyser et de visualiser un jeu de données contenant des individus décrits par plusieurs variables quantitatives.
 C’est une méthode statistique qui permet d’explorer des données dites multivariées (données avec plusieurs variables). Chaque variable pourrait être considérée comme une dimension différente.
 L’analyse en composantes principales est utilisée pour extraire et de visualiser les informations importantes contenues dans une table de données multivariées. L’ACP synthétise cette information en seulement quelques nouvelles variables appelées composantes principales. Ces nouvelles variables correspondent à une combinaison linéaire des variables originels. Le nombre de composantes principales est inférieur ou égal au nombre de variables d’origine.
+
+#### Calcul de l'ACP
 
 Pour réaliser le calcul de l'ACP, plusieurs fonctions, de différents packages, sont disponibles dans le logiciel R :
 
@@ -527,12 +540,17 @@ freMPL2.active <- freMPL2[,c(1:2,9:11, 18:19,21)]
 Réalisons maintenant notre Analyse en Composantes Principales. Pour cela, il faut exécuter la commande suivante : 
 
 ```{r, echo = TRUE}
-freMPL2.pca <- PCA(freMPL2.active, ncp = 3, graph = FALSE)
+freMPL2.pca <- PCA(freMPL2.active, ncp = 5, graph = FALSE)
 ```
 
 Notre fonction PCA() prend en compte un data frame freMPL2.active qui correspond aux colonnes du dataframe freMPL2 qui sont de type numérique et que l'on souhaite analyser, un paramètre ncp qui correspond au nombre de dimensions conservées dans les résultats finaux (par défaut, ce nombre est égal à 3) et un paramètre logique graph qui précise si oui (graph = TRUE) ou non (graph = FALSE) nous voulons qu'un graphique du résultat s'affiche.
 
 La fonction PCA() crée un objet contenant de nombreuses informations comme les valeurs propres (la variance du facteur correspondant où un facteur est une combinaison linéaire des variables initiales), la moyenne et l'écart type des variables, le poids de ces variables, ... 
+
+
+#### Analyse des résultats
+
+##### Valeurs propres
 
 Regardons d'abord les **valeurs propres**. Elles mesurent la quantité de variance expliquée par chaque axe prinicipal.
 
@@ -559,11 +577,13 @@ Une autre méthode pour déterminer le nombre de composantes principales est de 
 
 Le graphique des valeurs propres peut être généré à l’aide de la fonction *fviz_eig()* ou *fviz_screeplot()* du package *factoextra*.
 
-```{r}
+```{r, fig.width = 4, fig.height = 4, fig.align='center'}
 fviz_eig(freMPL2.pca, addlabels = TRUE, ylim = c(0,33))
 ```
 
 Du graphique ci-dessus, nous pourrions vouloir nous arrêter à la cinquième composante principale puisque environ 83% des informations contenues dans les données sont conservées par les cinq premières composantes principales.
+
+##### Les variables
 
 Pour extraire les résultats pour les variables, à partir de l'ACP, il est possible d'utiliser la fonction *get_pca_var()*. Cette fonction retourne une liste d'éléments contenant tous les résultats pour les variables actives (coordonnées, corrélation entre les variables et les axes, cosinus-carré et contributions).
 
@@ -573,14 +593,16 @@ Les composants de get_pca_var() peuvent être utilisés dans le graphique des va
 - *get_pca_var()$cos2* (cosinus carré des variables) : Représente la qualité de représentation des variables sur le graphique de l'ACP. Il est calculé comme étant les coordonnées au carré.
 - *get_pca_var()$contrib* : contient les contributions des variables aux composantes principales. 
 
+###### Cercle de corrélation
+
 Dans ce qui va suivre, nous allons visualiser les variables et tirer des conclusions à propos de leurs corrélations.
 
 La corrélation entre une variable et une composante principale est utilisée comme coordonnées de la variable sur la composante principale. La représentation des variables diffère de celle des observations : les observations sont représentées par leurs projections, mais les variables sont représentées par leurs corrélations. 
 
 Visualisons d'abord les variables :
 
-```{r}
-fviz_pca_var(freMPL2.pca)
+```{r, fig.width = 4, fig.height = 4, fig.align='center'}
+fviz_pca_var(freMPL2.pca, repel = TRUE)
 ```
 
 Le graphique ci-dessus est également connu sous le nom de **graphique de corrélation des variables**. Il montre les relations entre toutes les variables. Il peut être interprété comme suit:
@@ -589,12 +611,16 @@ Le graphique ci-dessus est également connu sous le nom de **graphique de corré
 - Les variables négativement corrélées sont positionnées sur les côtés opposés de l’origine du graphique (quadrants opposés).
 - La distance entre les variables et l’origine mesure la qualité de représentation des variables. Les variables qui sont loin de l’origine sont bien représentées par l’ACP.
 
+###### Qualité de la représentation
+
 Pour visualiser la qualité de la représentation des variables sur la carte de l'ACP, nous allons utiliser le cosinus carré (*cos2*). Visualisons d'abord le cosinus carré des variables sur toutes les dimensions en utilisant le package *corrplot*. Voici le résultat : 
 
-```{r}
+```{r, fig.width = 4, fig.height = 4, fig.align='center'}
 library("corrplot")
 corrplot(get_pca_var(freMPL2.pca)$cos2, is.corr=FALSE)
 ```
+
+On remarquera qu'avec 5 axes principaux l'ensemble des 8 variables utilisées dans notre ACP sont plutôt bien représentées.
 
 Pour visualiser le cosinus carré, nous aurions pu utiliser aussi la fonction *fviz_cos2()* du package *factoextra* pour créer un diagramme bâton du cosinus carré des variables. 
 
@@ -603,7 +629,7 @@ Inversement, un faible cosinus carré indique que la variable n’est pas parfai
 
 Il est également possible de colorer les variables en fonction de la valeur de leurs cosinus carré.  
 
-```{r}
+```{r, fig.width = 4, fig.height = 4, fig.align='center'}
 fviz_pca_var(freMPL2.pca, col.var = "cos2",
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
              repel = TRUE # Évite le chevauchement de texte
@@ -611,6 +637,8 @@ fviz_pca_var(freMPL2.pca, col.var = "cos2",
 ```
 
 On remarquera donc que les variables DrivAge et LicAge sont bien représentées par nos axes principaux tandis que la variable RiskVar n'est pas bien représenté par nos axes. 
+
+###### Contribution des variables aux axes principaux
 
 Observons maintenant la contribution des variables aux axes principaux. 
 
@@ -621,70 +649,130 @@ Les contributions des variables dans la définition d'un axe principal donné so
 
 Comme pour la visualisation du cosinus carré, il est possible d’utiliser la fonction *corrplot()* pour mettre en évidence les variables les plus contributives pour chaque dimension:
 
-```{r}
+```{r, fig.width = 4, fig.height = 4, fig.align='center'}
 corrplot(get_pca_var(freMPL2.pca)$contrib, is.corr=FALSE) 
 ```
 
-La fonction fviz_contrib() [package factoextra] peut être utilisée pour créer un bar plot de la contribution des variables. Si vos données contiennent de nombreuses variables, vous pouvez décider de ne montrer que les principales variables contributives.
+Grâce à ce graphique, on constate, par exemple, que les variables LicAge, DrivAge et BonusMalus représentent la première dimension (le premier axe principal). 
 
-```{r}
-fviz_contrib(freMPL2.pca, choice = "var", axes = 1)
-fviz_contrib(freMPL2.pca, choice = "var", axes = 2)
-fviz_contrib(freMPL2.pca, choice = "var", axes = 3)
+La fonction *fviz_contrib()* peut être utilisée pour créer un diagramme bâton de la contribution des variables pour voir plus précisement la répartition des varaibles selon l'axe principal. 
+
+```{r, fig.align='center'}
+f1 <- fviz_contrib(freMPL2.pca, choice = "var", axes = 1, top = 4, title = "Dim-1", ylim = c(0,65))
+f2 <- fviz_contrib(freMPL2.pca, choice = "var", axes = 2, top = 4, title = "Dim-2", ylim = c(0,65))
+f3 <- fviz_contrib(freMPL2.pca, choice = "var", axes = 3, top = 4, title = "Dim-3", ylim = c(0,65))
+f4 <- fviz_contrib(freMPL2.pca, choice = "var", axes = 4, top = 4, title = "Dim-4", ylim = c(0,65))
+f5 <- fviz_contrib(freMPL2.pca, choice = "var", axes = 5, top = 4, title = "Dim-5", ylim = c(0,65))
+
+plot_grid(f1,f2,f3,f4,f5, ncol = 5, nrow = 1, align = "h")
 ```
 
-On peut également visualiser la contribution totale aux deux premiers axes. 
-
-```{r}
-fviz_contrib(freMPL2.pca, choice = "var", axes = 1:2)
-```
-
-La ligne en pointillé rouge, sur le graphique ci-dessus, indique la contribution moyenne attendue. Pour une composante donnée, une variable avec une contribution supérieure à ce seuil pourrait être considérée comme importante pour contribuer à la composante.
+La ligne en pointillé rouge, sur les graphiques ci-dessus, indique la contribution moyenne attendue (dans notre cas, il est de 12,5%). Pour une composante donnée, une variable avec une contribution supérieure à ce seuil pourrait être considérée comme importante pour contribuer à la composante.
 
 Enfin, on peut mettre en évidence les variables les plus importantes sur le graphe de corrélation. 
 
-```{r}
+```{r, fig.width = 4, fig.height = 4, fig.align='center'}
 fviz_pca_var(freMPL2.pca, col.var = "contrib",
-             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07")
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
+             repel = TRUE
              )
 ```
-Description des dimensions
 
-Dans les sections précédentes, nous avons décrit comment mettre en évidence les variables en fonction de leurs contributions aux composantes principales.
-
-Notez également que la fonction dimdesc() [dans FactoMineR], pour dimension description (en anglais), peut être utilisée pour identifier les variables les plus significativement associées avec une composante principale donnée . Elle peut être utilisée comme suit:
-
-```{r, eval = FALSE}
-freMPL2.desc <- dimdesc(freMPL2.pca, axes = c(1,2), proba = 0.05)
-head(freMPL2.desc)
-```
+Au final, on notera que 5 de nos variables ont plus d'importances que les autres : l'age du conducteur, l'âge de la licence de ce conducteur, son bonus ou son malus, s'il a eu un accident pendant qu'il était assuré et le montant auquel il peut prendre prétendre. 
+On a également vu que nos 8 variables peuvent être réduites en 5 nouvelles variables qui sont des combinaisons linéaires des anciennes variables, sans pour autant perdre d'informations ou très peu (17% de l'ensemble de nos données). 
 
 ### Analyse factorielle des correspondances (AFC)
 
 L’ analyse factorielle des correspondances est une extension de l’analyse en composantes principales pour analyser l’association entre deux variables qualitatives (ou catégorielles).
 L’AFC permet de résumer et de visualiser l’information contenue dans le tableau de contingence formé par les deux variables catégorielles. Le tableau de contingence contient les fréquences formées par les deux variables.
+Il retourne les coordonnées des éléments des colonnes et des lignes du tableau de contingence. Ces coordonnées permettent de visualiser graphiquement l’association entre les éléments de lignes et de colonnes dans un graphique à deux dimensions.
+
+Nous verrons donc comment calculer et interpréter l’AFC et nous tenterons de définir les éléments les plus importants expliquant les variations dans le jeu de données. 
+
+#### Calcul
+
+Plusieurs fonctions de différents packages sont disponibles dans le logiciel R pour calculer l’AFC:
+
+- *CA()* du package *FactoMineR*
+- *ca()* du package *ca*
+- *dudi.coa()* du package *ade4*
+- *corresp()* du package *MASS*
+- *epCA()* du package *ExPositio*
+
+Cependant, nous allons utiliser la fonction *CA()* du package *FactoMineR* pour l'analyse et le package *factoextra* afin d'extraire et de visualiser les résultats de l’AFC.
 
 ```{r}
 library ("FactoMineR")
-freMPL2.ca <- CA (freMPL2.active)
 ```
 
-```{r}
-get_eigenvalue(freMPL2.ca)
-fviz_screeplot (freMPL2.ca, addlabels = TRUE)
+Réalisons maintenant notre Analyse factorielle des correspondances. Pour cela, il faut exécuter la commande suivante : 
+```{r, echo=TRUE}
+freMPL2.ca <- CA (freMPL2.active, ncp=5, graph = FALSE)
 ```
+
+Comme pour la fonction PCA() pour l'Analyse des Composantes Principales, notre fonction CA() prend en compte le data frame freMPL2.active que l'on souhaite analyser, le paramètre ncp qui correspond au nombre de dimensions conservées dans les résultats finaux et un paramètre logique graph qui précise si oui (graph = TRUE) ou non (graph = FALSE) nous voulons qu'un graphique du résultat s'affiche.
+
+La fonction CA() crée un objet contenant de nombreuses informations sous forme de listes ou de matrices comme les valeurs propres (la variance du facteur correspondant où un facteur est une combinaison linéaire des variables initiales), le poids des lignes et des colonnes, le cosinus carré des lignes et des colonnes ... 
+
+#### Analyse des résultats
+
+Pour analyser les résultats de notre AFC, nous pouvons utiliser les fonctions fournies par le package *factoextra* comme :
+
+- *get_eigenvalue(freMPL2.ca)* pour obtenir les valeurs propres expliquées par chaque axe principal
+- *fviz_eig(freMPL2.ca)* pour visualiser ces valeurs propres
+- *get_ca_row(freMPL2.ca)* et *get_ca_col(freMPL2.ca)* pour avoir les résultats associés aux lignes ou aux colonnes.
+- *fviz_ca_row(freMPL2.ca)* et  *fviz_ca_col(freMPL2.ca)* pour visualiser ces résultats.
+
+##### Conformité statistique : test de chi2
+
+Pour interpréter l'AFC, la première étape consiste à évaluer s'il existe une dépendance significative entre les lignes et les colonnes. 
+Une méthode consiste à utiliser le test statistique *chi2* pour examiner l'association entre les modalités des lignes et celles des colonnes. Dans notre exemple, l'association est très significative puisque nous avons un résultat pour chi-square égal à 22101115 pour une p-value nulle (Un score élevé signifie un lien fort entre les lignes et les colonnes).
+
+##### Valeurs propres
+
+L’observation des valeurs propres permet de déterminer le nombre d’axes principaux à considérer. Elles correspondent à la quantité d’informations retenue par chaque axe. Elles sont grandes pour le premier axe et petites pour l’axe suivant.
+Les valeurs propres et la proportion de variances pour les différents axes peuvent être extraites à l’aide de la fonction *get_eigenvalue()*. 
+
+```{r}
+knitr::kable(get_eigenvalue(freMPL2.ca))
+```
+
+Les dimensions sont ordonnées de manière décroissante et listées en fonction de la quantité de variance expliquée. La dimension 1 explique la plus grande variance, suivie de la dimension 2 et ainsi de suite.
+
+Le pourcentage cumulé expliqué est obtenu en ajoutant les proportions successives de variances expliquées pour obtenir le total courant. Par exemple, 87.89% plus 10.96% est égal à 98.85%. Par conséquent, environ 98.85% de la variance totale est expliquée par les deux premières dimensions.
+
+Les valeurs propres peuvent être utilisées pour déterminer le nombre d’axes à retenir. Il n’y a pas de «règle générale» pour choisir le nombre de dimensions à conserver pour l’interprétation des données.
+
+Dans notre analyse, les deux premiers axes expliquent 98.85% de la variance totale. C’est un pourcentage plus qu'acceptable.
+
+Il est également possible de calculer une valeur propre moyenne au-dessus de laquelle l’axe doit être conservé dans le résultat. Dans notre cas, prenons 12,5% (1*100/8) comme valeur propre moyenne.Ainsi, tout axe avec une contribution supérieure devrait être considéré comme important et inclus dans la solution pour l’interprétation des données.
+
+On peut voir cela sur le graphique des valeurs propres afin de déterminer le nombre de dimensions à l’aide de la fonction ou *fviz_screeplot()*.
+
+```{r,fig.width = 4, fig.height = 4, fig.align='center'}
+fviz_screeplot (freMPL2.ca, addlabels = TRUE)+
+  geom_hline (yintercept = 12.5, linetype = 2, color = "red")
+```
+
+Selon le graphique ci-dessus, seule la dimension 1 doit être considérées pour l’interprétation de la solution. La dimension 2 explique seulement 11% de l’inertie totale, ce qui est inférieur à la valeur moyenne des axes (12,5%) et trop petit pour être éventuellement conservé pour une analyse plus approfondie.
+
+La dimension 1 explique environ 87,9% de l’inertie totale. Plus la rétention est élevée, plus la subtilité contenue dans les données d’origine est conservée dans la solution de l’AFC à faible dimension.
+
+#### Les variables colonnes
+
+La fonction *get_ca_col()* sert à extraire les résultats pour les colonnes. Cette fonction renvoie une liste contenant les coordonnées, le cos2, la contribution et l’inertie des colonnes.
+
+##### Qualité et contribution pour les colonnes
+
+Pour visualiser la qualité et la contribution des colonnes dans notre tableau de données, on peut utiliser la fonction *fviz_ca_col()*. Voici ce qu'elle affiche : 
 
 ```{r}
 fviz_ca_col (freMPL2.ca, col.col = "cos2",
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
              repel = TRUE)
-fviz_cos2 (freMPL2.ca, choice = "col", axes = 1:2)
 ```
 
-```{r}
-res.desc <- dimdesc(freMPL2.ca, axes = c(1, 2))
-res.desc[[1]]$col
-```
+Comme pour l'ACP, on constate que 5 variables sont plutôt bien représentés. En effet, les colonnes LicAge, DrivAge, ClaimAmount, BonusMalus et RiskVar sont les variables les mieux représentées. 
 
 # GLM 
 
