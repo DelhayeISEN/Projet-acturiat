@@ -809,33 +809,36 @@ Et Gamma et Inverse gauss pour représenter la sévérité des sinistres
 ### Présentation des lois utilisables
 
 ### Exécution du GLM sur notre tableau freMPL2
+
+Test du modèle GLM avec BERNOUILLI : 
+
+
 ```{r}
-# Modification faite sur les données DrivAge et BonusMalus
-
-freMPL2$DrivAge <- cut(freMPL2$DrivAge, breaks = c(17, 4:16*5,104))
-freMPL2$BonusMalus <- cut(freMPL2$BonusMalus, breaks = c(49,100,350))
-
+freMPL2 <- freMPL2[,c(-4)]
 ```
 
-Test du modèle GLM avec la loi de Poisson : 
-
 ```{r, echo = TRUE}
+glm1 <- glm(ClaimInd~., offset = log(Exposure), family=binomial(link="logit"), data=freMPL2)
+```
 
-#calibration d’une loi de Poisson
-glm1 <- glm(ClaimInd~DrivAge+VehAge+VehUsage+BonusMalus+VehBody+VehMaxSpeed, offset = log(Exposure), family=poisson("log"), data=freMPL2)
-summary(glm1)
 
-#glm1$aic
-#glm1$null.deviance
-#glm1$deviance
-#glm1$iter
+```{r}
+#summary(glm1)
+print("AIC")
+glm1$aic
+print("null.deviance")
+glm1$null.deviance
+print("deviance")
+glm1$deviance
+print("iter")
+glm1$iter
 predict1 <- predict(glm1, freMPL2, type = 'response')
 recap1 <- data.frame(ClaimInd = freMPL2$ClaimInd,
                      Predict_ClaimInd = predict1,
                      difference = abs(freMPL2$ClaimInd- predict1))
 head(recap1,10)
-recap1[recap1$difference<0.5 & recap1$ClaimInd == 1,]
- # Ce modèle ne fonctionne pas pour prédire les ClaimInd égaux à 1
+#recap1[recap1$difference<0.001,]
+#recap1[recap1$difference<0.5 & recap1$ClaimInd == 1,]
 ```
 
 Le résumé de notre modèle révèle des informations intéressantes. La performance d'une régression logistique est évaluée avec des métriques clés spécifiques :
@@ -889,12 +892,14 @@ legend("topright", legend = c("mu = 1 et lambda = 1", "mu = 1 et lambda = 0.2", 
 ```
 
 ```{r}
-glm4 <- glm(ClaimAmount~DrivAge+VehAge+VehUsage+BonusMalus+VehBody+VehMaxSpeed, offset = ClaimInd, family=poisson(link = "log"), data=freMPL2)
-summary(glm4)
-predict4 <- predict(glm4, freMPL2, type = 'response')
-recap4 <- data.frame(ClaimAmount = freMPL2$ClaimAmount,
+freMPL2.posclaim <- freMPL2[freMPL2$ClaimAmount != 0,]
+
+glm4 <- glm(ClaimAmount~., offset = ClaimInd, family=Gamma(link  = "log"), data=freMPL2.posclaim)
+#summary(glm4)
+predict4 <- predict(glm4, freMPL2.posclaim, type = 'response')
+recap4 <- data.frame(ClaimAmount = freMPL2.posclaim$ClaimAmount,
                      Predict_ClaimAmount = predict4,
-                     difference = abs(freMPL2$ClaimAmount- predict4))
+                     difference = abs(freMPL2.posclaim$ClaimAmount- predict4))
 head(recap4,10)
 ```
 
