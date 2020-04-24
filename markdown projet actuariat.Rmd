@@ -758,11 +758,11 @@ Selon le graphique ci-dessus, seule la dimension 1 doit être considérées pour
 
 La dimension 1 explique environ 87,9% de l’inertie totale. Plus la rétention est élevée, plus la subtilité contenue dans les données d’origine est conservée dans la solution de l’AFC à faible dimension.
 
-#### Les variables colonnes
+##### Les variables colonnes
 
 La fonction *get_ca_col()* sert à extraire les résultats pour les colonnes. Cette fonction renvoie une liste contenant les coordonnées, le cos2, la contribution et l’inertie des colonnes.
 
-##### Qualité et contribution pour les colonnes
+###### Qualité et contribution pour les colonnes
 
 Pour visualiser la qualité et la contribution des colonnes dans notre tableau de données, on peut utiliser la fonction *fviz_ca_col()*. Voici ce qu'elle affiche : 
 
@@ -775,6 +775,8 @@ fviz_ca_col (freMPL2.ca, col.col = "cos2",
 Comme pour l'ACP, on constate que 5 variables sont plutôt bien représentés. En effet, les colonnes LicAge, DrivAge, ClaimAmount, BonusMalus et RiskVar sont les variables les mieux représentées. 
 
 # GLM 
+
+## Qu'est-ce qu'un modèle linéaire généralisé (GLM) ?
 
 Les modèles linéaires généralisés aussi appelés GLM sont une extension des modèles linéaires classiques. 
 
@@ -804,106 +806,88 @@ Ainsi, dans notre cas les distribution de Poisson ou binomiale négative peuvent
 
 Et Gamma et Inverse gauss pour représenter la sévérité des sinistres
 
-## Fréquence des sinistres
+## Modélisation de la fréquence et de la sévérité des sinistres par les GLM
 
-### Présentation des lois utilisables
-
-### Exécution du GLM sur notre tableau freMPL2
-
-Test du modèle GLM avec BERNOUILLI : 
-
+### Fréquence des sinistres
 
 ```{r}
-freMPL2 <- freMPL2[,c(-4)]
+freMPL2$LicAge <- cut(freMPL2$LicAge, breaks = c(-1,36,1:8*120))
+freMPL2$DrivAge <- cut(freMPL2$DrivAge, breaks = c(17,2:8*10,103))
+freMPL2$BonusMalus <- cut(freMPL2$BonusMalus, breaks = c(49,100,350))
+freMPL2$HasKmLimit <- as.factor(freMPL2$HasKmLimit)
+freMPL2$RiskVar <- cut(freMPL2$RiskVar, breaks = c(-1,0:5*4))
+freMPL2.freq <- freMPL2[,c(-4,-19)]
+```
+
+```{r, results='hide', echo = TRUE}
+glmfreq1 <- glm(ClaimInd~., offset = log(Exposure), family=binomial(link="logit"), data=freMPL2.freq)
+glmimprove <- step(glmfreq1)
 ```
 
 ```{r, echo = TRUE}
-glm1 <- glm(ClaimInd~., offset = log(Exposure), family=binomial(link="logit"), data=freMPL2)
+glmfreq <- glmimprove
 ```
 
 
 ```{r}
-#summary(glm1)
 print("AIC")
-glm1$aic
+glmfreq$aic
 print("null.deviance")
-glm1$null.deviance
+glmfreq$null.deviance
 print("deviance")
-glm1$deviance
+glmfreq$deviance
 print("iter")
-glm1$iter
-predict1 <- predict(glm1, freMPL2, type = 'response')
+glmfreq$iter
+predict1 <- predict(glmfreq, freMPL2.freq, type = 'response')
 recap1 <- data.frame(ClaimInd = freMPL2$ClaimInd,
                      Predict_ClaimInd = predict1,
                      difference = abs(freMPL2$ClaimInd- predict1))
 head(recap1,10)
-#recap1[recap1$difference<0.001,]
-#recap1[recap1$difference<0.5 & recap1$ClaimInd == 1,]
 ```
 
-Le résumé de notre modèle révèle des informations intéressantes. La performance d'une régression logistique est évaluée avec des métriques clés spécifiques :
-- AIC (Critère d'information d'Akaike): Il mesure l'ajustement lorsqu'une pénalité est appliquée au nombre de paramètres. Des valeurs AIC plus petites indiquent que le modèle est plus proche de la vérité. 
-- Null deviance : Il s'agit de la déviance du modèle nul, c'est-à-dire qu'il 'est caractérisé par aucun facteur.
-- Residual deviance : Il s'agit de la déviance du modèle avec toutes les variables. 
-- Number of Fisher Scoring iterations : Il s'agit du nombre d'itérations avant la convergence.
+La fonction tidy de l’extension broom pour récupérer les coefficients du modèle sous la forme d’un tableau de données. On précisera conf.int = TRUE pour obtenir les intervalles de confiance et exponentiate = TRUE pour avoir les odds ratio plutôt que les coefficients bruts.
 
-## Sévérité des sinistres
-
-### Présentation des lois utilisables
-
-#### loi de gamma (ou d'Euler)
 
 ```{r}
-x_dgamma<- seq(0, 20, by = 0.01) 
-y_dgamma1 <- dgamma(x_dgamma, shape = 1, scale = 2)
-y_dgamma2 <- dgamma(x_dgamma, shape = 2, scale = 2)
-y_dgamma3 <- dgamma(x_dgamma, shape = 3, scale = 2)
-y_dgamma4 <- dgamma(x_dgamma, shape = 5, scale = 1)
-y_dgamma5 <- dgamma(x_dgamma, shape = 9, scale = 0.5)
-y_dgamma6 <- dgamma(x_dgamma, shape = 7.5, scale = 1)
-y_dgamma7 <- dgamma(x_dgamma, shape = 0.5, scale = 1)
-# shape correspond à alpha et scale correspond à beta 
-
-plot(x_dgamma, y_dgamma1, type = "l",col = "red",main = "distribution de loi gamma", xlab = " ", ylab = " ")
-lines(x_dgamma, y_dgamma2, col = "orange")
-lines(x_dgamma, y_dgamma3, col = "yellow")
-lines(x_dgamma, y_dgamma4, col = "green")
-lines(x_dgamma, y_dgamma5, col = "black")
-lines(x_dgamma, y_dgamma6, col = "blue")
-lines(x_dgamma, y_dgamma7, col = "purple")
-legend("topright", legend = c("alpha = 1 et beta = 2", "alpha = 2 et beta = 2", "alpha = 3 et beta = 2","alpha = 5 et beta = 1", "alpha = 9 et beta = 0.5", "alpha = 7.5 et beta = 1", "alpha = 0.5 et beta = 1"),lty = 1, col = c("red", "orange", "yellow", "green", "black", "blue", "purple"))
+#install.packages("broom")
+library(broom)
+glmfreqtab <- tidy(glmfreq)
+knitr::kable(glmfreqtab[,c("term","estimate")])
 ```
 
-#### Inverse gauss
-
-```{r}
-#install.packages("statmod")
-library("statmod")
-x_dinvgauss <- seq(0, 5, by = 0.01) 
-y_dinvgauss1 <- dinvgauss(x_dinvgauss, 1, 1) 
-y_dinvgauss2 <- dinvgauss(x_dinvgauss, 1, 0.2) 
-y_dinvgauss3 <- dinvgauss(x_dinvgauss, 1, 3) 
-y_dinvgauss4 <- dinvgauss(x_dinvgauss, 3, 1) 
-plot(x_dinvgauss, y_dinvgauss1, type = "l",col = "green",main = "distribution de loi inverse gaussienne", xlab = " ", ylab = " ")
-lines(x_dinvgauss, y_dinvgauss2, col = "red")
-lines(x_dinvgauss, y_dinvgauss3, col = "blue")
-lines(x_dinvgauss, y_dinvgauss4, col = "orange")
-legend("topright", legend = c("mu = 1 et lambda = 1", "mu = 1 et lambda = 0.2", "mu = 1 et lambda = 3","mu = 3 et lambda = 1"),lty = 1, col = c("green", "red", "blue", "orange"))
+```{r, eval = FALSE}
+recap1[recap1$difference<0.05,]
+recap1[recap1$difference<0.5 & recap1$ClaimInd == 1,]
 ```
+
+### Sévérité des sinistres
 
 ```{r}
 freMPL2.posclaim <- freMPL2[freMPL2$ClaimAmount != 0,]
-
-glm4 <- glm(ClaimAmount~., offset = ClaimInd, family=Gamma(link  = "log"), data=freMPL2.posclaim)
-#summary(glm4)
-predict4 <- predict(glm4, freMPL2.posclaim, type = 'response')
-recap4 <- data.frame(ClaimAmount = freMPL2.posclaim$ClaimAmount,
-                     Predict_ClaimAmount = predict4,
-                     difference = abs(freMPL2.posclaim$ClaimAmount- predict4))
-head(recap4,10)
 ```
 
-### Calcul de la prime pure
+```{r, results='hide', echo = TRUE}
+glmsev1 <- glm(ClaimAmount~.,offset = log(Exposure), family=Gamma(link = "log"), data=freMPL2.posclaim)
+glmimprove2 <- step(glmsev1)
+```
+
+```{r, echo = TRUE}
+glmsev <- glmimprove2
+```
+
+```{r, eval= FALSE}
+summary(glmsev)
+```
+
+### Justification des modèles
+
+Le résumé de notre modèle révèle des informations intéressantes. La performance d'une régression logistique est évaluée avec des métriques clés spécifiques :
+- AIC (Critère d'information d'Akaike): Il mesure l'ajustement lorsqu'une pénalité est appliquée au nombre de paramètres. Des valeurs AIC plus petites indiquent que le modèle est plus proche de la vérité. 
+- Null deviance : Il s'agit de la déviance du modèle nul, c'est-à-dire qu'il n'est caractérisé par aucun facteur.
+- Residual deviance : Il s'agit de la déviance du modèle avec toutes les variables. 
+- Number of Fisher Scoring iterations : Il s'agit du nombre d'itérations avant la convergence.
+
+### Calcul de la prime pure établi par le GLM 
 
 Soit X le coût monétaire au risque
 
@@ -917,6 +901,10 @@ Autrement dit, N représente la fréquence (variable discrète) et Bk la sévér
 En admettant que la fréquence n'a pas d'influence sur la sévérité et que les montants des sinistres ont le même comportement aléatoire, on a : E(X) = E(N).E(B)   (prime pure). 
 
 Comment calculer E(N)? Comment calculer E(B)?
+
+#### Calcul de l'espérance du nombre de sinistres (E(N))
+
+fonction de lien logit : 
 
 # Bibliographie
 
