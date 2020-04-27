@@ -14,7 +14,7 @@ output:
 lang: fr
 ---
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE)
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, cache = TRUE)
 ```
 
 ```{r}
@@ -559,12 +559,12 @@ Examinons donc ces valeurs propres (eigenvalue en anglais) afin de déterminer l
 Voici le résultat que l'on obtient :
 
 ```{r}
-knitr::kable(get_eigenvalue(freMPL2.pca))
+knitr::kable(round(get_eigenvalue(freMPL2.pca),3))
 ```
 
 Dans ce tableau, nous avons les valeurs propres de chacune des 8 colonnes du dataframe freMPL2.active (Exposure, LicAge, DrivAge, HasKmLimit, BonusMalus, RiskVar, ClaimAmount, ClaimInd), la proportion de variance associée et la variance cumulée.
 
-La somme de toutes les valeurs propres donne une variance total de 8 (le nombre de dimensions). Pour obtenir la proportion de variance de la deuxième colonne, il suffit de prendre la valeur propre associée, de diviser cette valeur par le nombre de dimensions et de le mettre en pourcentage. Par exemple, pour la dimension 1, 2,3406825 divisé par 8 donne 0,29258531, ce qui donne 29,2585314% de la variance. Enfin, la dernière colonne correspond à la somme cumulée des variances. Par exemple, 59.02856 correspond à la somme de 12.7801347 avec 16.9898931 et 29.2585314. 
+La somme de toutes les valeurs propres donne une variance total de 8 (le nombre de dimensions). Pour obtenir la proportion de variance de la deuxième colonne, il suffit de prendre la valeur propre associée, de diviser cette valeur par le nombre de dimensions et de le mettre en pourcentage. Par exemple, pour la dimension 1, 2,341 divisé par 8 donne 0,29259, ce qui donne 29,259% de la variance. Enfin, la dernière colonne correspond à la somme cumulée des variances. Par exemple, 59.029 correspond à la somme de 12.780 avec 16.990 et 29.259. 
 
 On notera ainsi qu'environ 46,25% de la variance totale est expliquée par nos 2 premières dimensions.
 
@@ -734,7 +734,7 @@ L’observation des valeurs propres permet de déterminer le nombre d’axes pri
 Les valeurs propres et la proportion de variances pour les différents axes peuvent être extraites à l’aide de la fonction *get_eigenvalue()*. 
 
 ```{r}
-knitr::kable(get_eigenvalue(freMPL2.ca))
+knitr::kable(round(get_eigenvalue(freMPL2.ca),3))
 ```
 
 Les dimensions sont ordonnées de manière décroissante et listées en fonction de la quantité de variance expliquée. La dimension 1 explique la plus grande variance, suivie de la dimension 2 et ainsi de suite.
@@ -887,7 +887,28 @@ Le résumé de notre modèle révèle des informations intéressantes. La perfor
 - Residual deviance : Il s'agit de la déviance du modèle avec toutes les variables. 
 - Number of Fisher Scoring iterations : Il s'agit du nombre d'itérations avant la convergence.
 
-### Calcul de la prime pure établi par le GLM 
+### Calcul de la prime pure établi par le GLM
+
+```{r}
+# Pour ceux qui ont eu un accident
+
+
+calcul_prime <- data.frame(
+  identifiant_individu = 1:dim(freMPL2.posclaim)[1], 
+  prediction_moyenne_frequence = round(predict(glmfreq, freMPL2.posclaim, type = 'response'),2),
+  prediction_moyenne_severite = round(predict(glmsev, freMPL2.posclaim, type = 'response'),2),
+  prime_pure = rep(0, times   = dim(freMPL2.posclaim)[1])
+)
+
+
+
+for (i in 1:dim(freMPL2.posclaim)[1]){
+  calcul_prime$prime_pure[i] <- calcul_prime$prediction_moyenne_frequence[i]*calcul_prime$prediction_moyenne_severite[i]
+}
+
+head(calcul_prime)
+```
+
 
 Soit X le coût monétaire au risque
 
@@ -904,7 +925,13 @@ Comment calculer E(N)? Comment calculer E(B)?
 
 #### Calcul de l'espérance du nombre de sinistres (E(N))
 
-fonction de lien logit : 
+fonction de lien logit : logit(x) = ln(X/(1-x))
+fonction réciproque : sigmoid(x) = 1/(1+exp(-x))
+
+```{r}
+freMPL2[1,]
+```
+
 
 # Bibliographie
 
