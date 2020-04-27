@@ -44,10 +44,10 @@ data(freMPL2)
 
 # Présentation du projet
 
-L’assurance est un contrat par lequel, moyennant le versement d’une prime dont le montant est ﬁxé a priori (en début de période de couverture), l’assureur s’engage à indemniser l’assuré pendant toute la période de couverture (généralement un an). Cette prime doit reﬂéter le risque associé au contrat. 
-Pour chaque police d’assurance, la prime est fonction de variables dites de tariﬁcation permettant de segmenter la population en fonction de son risque. Il est usuel d’utiliser une approche fréquence/sévérité ou une approche indemnitaire pour modéliser le coût annuel d’une police d’assurance. Sur les données utilisées dans ce projet, nous utiliserons cette dernière approche car on ne dispose pas des montants individuels de sinistre.
-Le but de ce projet est de proposer un tariﬁcateur en se basant deux méthodes : les modèles linéaires généralisés (GLM) et les modèles additifs généralisés (GAM). Ces derniers sont une extension des GLM (proposé par McCullagh et Nelder, 1989) en considérant une approche non-paramétrique pour le prédicteur. 
-Un second objectif sera, en plus de calculer une prime pure par police, de déterminer une commerciale intégrant une marge pour risque. Une approche par simulation sera réalisée pour juger de l’adéquation du chargement par rapport à la charge sinistre totale portefeuille.
+|    L’assurance est un contrat par lequel, moyennant le versement d’une prime dont le montant est ﬁxé a priori (en début de période de couverture), l’assureur s’engage à indemniser l’assuré pendant toute la période de couverture (généralement un an). Cette prime doit reﬂéter le risque associé au contrat.   
+|    Pour chaque police d’assurance, la prime est fonction de variables dites de tariﬁcation permettant de segmenter la population en fonction de son risque. Il est usuel d’utiliser une approche fréquence/sévérité ou une approche indemnitaire pour modéliser le coût annuel d’une police d’assurance. Sur les données utilisées dans ce projet, nous utiliserons cette dernière approche car on ne dispose pas des montants individuels de sinistre.  
+|    Le but de ce projet est de proposer un tariﬁcateur en se basant deux méthodes : les modèles linéaires généralisés (GLM) et les modèles additifs généralisés (GAM). Ces derniers sont une extension des GLM (proposé par McCullagh et Nelder, 1989) en considérant une approche non-paramétrique pour le prédicteur.  
+|    Un second objectif sera, en plus de calculer une prime pure par police, de déterminer une commerciale intégrant une marge pour risque. Une approche par simulation sera réalisée pour juger de l’adéquation du chargement par rapport à la charge sinistre totale portefeuille.
 
 # Exploration des jeux de données freMPL1 et freMPL2
 
@@ -60,10 +60,10 @@ dim_freMPL1 <- dim(freMPL1)
 dim_freMPL2 <- dim(freMPL2)
 ```
 
-Les dimmensions du jeu de données **freMPL1** sont (`r dim_freMPL1`).
+|    Les dimmensions du jeu de données **freMPL1** sont (`r dim_freMPL1`).
 Ainsi, notre jeu contient `r dim_freMPL1[1]` données différentes, toutes définies par `r dim_freMPL1[2]` caractéristiques différentes. 
 
-De même, les dimmensions du jeu de données **freMPL2** sont (`r dim_freMPL2`).
+|    De même, les dimmensions du jeu de données **freMPL2** sont (`r dim_freMPL2`).
 Ainsi, notre jeu contient `r dim_freMPL2[1]` données différentes, toutes définies par `r dim_freMPL2[2]` caractéristiques différentes. 
 
 ```{r, results='hide'}
@@ -263,8 +263,9 @@ dfSummary(freMPL1, plain.ascii = FALSE,style = "grid", headings = FALSE,
           graph.col = FALSE, valid.col = FALSE, lang = 'fr', dfSummary.silent = TRUE)
 ```
 
-On constate ainsi que, pour ce data frame, l'âge moyen du conducteur est de 46,3 ans avec pour écart-type 14,9 ans. Le plus jeune conducteur a 18 ans(âge minimum légale pour conduire en France) et le plus âgé a 97 ans. L'écart interquartile (IQR), c'est-à-dire la mesure de dispersion qui s'obtient en faisant la différence entre le premier (25% des valeurs du data frame sont inférieures à ce quartile) et le troisième quartile(75 %), est de 23. Autrement dit, 50% des âges des conducteurs est compris entre 35 et 58 ans. Le coefficient de variation (CV), le rapport entre l'écart-type et la moyenne, est égale à 3. 
-De même, en ce qui concerne l'usage du véhicule par son propriétaire, on remarquera que la plupart des personnes renseignées utilise leur véhicule pour les trajets privés et pour se rendre à leur bureau (44,1%).  
+|    On constate ainsi que, pour ce data frame, l'âge moyen du conducteur est de 46,3 ans avec pour écart-type 14,9 ans. Le plus jeune conducteur a 18 ans(âge minimum légale pour conduire en France) et le plus âgé a 97 ans. L'écart interquartile (IQR), c'est-à-dire la mesure de dispersion qui s'obtient en faisant la différence entre le premier (25% des valeurs du data frame sont inférieures à ce quartile) et le troisième quartile(75 %), est de 23. Autrement dit, 50% des âges des conducteurs est compris entre 35 et 58 ans. Le coefficient de variation (CV), le rapport entre l'écart-type et la moyenne, est égale à 3.  
+
+|    De même, en ce qui concerne l'usage du véhicule par son propriétaire, on remarquera que la plupart des personnes renseignées utilise leur véhicule pour les trajets privés et pour se rendre à leur bureau (44,1%).  
 
 
 - Pour **freMPL2** :
@@ -274,13 +275,14 @@ dfSummary(freMPL2, plain.ascii = FALSE, style = "grid", headings = FALSE,
           graph.col = FALSE, valid.col = FALSE, lang = 'fr', dfSummary.silent = TRUE)
 ```
 
-Pour ce data frame, l'âge moyen du conducteur est de 44,5 ans avec pour écart-type 14,7 ans. Le plus jeune conducteur a 18 ans(âge minimum légale pour conduire en France) et le plus âgé a 103 ans. L'écart interquartile (IQR) est de 23 ce qui veut dire que 50% des conducteurs ont un âge compris entre 33 et 56 ans. Le coefficient de variation (CV) est égale à 3. 
-De même, en ce qui concerne l'usage du véhicule par son propriétaire, on remarquera que la plupart des personnes renseignées utilise leur véhicule pour les trajets privés et pour se rendre à leur bureau (46,4%).
+|    Pour ce data frame, l'âge moyen du conducteur est de 44,5 ans avec pour écart-type 14,7 ans. Le plus jeune conducteur a 18 ans(âge minimum légale pour conduire en France) et le plus âgé a 103 ans. L'écart interquartile (IQR) est de 23 ce qui veut dire que 50% des conducteurs ont un âge compris entre 33 et 56 ans. Le coefficient de variation (CV) est égale à 3.   
+
+|    De même, en ce qui concerne l'usage du véhicule par son propriétaire, on remarquera que la plupart des personnes renseignées utilise leur véhicule pour les trajets privés et pour se rendre à leur bureau (46,4%).
 
 
 On remarquera également qu'il existe des données manquantes, pour les 2 tableaux de données, dans la colonne RecEnd, ce qui signifie que les individus concernés sont toujours assurés.
 
-On peut aussi utiliser la fonction **describe()** du package Hmisc pour avoir un aperçu de la dispersion des données. En effet, cette fonction détermine le type de la variable (character, factor, numeric,...) et affiche un "résumé" concis en fonction de chacun. Vous trouvez un exemple d'exécution de la focntion describe en annexe. 
+|    On peut aussi utiliser la fonction **describe()** du package Hmisc pour avoir un aperçu de la dispersion des données. En effet, cette fonction détermine le type de la variable (character, factor, numeric,...) et affiche un "résumé" concis en fonction de chacun. Vous trouvez un exemple d'exécution de la focntion describe en annexe. 
 
 ```{r}
 library("Hmisc")
@@ -490,13 +492,13 @@ dev.off()
 
 ## Méthodes des composantes principales
 
-Nous allons maintenant rentrer dans des méthodes d'analyse descriptives plus complètes pour nous permettre d'établir nos modèles linéaires. Pour cela, nous allons appliquer les méthodes d'analyse en composantes principales (ACP) et d'analyse factorielle des correspondances (AFC). Le but de ces méthodes est de définir les informations les plus significatives de nos data frames et de découvrir si oui ou non il existe certaines similitudes entre nos différentes informations pour pouvoir obtenir un data frame optimisé sur lequel on appliquera nos 2 modèles linéaires (GLM, GAM).
+|    Nous allons maintenant rentrer dans des méthodes d'analyse descriptives plus complètes pour nous permettre d'établir nos modèles linéaires. Pour cela, nous allons appliquer les méthodes d'analyse en composantes principales (ACP) et d'analyse factorielle des correspondances (AFC). Le but de ces méthodes est de définir les informations les plus significatives de nos data frames et de découvrir si oui ou non il existe certaines similitudes entre nos différentes informations pour pouvoir obtenir un data frame optimisé sur lequel on appliquera nos 2 modèles linéaires (GLM, GAM).
 
 ### Analyse en composantes principales (ACP) 
 
-L'ACP permet d’analyser et de visualiser un jeu de données contenant des individus décrits par plusieurs variables quantitatives.
-C’est une méthode statistique qui permet d’explorer des données dites multivariées (données avec plusieurs variables). Chaque variable pourrait être considérée comme une dimension différente.
-L’analyse en composantes principales est utilisée pour extraire et de visualiser les informations importantes contenues dans une table de données multivariées. L’ACP synthétise cette information en seulement quelques nouvelles variables appelées composantes principales. Ces nouvelles variables correspondent à une combinaison linéaire des variables originels. Le nombre de composantes principales est inférieur ou égal au nombre de variables d’origine.
+|    L'ACP permet d’analyser et de visualiser un jeu de données contenant des individus décrits par plusieurs variables quantitatives.  
+|    C’est une méthode statistique qui permet d’explorer des données dites multivariées (données avec plusieurs variables). Chaque variable pourrait être considérée comme une dimension différente.  
+|    L’analyse en composantes principales est utilisée pour extraire et de visualiser les informations importantes contenues dans une table de données multivariées. L’ACP synthétise cette information en seulement quelques nouvelles variables appelées composantes principales. Ces nouvelles variables correspondent à une combinaison linéaire des variables originels. Le nombre de composantes principales est inférieur ou égal au nombre de variables d’origine.
 
 #### Calcul de l'ACP
 
@@ -507,9 +509,9 @@ Pour réaliser le calcul de l'ACP, plusieurs fonctions, de différents packages,
 - *dudi.pca()* issu du package *ade4*
 - *epPCA()*  issu du package *ExPosition*.
 
-Parmi ces fonctions, nous avons decider d'utiliser la fonction **PCA()** du package **FactoMineR** car ce package nous permettra également de réaliser notre seconde analyse. Enfin, pour extraire et visualiser les résultats, nous allons utiliser les fonctions R fournies par le package **factoextra**.
+|    Parmi ces fonctions, nous avons decider d'utiliser la fonction **PCA()** du package **FactoMineR** car ce package nous permettra également de réaliser notre seconde analyse. Enfin, pour extraire et visualiser les résultats, nous allons utiliser les fonctions R fournies par le package **factoextra**.  
 
-Nous allons donc exécuter l'ACP sur notre tableau freMPL2 en prenant à ce que l'ensemble des valeurs que nous utilisons soit de type numérique (quitte à réaliser une conversion sur certaines de nos colonnes).  
+|    Nous allons donc exécuter l'ACP sur notre tableau freMPL2 en prenant à ce que l'ensemble des valeurs que nous utilisons soit de type numérique (quitte à réaliser une conversion sur certaines de nos colonnes).   
 
 ```{r}
 freMPL2$LicAge <- as.numeric(freMPL2$LicAge)
@@ -521,10 +523,10 @@ freMPL2$ClaimAmount <- as.numeric(freMPL2$ClaimAmount)
 freMPL2$ClaimInd <- as.numeric(freMPL2$ClaimInd)
 ```
 
-Une fois que nos données ont été converties, il faut veiller à la *standardisation des données*. Pour cela, on normalise nos variables afin que le résultat de l'ACP obtenue ne soient pas affecté (par exemple, par des différences d'unités). 
-Ainsi, l'objectif est de rendre les variables comparables en les normalisant généralement de manière à ce qu'elles aient un écart type égal à 1 et une moyenne nulle.
-L'approche consiste à transformer les données en soustrayant à chaque valeur une valeur de référence (la moyenne de la variable) et en la divisant par l’écart type.
-Pour normaliser les données, il est possible d'utiliser la fonction *scale()*. Cependant, par défaut, le fonction PCA() normalise automatiquement les données. Nous n'avons pas eu besoin de faire cette transformation. 
+|    Une fois que nos données ont été converties, il faut veiller à la *standardisation des données*. Pour cela, on normalise nos variables afin que le résultat de l'ACP obtenue ne soient pas affecté (par exemple, par des différences d'unités).  
+|    Ainsi, l'objectif est de rendre les variables comparables en les normalisant généralement de manière à ce qu'elles aient un écart type égal à 1 et une moyenne nulle.  
+|    L'approche consiste à transformer les données en soustrayant à chaque valeur une valeur de référence (la moyenne de la variable) et en la divisant par l’écart type.  
+|    Pour normaliser les données, il est possible d'utiliser la fonction *scale()*. Cependant, par défaut, le fonction PCA() normalise automatiquement les données. Nous n'avons pas eu besoin de faire cette transformation. 
 
 ```{r}
 library("FactoMineR")
@@ -538,18 +540,18 @@ Réalisons maintenant notre Analyse en Composantes Principales. Pour cela, il fa
 freMPL2.pca <- PCA(freMPL2.active, ncp = 5, graph = FALSE)
 ```
 
-Notre fonction PCA() prend en compte un data frame freMPL2.active qui correspond aux colonnes du dataframe freMPL2 qui sont de type numérique et que l'on souhaite analyser, un paramètre ncp qui correspond au nombre de dimensions conservées dans les résultats finaux (par défaut, ce nombre est égal à 3) et un paramètre logique graph qui précise si oui (graph = TRUE) ou non (graph = FALSE) nous voulons qu'un graphique du résultat s'affiche.
+|    Notre fonction PCA() prend en compte un data frame freMPL2.active qui correspond aux colonnes du dataframe freMPL2 qui sont de type numérique et que l'on souhaite analyser, un paramètre ncp qui correspond au nombre de dimensions conservées dans les résultats finaux (par défaut, ce nombre est égal à 3) et un paramètre logique graph qui précise si oui (graph = TRUE) ou non (graph = FALSE) nous voulons qu'un graphique du résultat s'affiche.
 
-La fonction PCA() crée un objet contenant de nombreuses informations comme les valeurs propres (la variance du facteur correspondant où un facteur est une combinaison linéaire des variables initiales), la moyenne et l'écart type des variables, le poids de ces variables, ... 
+|    La fonction PCA() crée un objet contenant de nombreuses informations comme les valeurs propres (la variance du facteur correspondant où un facteur est une combinaison linéaire des variables initiales), la moyenne et l'écart type des variables, le poids de ces variables, ... 
 
 
 #### Analyse des résultats
 
 ##### Valeurs propres
 
-Regardons d'abord les **valeurs propres**. Elles mesurent la quantité de variance expliquée par chaque axe prinicipal.
+|    Regardons d'abord les **valeurs propres**. Elles mesurent la quantité de variance expliquée par chaque axe prinicipal.
 
-Examinons donc ces valeurs propres (eigenvalue en anglais) afin de déterminer le nombre de composantes principales à prendre en considération. Les valeurs propres et la proportion de variances retenues par les composantes principales peuvent être extraites à l'aide de la fonction *get_eignevalue()* du package *factoextra*.
+|    Examinons donc ces valeurs propres (eigenvalue en anglais) afin de déterminer le nombre de composantes principales à prendre en considération. Les valeurs propres et la proportion de variances retenues par les composantes principales peuvent être extraites à l'aide de la fonction *get_eignevalue()* du package *factoextra*.
 
 Voici le résultat que l'on obtient :
 
@@ -557,9 +559,9 @@ Voici le résultat que l'on obtient :
 knitr::kable(round(get_eigenvalue(freMPL2.pca),3))
 ```
 
-Dans ce tableau, nous avons les valeurs propres de chacune des 8 colonnes du dataframe freMPL2.active (Exposure, LicAge, DrivAge, HasKmLimit, BonusMalus, RiskVar, ClaimAmount, ClaimInd), la proportion de variance associée et la variance cumulée.
+|    Dans ce tableau, nous avons les valeurs propres de chacune des 8 colonnes du dataframe freMPL2.active (Exposure, LicAge, DrivAge, HasKmLimit, BonusMalus, RiskVar, ClaimAmount, ClaimInd), la proportion de variance associée et la variance cumulée.
 
-La somme de toutes les valeurs propres donne une variance total de 8 (le nombre de dimensions). Pour obtenir la proportion de variance de la deuxième colonne, il suffit de prendre la valeur propre associée, de diviser cette valeur par le nombre de dimensions et de le mettre en pourcentage. Par exemple, pour la dimension 1, 2,341 divisé par 8 donne 0,29259, ce qui donne 29,259% de la variance. Enfin, la dernière colonne correspond à la somme cumulée des variances. Par exemple, 59.029 correspond à la somme de 12.780 avec 16.990 et 29.259. 
+|    La somme de toutes les valeurs propres donne une variance total de 8 (le nombre de dimensions). Pour obtenir la proportion de variance de la deuxième colonne, il suffit de prendre la valeur propre associée, de diviser cette valeur par le nombre de dimensions et de le mettre en pourcentage. Par exemple, pour la dimension 1, 2,341 divisé par 8 donne 0,29259, ce qui donne 29,259% de la variance. Enfin, la dernière colonne correspond à la somme cumulée des variances. Par exemple, 59.029 correspond à la somme de 12.780 avec 16.990 et 29.259. 
 
 On notera ainsi qu'environ 46,25% de la variance totale est expliquée par nos 2 premières dimensions.
 
@@ -568,7 +570,7 @@ On peut utiliser ses valeurs propres pour déterminer le nombre d'axes principau
 - Une valeur propre > 1 indique que la composante principale  concernée représente plus de variance par rapport à une seule variable d’origine, lorsque les données sont standardisées. Ceci est généralement utilisé comme seuil à partir duquel les PC sont conservés (Dans ce cas, on aurait 3 composantes principales).
 - On peut également limiter le nombre d’axes à un nombre qui représente une certaine fraction de la variance totale. Par exemple, si vous êtes satisfaits avec 70% de la variance totale expliquée, utilisez le nombre d’axes pour y parvenir (Dans ce cas, on aurait 4 dimensions).
 
-Une autre méthode pour déterminer le nombre de composantes principales est de regarder le graphique des valeurs propres (appelé **scree plot**). Le nombre d’axes est déterminé par le point, au-delà duquel les valeurs propres restantes sont toutes relativement petites et de tailles comparables. 
+|    Une autre méthode pour déterminer le nombre de composantes principales est de regarder le graphique des valeurs propres (appelé **scree plot**). Le nombre d’axes est déterminé par le point, au-delà duquel les valeurs propres restantes sont toutes relativement petites et de tailles comparables. 
 
 Le graphique des valeurs propres peut être généré à l’aide de la fonction *fviz_eig()* ou *fviz_screeplot()* du package *factoextra*.
 
@@ -576,11 +578,11 @@ Le graphique des valeurs propres peut être généré à l’aide de la fonction
 fviz_eig(freMPL2.pca, addlabels = TRUE, ylim = c(0,33))
 ```
 
-Du graphique ci-dessus, nous pourrions vouloir nous arrêter à la cinquième composante principale puisque environ 83% des informations contenues dans les données sont conservées par les cinq premières composantes principales.
+|    Du graphique ci-dessus, nous pourrions vouloir nous arrêter à la cinquième composante principale puisque environ 83% des informations contenues dans les données sont conservées par les cinq premières composantes principales.
 
 ##### Les variables
 
-Pour extraire les résultats pour les variables, à partir de l'ACP, il est possible d'utiliser la fonction *get_pca_var()*. Cette fonction retourne une liste d'éléments contenant tous les résultats pour les variables actives (coordonnées, corrélation entre les variables et les axes, cosinus-carré et contributions).
+|    Pour extraire les résultats pour les variables, à partir de l'ACP, il est possible d'utiliser la fonction *get_pca_var()*. Cette fonction retourne une liste d'éléments contenant tous les résultats pour les variables actives (coordonnées, corrélation entre les variables et les axes, cosinus-carré et contributions).
 
 Les composants de get_pca_var() peuvent être utilisés dans le graphique des variables comme suit :
 
@@ -592,7 +594,7 @@ Les composants de get_pca_var() peuvent être utilisés dans le graphique des va
 
 Dans ce qui va suivre, nous allons visualiser les variables et tirer des conclusions à propos de leurs corrélations.
 
-La corrélation entre une variable et une composante principale est utilisée comme coordonnées de la variable sur la composante principale. La représentation des variables diffère de celle des observations : les observations sont représentées par leurs projections, mais les variables sont représentées par leurs corrélations. 
+|    La corrélation entre une variable et une composante principale est utilisée comme coordonnées de la variable sur la composante principale. La représentation des variables diffère de celle des observations : les observations sont représentées par leurs projections, mais les variables sont représentées par leurs corrélations. 
 
 Visualisons d'abord les variables :
 
@@ -615,12 +617,12 @@ library("corrplot")
 corrplot(get_pca_var(freMPL2.pca)$cos2, is.corr=FALSE)
 ```
 
-On remarquera qu'avec 5 axes principaux l'ensemble des 8 variables utilisées dans notre ACP sont plutôt bien représentées.
+|    On remarquera qu'avec 5 axes principaux l'ensemble des 8 variables utilisées dans notre ACP sont plutôt bien représentées.
 
-Pour visualiser le cosinus carré, nous aurions pu utiliser aussi la fonction *fviz_cos2()* du package *factoextra* pour créer un diagramme bâton du cosinus carré des variables. 
+|    Pour visualiser le cosinus carré, nous aurions pu utiliser aussi la fonction *fviz_cos2()* du package *factoextra* pour créer un diagramme bâton du cosinus carré des variables. 
 
-Plus la valeur du cosinus carré est élévée, plus la réprésentation de la variable sur les axes prinicipaux pris en considération est bonne. Dans ce cas-là, la variable est positionnée à proximité de la circonférence du cercle de corrélation et le point associé dans le tableau de corrélation est gros et de couleur foncé.
-Inversement, un faible cosinus carré indique que la variable n’est pas parfaitement représentée par les axes principaux. Dans ce cas, la variable est proche du centre du cercle et le point du tableau de corrélation est petit (voir inexistant). 
+|    Plus la valeur du cosinus carré est élévée, plus la réprésentation de la variable sur les axes prinicipaux pris en considération est bonne. Dans ce cas-là, la variable est positionnée à proximité de la circonférence du cercle de corrélation et le point associé dans le tableau de corrélation est gros et de couleur foncé.  
+|    Inversement, un faible cosinus carré indique que la variable n’est pas parfaitement représentée par les axes principaux. Dans ce cas, la variable est proche du centre du cercle et le point du tableau de corrélation est petit (voir inexistant). 
 
 Il est également possible de colorer les variables en fonction de la valeur de leurs cosinus carré.  
 
@@ -631,7 +633,7 @@ fviz_pca_var(freMPL2.pca, col.var = "cos2",
              )
 ```
 
-On remarquera donc que les variables DrivAge et LicAge sont bien représentées par nos axes principaux tandis que la variable RiskVar n'est pas bien représenté par nos axes. 
+|    On remarquera donc que les variables DrivAge et LicAge sont bien représentées par nos axes principaux tandis que la variable RiskVar n'est pas bien représenté par nos axes. 
 
 ###### Contribution des variables aux axes principaux
 
@@ -673,16 +675,16 @@ fviz_pca_var(freMPL2.pca, col.var = "contrib",
              )
 ```
 
-Au final, on notera que 5 de nos variables ont plus d'importances que les autres : l'age du conducteur, l'âge de la licence de ce conducteur, son bonus ou son malus, s'il a eu un accident pendant qu'il était assuré et le montant auquel il peut prendre prétendre. 
-On a également vu que nos 8 variables peuvent être réduites en 5 nouvelles variables qui sont des combinaisons linéaires des anciennes variables, sans pour autant perdre d'informations ou très peu (17% de l'ensemble de nos données). 
+|    Au final, on notera que 5 de nos variables ont plus d'importances que les autres : l'age du conducteur, l'âge de la licence de ce conducteur, son bonus ou son malus, s'il a eu un accident pendant qu'il était assuré et le montant auquel il peut prendre prétendre.  
+|    On a également vu que nos 8 variables peuvent être réduites en 5 nouvelles variables qui sont des combinaisons linéaires des anciennes variables, sans pour autant perdre d'informations ou très peu (17% de l'ensemble de nos données). 
 
 ### Analyse factorielle des correspondances (AFC)
 
-L’ analyse factorielle des correspondances est une extension de l’analyse en composantes principales pour analyser l’association entre deux variables qualitatives (ou catégorielles).
-L’AFC permet de résumer et de visualiser l’information contenue dans le tableau de contingence formé par les deux variables catégorielles. Le tableau de contingence contient les fréquences formées par les deux variables.
+|    L’analyse factorielle des correspondances est une extension de l’analyse en composantes principales pour analyser l’association entre deux variables qualitatives (ou catégorielles).  
+L’AFC permet de résumer et de visualiser l’information contenue dans le tableau de contingence formé par les deux variables catégorielles. Le tableau de contingence contient les fréquences formées par les deux variables.  
 Il retourne les coordonnées des éléments des colonnes et des lignes du tableau de contingence. Ces coordonnées permettent de visualiser graphiquement l’association entre les éléments de lignes et de colonnes dans un graphique à deux dimensions.
 
-Nous verrons donc comment calculer et interpréter l’AFC et nous tenterons de définir les éléments les plus importants expliquant les variations dans le jeu de données. 
+|    Nous verrons donc comment calculer et interpréter l’AFC et nous tenterons de définir les éléments les plus importants expliquant les variations dans le jeu de données. 
 
 #### Calcul
 
@@ -705,9 +707,9 @@ Réalisons maintenant notre Analyse factorielle des correspondances. Pour cela, 
 freMPL2.ca <- CA (freMPL2.active, ncp=5, graph = FALSE)
 ```
 
-Comme pour la fonction PCA() pour l'Analyse des Composantes Principales, notre fonction CA() prend en compte le data frame freMPL2.active que l'on souhaite analyser, le paramètre ncp qui correspond au nombre de dimensions conservées dans les résultats finaux et un paramètre logique graph qui précise si oui (graph = TRUE) ou non (graph = FALSE) nous voulons qu'un graphique du résultat s'affiche.
+|    Comme pour la fonction PCA() pour l'Analyse des Composantes Principales, notre fonction CA() prend en compte le data frame freMPL2.active que l'on souhaite analyser, le paramètre ncp qui correspond au nombre de dimensions conservées dans les résultats finaux et un paramètre logique graph qui précise si oui (graph = TRUE) ou non (graph = FALSE) nous voulons qu'un graphique du résultat s'affiche.
 
-La fonction CA() crée un objet contenant de nombreuses informations sous forme de listes ou de matrices comme les valeurs propres (la variance du facteur correspondant où un facteur est une combinaison linéaire des variables initiales), le poids des lignes et des colonnes, le cosinus carré des lignes et des colonnes ... 
+|    La fonction CA() crée un objet contenant de nombreuses informations sous forme de listes ou de matrices comme les valeurs propres (la variance du facteur correspondant où un facteur est une combinaison linéaire des variables initiales), le poids des lignes et des colonnes, le cosinus carré des lignes et des colonnes ... 
 
 #### Analyse des résultats
 
@@ -720,27 +722,27 @@ Pour analyser les résultats de notre AFC, nous pouvons utiliser les fonctions f
 
 ##### Conformité statistique : test de chi2
 
-Pour interpréter l'AFC, la première étape consiste à évaluer s'il existe une dépendance significative entre les lignes et les colonnes. 
-Une méthode consiste à utiliser le test statistique *chi2* pour examiner l'association entre les modalités des lignes et celles des colonnes. Dans notre exemple, l'association est très significative puisque nous avons un résultat pour chi-square égal à 22101115 pour une p-value nulle (Un score élevé signifie un lien fort entre les lignes et les colonnes).
+|    Pour interpréter l'AFC, la première étape consiste à évaluer s'il existe une dépendance significative entre les lignes et les colonnes.  
+|    Une méthode consiste à utiliser le test statistique *chi2* pour examiner l'association entre les modalités des lignes et celles des colonnes. Dans notre exemple, l'association est très significative puisque nous avons un résultat pour chi-square égal à 22101115 pour une p-value nulle (Un score élevé signifie un lien fort entre les lignes et les colonnes).
 
 ##### Valeurs propres
 
-L’observation des valeurs propres permet de déterminer le nombre d’axes principaux à considérer. Elles correspondent à la quantité d’informations retenue par chaque axe. Elles sont grandes pour le premier axe et petites pour l’axe suivant.
+|    L’observation des valeurs propres permet de déterminer le nombre d’axes principaux à considérer. Elles correspondent à la quantité d’informations retenue par chaque axe. Elles sont grandes pour le premier axe et petites pour l’axe suivant.  
 Les valeurs propres et la proportion de variances pour les différents axes peuvent être extraites à l’aide de la fonction *get_eigenvalue()*. 
 
 ```{r}
 knitr::kable(round(get_eigenvalue(freMPL2.ca),3))
 ```
 
-Les dimensions sont ordonnées de manière décroissante et listées en fonction de la quantité de variance expliquée. La dimension 1 explique la plus grande variance, suivie de la dimension 2 et ainsi de suite.
+|    Les dimensions sont ordonnées de manière décroissante et listées en fonction de la quantité de variance expliquée. La dimension 1 explique la plus grande variance, suivie de la dimension 2 et ainsi de suite.
 
-Le pourcentage cumulé expliqué est obtenu en ajoutant les proportions successives de variances expliquées pour obtenir le total courant. Par exemple, 87.89% plus 10.96% est égal à 98.85%. Par conséquent, environ 98.85% de la variance totale est expliquée par les deux premières dimensions.
+|    Le pourcentage cumulé expliqué est obtenu en ajoutant les proportions successives de variances expliquées pour obtenir le total courant. Par exemple, 87.89% plus 10.96% est égal à 98.85%. Par conséquent, environ 98.85% de la variance totale est expliquée par les deux premières dimensions.
 
-Les valeurs propres peuvent être utilisées pour déterminer le nombre d’axes à retenir. Il n’y a pas de «règle générale» pour choisir le nombre de dimensions à conserver pour l’interprétation des données.
+|    Les valeurs propres peuvent être utilisées pour déterminer le nombre d’axes à retenir. Il n’y a pas de «règle générale» pour choisir le nombre de dimensions à conserver pour l’interprétation des données.
 
-Dans notre analyse, les deux premiers axes expliquent 98.85% de la variance totale. C’est un pourcentage plus qu'acceptable.
+|    Dans notre analyse, les deux premiers axes expliquent 98.85% de la variance totale. C’est un pourcentage plus qu'acceptable.
 
-Il est également possible de calculer une valeur propre moyenne au-dessus de laquelle l’axe doit être conservé dans le résultat. Dans notre cas, prenons 12,5% (1*100/8) comme valeur propre moyenne.Ainsi, tout axe avec une contribution supérieure devrait être considéré comme important et inclus dans la solution pour l’interprétation des données.
+|    Il est également possible de calculer une valeur propre moyenne au-dessus de laquelle l’axe doit être conservé dans le résultat. Dans notre cas, prenons 12,5% (1*100/8) comme valeur propre moyenne.Ainsi, tout axe avec une contribution supérieure devrait être considéré comme important et inclus dans la solution pour l’interprétation des données.
 
 On peut voir cela sur le graphique des valeurs propres afin de déterminer le nombre de dimensions à l’aide de la fonction ou *fviz_screeplot()*.
 
@@ -749,17 +751,17 @@ fviz_screeplot (freMPL2.ca, addlabels = TRUE)+
   geom_hline (yintercept = 12.5, linetype = 2, color = "red")
 ```
 
-Selon le graphique ci-dessus, seule la dimension 1 doit être considérées pour l’interprétation de la solution. La dimension 2 explique seulement 11% de l’inertie totale, ce qui est inférieur à la valeur moyenne des axes (12,5%) et trop petit pour être éventuellement conservé pour une analyse plus approfondie.
+|    Selon le graphique ci-dessus, seule la dimension 1 doit être considérées pour l’interprétation de la solution. La dimension 2 explique seulement 11% de l’inertie totale, ce qui est inférieur à la valeur moyenne des axes (12,5%) et trop petit pour être éventuellement conservé pour une analyse plus approfondie.
 
-La dimension 1 explique environ 87,9% de l’inertie totale. Plus la rétention est élevée, plus la subtilité contenue dans les données d’origine est conservée dans la solution de l’AFC à faible dimension.
+|    La dimension 1 explique environ 87,9% de l’inertie totale. Plus la rétention est élevée, plus la subtilité contenue dans les données d’origine est conservée dans la solution de l’AFC à faible dimension.
 
 ##### Les variables colonnes
 
-La fonction *get_ca_col()* sert à extraire les résultats pour les colonnes. Cette fonction renvoie une liste contenant les coordonnées, le cos2, la contribution et l’inertie des colonnes.
+|    La fonction *get_ca_col()* sert à extraire les résultats pour les colonnes. Cette fonction renvoie une liste contenant les coordonnées, le cos2, la contribution et l’inertie des colonnes.
 
 ###### Qualité et contribution pour les colonnes
 
-Pour visualiser la qualité et la contribution des colonnes dans notre tableau de données, on peut utiliser la fonction *fviz_ca_col()*. Voici ce qu'elle affiche : 
+|    Pour visualiser la qualité et la contribution des colonnes dans notre tableau de données, on peut utiliser la fonction *fviz_ca_col()*. Voici ce qu'elle affiche : 
 
 ```{r}
 fviz_ca_col (freMPL2.ca, col.col = "cos2",
@@ -767,7 +769,7 @@ fviz_ca_col (freMPL2.ca, col.col = "cos2",
              repel = TRUE)
 ```
 
-Comme pour l'ACP, on constate que 5 variables sont plutôt bien représentés. En effet, les colonnes LicAge, DrivAge, ClaimAmount, BonusMalus et RiskVar sont les variables les mieux représentées. 
+|    Comme pour l'ACP, on constate que 5 variables sont plutôt bien représentés. En effet, les colonnes LicAge, DrivAge, ClaimAmount, BonusMalus et RiskVar sont les variables les mieux représentées. 
 
 # GLM 
 
@@ -775,7 +777,7 @@ Comme pour l'ACP, on constate que 5 variables sont plutôt bien représentés. E
 
 Les modèles linéaires généralisés aussi appelés GLM sont une extension des modèles linéaires classiques. 
 
-Cependant les modèles linéaires classiques sont utilisés uniquement lorsque la variable réponse est de type numérique continue. Or dans le cas que nous étudions, nous allons principalement utiliser des variables binaires avec lesquelles nous devrons utiliser la loi de Bernouilli.
+|    Cependant les modèles linéaires classiques sont utilisés uniquement lorsque la variable réponse est de type numérique continue. Or dans le cas que nous étudions, nous allons principalement utiliser des variables binaires avec lesquelles nous devrons utiliser la loi de Bernouilli.
 De ce fait l’erreur qui résulte de notre modèle linéaire classique ne peut donc pas suivre une loi normale de moyenne nulle et de variance constante, nos résultats étant soit 0 ou 1.
 
 Un GLM est composé de trois éléments :
@@ -783,21 +785,21 @@ Un GLM est composé de trois éléments :
 2.	Une fonction de lien
 3.	Une structure des erreurs
 
-Les prédicteurs linéaires sont un ensemble de variables prédictives induisant une variable dépendante que l’on nomme réponse.
+|    Les prédicteurs linéaires sont un ensemble de variables prédictives induisant une variable dépendante que l’on nomme réponse.
 $$\eta \; = \sum_{j=1}^{p} \beta_j\;X_{ij}$$
 
-La fonction de lien est une transformation par une fonction mathématique de la prédiction moyenne. Il s’agit donc d’une fonction qui transforme les valeurs du prédicteur linéaire. G étant ici notre fonction lien
+|    La fonction de lien est une transformation par une fonction mathématique de la prédiction moyenne. Il s’agit donc d’une fonction qui transforme les valeurs du prédicteur linéaire. G étant ici notre fonction lien
 $$g(µ_y) =\sum_{j=1}^{p} \beta_j\;X_{ij}$$
 
-Le but d’une fonction de lien est primordial dans notre exemple, celle-ci va contraindre les valeurs prédites dans l’échelle des valeurs observées. On comprendra alors que cette fonction lien nous est nécessaire pour pouvoir analyser nos variables binaires.
+|    Le but d’une fonction de lien est primordial dans notre exemple, celle-ci va contraindre les valeurs prédites dans l’échelle des valeurs observées. On comprendra alors que cette fonction lien nous est nécessaire pour pouvoir analyser nos variables binaires.
 
-Enfin la structure des erreurs va donc devoir être adaptée par rapport à nos modèles linéaires classique afin qu’ils puissent correspondre à nos nouvelles données. Pour cela il existe plusieurs lois comme la loi de Poisson ou la loi Binomiale nous offrant une distribution des erreurs et des réponses qui seront différents.
+|    Enfin la structure des erreurs va donc devoir être adaptée par rapport à nos modèles linéaires classique afin qu’ils puissent correspondre à nos nouvelles données. Pour cela il existe plusieurs lois comme la loi de Poisson ou la loi Binomiale nous offrant une distribution des erreurs et des réponses qui seront différents.
 
-La loi de Poisson est principalement utilisée lorsqu’il s’agit de problèmes de comptage (nombre de poissons dans une rivière, nombre de buts marqués dans une saison etc.)
+|    La loi de Poisson est principalement utilisée lorsqu’il s’agit de problèmes de comptage (nombre de poissons dans une rivière, nombre de buts marqués dans une saison etc.)
 
-Lorsque les données sont continues, nous pouvons donc utiliser une distribution Gaussienne, mais il existe également des distributions Binomiales négatives qui a pour but de modéliser des variables de comptage lorsque celles-ci sont sur-dispersées
+|    Lorsque les données sont continues, nous pouvons donc utiliser une distribution Gaussienne, mais il existe également des distributions Binomiales négatives qui a pour but de modéliser des variables de comptage lorsque celles-ci sont sur-dispersées
 
-Ainsi, dans notre cas les distribution de Poisson ou binomiale négative peuvent être utiliser pour représenter les fréquences des sinistres
+|    Ainsi, dans notre cas les distribution de Poisson ou binomiale négative peuvent être utiliser pour représenter les fréquences des sinistres
 
 Et Gamma et Inverse gauss pour représenter la sévérité des sinistres
 
@@ -832,7 +834,8 @@ print("iter")
 glmfreqfinal$iter
 ```
 
-La fonction tidy de l’extension broom pour récupérer les coefficients du modèle sous la forme d’un tableau de données. On précisera conf.int = TRUE pour obtenir les intervalles de confiance et exponentiate = TRUE pour avoir les odds ratio plutôt que les coefficients bruts.
+|    La fonction tidy de l’extension broom pour récupérer les coefficients du modèle sous la forme d’un tableau de données. On précisera conf.int = TRUE pour obtenir les intervalles de confiance et exponentiate = TRUE pour avoir les odds ratio plutôt que les coefficients bruts.
+
 
 ```{r}
 #install.packages("broom")
@@ -925,7 +928,7 @@ knitr::kable(glmsevtab[,c("term","estimate")])
 
 ### Justification des modèles
 
-Le résumé de notre modèle révèle des informations intéressantes. La performance d'une régression logistique est évaluée avec des métriques clés spécifiques :
+|    Le résumé de notre modèle révèle des informations intéressantes. La performance d'une régression logistique est évaluée avec des métriques clés spécifiques :
 - AIC (Critère d'information d'Akaike): Il mesure l'ajustement lorsqu'une pénalité est appliquée au nombre de paramètres. Des valeurs AIC plus petites indiquent que le modèle est plus proche de la vérité. 
 - Null deviance : Il s'agit de la déviance du modèle nul, c'est-à-dire qu'il n'est caractérisé par aucun facteur.
 - Residual deviance : Il s'agit de la déviance du modèle avec toutes les variables. 
@@ -956,9 +959,9 @@ head(calcul_prime)
 
 Soit X le coût monétaire au risque
 
-Selon le modèle général, X = SOMME de 1 à N des Bk
+Selon le modèle général, $$X = \sum_{i=1}^NB_k$$
 
-où N correspond au nombre de sinistres
+où N correspond au nombre de sinistres  
 et Bk correspond au montant de sinistres
 
 Autrement dit, N représente la fréquence (variable discrète) et Bk la sévérité (variable continue positive)
@@ -967,10 +970,10 @@ En admettant que la fréquence n'a pas d'influence sur la sévérité et que les
 
 Comment calculer E(N)? Comment calculer E(B)?
 
-#### Calcul de l'espérance du nombre de sinistres (E(N))
+#### Calcul de l'espérance du nombre de sinistres (E(N))    
 
-fonction de lien logit : logit(x) = ln(X/(1-x))
-fonction réciproque : sigmoid(x) = 1/(1+exp(-x))
+|    fonction de lien logit : $$log_{it}(x) = ln(\frac{X}{1-x})$$
+|    fonction réciproque : $$sigmoid(x) = \frac{1}{1+e^{-x}}$$
 
 # Bibliographie
 
