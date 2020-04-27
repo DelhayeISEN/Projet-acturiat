@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/W32TeX) (preloaded format=pdflatex 2020.4.1)  27 APR 2020 10:17
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/W32TeX) (preloaded format=pdflatex 2020.4.1)  27 APR 2020 12:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -764,279 +764,279 @@ LaTeX Warning: Command \textmu invalid in math mode on input line 1841.
 LaTeX Warning: Command \textmu invalid in math mode on input line 1841.
 
 [21 <./markdown-projet-actuariat_files/figure-latex/unnamed-chunk-28-1.pdf>] [2
-2] [23] [24]
-Underfull \hbox (badness 10000) in paragraph at lines 2088--2091
+2] [23] [24] [25]
+Underfull \hbox (badness 10000) in paragraph at lines 2186--2189
 \T1/lmr/m/n/10 des -[] composantes -[] principales -[] dans -[] r -[] guide -[]
  pratique / 73 -[] acp -[] analyse -[] en -[] composantes -[] principales -[]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2091--2093
+Underfull \hbox (badness 10000) in paragraph at lines 2189--2191
 \T1/lmr/m/n/10 des -[] composantes -[] principales -[] dans -[] r -[] guide -[]
  pratique / 74 -[] afc -[] analyse -[] factorielle -[] des -[] correspondances 
 -[]
  []
 
+[26]
 LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
-2222.
+2320.
 (c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-) [25] [26] [27] [28] [29]
-Overfull \hbox (296.74275pt too wide) in paragraph at lines 2428--2428
+) [27] [28] [29] [30]
+Overfull \hbox (296.74275pt too wide) in paragraph at lines 2526--2526
 []\T1/lmtt/m/n/10 ## lowest : carburation                    GPL               
              injection                      injection directe surpuissante élec
 trique[] 
  []
 
 
-Overfull \hbox (359.74257pt too wide) in paragraph at lines 2428--2428
+Overfull \hbox (359.74257pt too wide) in paragraph at lines 2526--2526
 []\T1/lmtt/m/n/10 ## highest: GPL                            injection         
              injection directe surpuissante électrique                     inje
 ction surpuissante[] 
  []
 
-[30]
-Overfull \hbox (2.03835pt too wide) in alignment at lines 2434--2438
+[31] [32]
+Overfull \hbox (2.03835pt too wide) in alignment at lines 2532--2536
  [] [] [] 
  []
 
-<graphique/Exposure1.png, id=397, 803.0pt x 702.625pt>
+<graphique/Exposure1.png, id=408, 803.0pt x 702.625pt>
 File: graphique/Exposure1.png Graphic file (type png)
 <use graphique/Exposure1.png>
-Package pdftex.def Info: graphique/Exposure1.png  used on input line 2440.
+Package pdftex.def Info: graphique/Exposure1.png  used on input line 2538.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/Exposure2.png, id=398, 803.0pt x 702.625pt>
+<graphique/Exposure2.png, id=409, 803.0pt x 702.625pt>
 File: graphique/Exposure2.png Graphic file (type png)
 <use graphique/Exposure2.png>
-Package pdftex.def Info: graphique/Exposure2.png  used on input line 2442.
+Package pdftex.def Info: graphique/Exposure2.png  used on input line 2540.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/LicAge1.png, id=399, 803.0pt x 702.625pt>
+<graphique/LicAge1.png, id=410, 803.0pt x 702.625pt>
 File: graphique/LicAge1.png Graphic file (type png)
 <use graphique/LicAge1.png>
-Package pdftex.def Info: graphique/LicAge1.png  used on input line 2444.
+Package pdftex.def Info: graphique/LicAge1.png  used on input line 2542.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/LicAge2.png, id=400, 803.0pt x 702.625pt>
+<graphique/LicAge2.png, id=411, 803.0pt x 702.625pt>
 File: graphique/LicAge2.png Graphic file (type png)
 <use graphique/LicAge2.png>
-Package pdftex.def Info: graphique/LicAge2.png  used on input line 2446.
+Package pdftex.def Info: graphique/LicAge2.png  used on input line 2544.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehAge1.png, id=401, 803.0pt x 702.625pt>
+<graphique/VehAge1.png, id=412, 803.0pt x 702.625pt>
 File: graphique/VehAge1.png Graphic file (type png)
 <use graphique/VehAge1.png>
-Package pdftex.def Info: graphique/VehAge1.png  used on input line 2448.
+Package pdftex.def Info: graphique/VehAge1.png  used on input line 2546.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehAge2.png, id=402, 803.0pt x 702.625pt>
+<graphique/VehAge2.png, id=413, 803.0pt x 702.625pt>
 File: graphique/VehAge2.png Graphic file (type png)
 <use graphique/VehAge2.png>
-Package pdftex.def Info: graphique/VehAge2.png  used on input line 2450.
+Package pdftex.def Info: graphique/VehAge2.png  used on input line 2548.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/MariStat1.png, id=403, 803.0pt x 702.625pt>
+<graphique/MariStat1.png, id=414, 803.0pt x 702.625pt>
 File: graphique/MariStat1.png Graphic file (type png)
 <use graphique/MariStat1.png>
-Package pdftex.def Info: graphique/MariStat1.png  used on input line 2452.
+Package pdftex.def Info: graphique/MariStat1.png  used on input line 2550.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/MariStat2.png, id=404, 803.0pt x 702.625pt>
+<graphique/MariStat2.png, id=415, 803.0pt x 702.625pt>
 File: graphique/MariStat2.png Graphic file (type png)
 <use graphique/MariStat2.png>
-Package pdftex.def Info: graphique/MariStat2.png  used on input line 2454.
+Package pdftex.def Info: graphique/MariStat2.png  used on input line 2552.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/SocioCateg1.png, id=405, 803.0pt x 702.625pt>
+<graphique/SocioCateg1.png, id=416, 803.0pt x 702.625pt>
 File: graphique/SocioCateg1.png Graphic file (type png)
 <use graphique/SocioCateg1.png>
-Package pdftex.def Info: graphique/SocioCateg1.png  used on input line 2456.
+Package pdftex.def Info: graphique/SocioCateg1.png  used on input line 2554.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/SocioCateg2.png, id=406, 803.0pt x 702.625pt>
+<graphique/SocioCateg2.png, id=417, 803.0pt x 702.625pt>
 File: graphique/SocioCateg2.png Graphic file (type png)
 <use graphique/SocioCateg2.png>
-Package pdftex.def Info: graphique/SocioCateg2.png  used on input line 2458.
+Package pdftex.def Info: graphique/SocioCateg2.png  used on input line 2556.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehUsage1.png, id=407, 803.0pt x 702.625pt>
+<graphique/VehUsage1.png, id=418, 803.0pt x 702.625pt>
 File: graphique/VehUsage1.png Graphic file (type png)
 <use graphique/VehUsage1.png>
-Package pdftex.def Info: graphique/VehUsage1.png  used on input line 2460.
+Package pdftex.def Info: graphique/VehUsage1.png  used on input line 2558.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehUsage2.png, id=408, 803.0pt x 702.625pt>
+<graphique/VehUsage2.png, id=419, 803.0pt x 702.625pt>
 File: graphique/VehUsage2.png Graphic file (type png)
 <use graphique/VehUsage2.png>
-Package pdftex.def Info: graphique/VehUsage2.png  used on input line 2462.
+Package pdftex.def Info: graphique/VehUsage2.png  used on input line 2560.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/DrivAge1.png, id=409, 803.0pt x 702.625pt>
+<graphique/DrivAge1.png, id=420, 803.0pt x 702.625pt>
 File: graphique/DrivAge1.png Graphic file (type png)
 <use graphique/DrivAge1.png>
-Package pdftex.def Info: graphique/DrivAge1.png  used on input line 2464.
+Package pdftex.def Info: graphique/DrivAge1.png  used on input line 2562.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/DrivAge2.png, id=410, 803.0pt x 702.625pt>
+<graphique/DrivAge2.png, id=421, 803.0pt x 702.625pt>
 File: graphique/DrivAge2.png Graphic file (type png)
 <use graphique/DrivAge2.png>
-Package pdftex.def Info: graphique/DrivAge2.png  used on input line 2466.
+Package pdftex.def Info: graphique/DrivAge2.png  used on input line 2564.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/HasKmLimit1.png, id=411, 803.0pt x 702.625pt>
+<graphique/HasKmLimit1.png, id=422, 803.0pt x 702.625pt>
 File: graphique/HasKmLimit1.png Graphic file (type png)
 <use graphique/HasKmLimit1.png>
-Package pdftex.def Info: graphique/HasKmLimit1.png  used on input line 2468.
+Package pdftex.def Info: graphique/HasKmLimit1.png  used on input line 2566.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/HasKmLimit2.png, id=412, 803.0pt x 702.625pt>
+<graphique/HasKmLimit2.png, id=423, 803.0pt x 702.625pt>
 File: graphique/HasKmLimit2.png Graphic file (type png)
 <use graphique/HasKmLimit2.png>
-Package pdftex.def Info: graphique/HasKmLimit2.png  used on input line 2470.
+Package pdftex.def Info: graphique/HasKmLimit2.png  used on input line 2568.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/BonusMalus1.png, id=413, 803.0pt x 702.625pt>
+<graphique/BonusMalus1.png, id=424, 803.0pt x 702.625pt>
 File: graphique/BonusMalus1.png Graphic file (type png)
 <use graphique/BonusMalus1.png>
-Package pdftex.def Info: graphique/BonusMalus1.png  used on input line 2472.
+Package pdftex.def Info: graphique/BonusMalus1.png  used on input line 2570.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/BonusMalus2.png, id=414, 803.0pt x 702.625pt>
+<graphique/BonusMalus2.png, id=425, 803.0pt x 702.625pt>
 File: graphique/BonusMalus2.png Graphic file (type png)
 <use graphique/BonusMalus2.png>
-Package pdftex.def Info: graphique/BonusMalus2.png  used on input line 2474.
+Package pdftex.def Info: graphique/BonusMalus2.png  used on input line 2572.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehBody1.png, id=415, 803.0pt x 702.625pt>
+<graphique/VehBody1.png, id=426, 803.0pt x 702.625pt>
 File: graphique/VehBody1.png Graphic file (type png)
 <use graphique/VehBody1.png>
-Package pdftex.def Info: graphique/VehBody1.png  used on input line 2476.
+Package pdftex.def Info: graphique/VehBody1.png  used on input line 2574.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehBody2.png, id=416, 803.0pt x 702.625pt>
+<graphique/VehBody2.png, id=427, 803.0pt x 702.625pt>
 File: graphique/VehBody2.png Graphic file (type png)
 <use graphique/VehBody2.png>
-Package pdftex.def Info: graphique/VehBody2.png  used on input line 2478.
+Package pdftex.def Info: graphique/VehBody2.png  used on input line 2576.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehPrice1.png, id=417, 803.0pt x 702.625pt>
+<graphique/VehPrice1.png, id=428, 803.0pt x 702.625pt>
 File: graphique/VehPrice1.png Graphic file (type png)
 <use graphique/VehPrice1.png>
-Package pdftex.def Info: graphique/VehPrice1.png  used on input line 2480.
+Package pdftex.def Info: graphique/VehPrice1.png  used on input line 2578.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehPrice2.png, id=418, 803.0pt x 702.625pt>
+<graphique/VehPrice2.png, id=429, 803.0pt x 702.625pt>
 File: graphique/VehPrice2.png Graphic file (type png)
 <use graphique/VehPrice2.png>
-Package pdftex.def Info: graphique/VehPrice2.png  used on input line 2482.
+Package pdftex.def Info: graphique/VehPrice2.png  used on input line 2580.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehEngine1.png, id=419, 803.0pt x 702.625pt>
+<graphique/VehEngine1.png, id=430, 803.0pt x 702.625pt>
 File: graphique/VehEngine1.png Graphic file (type png)
 <use graphique/VehEngine1.png>
-Package pdftex.def Info: graphique/VehEngine1.png  used on input line 2484.
+Package pdftex.def Info: graphique/VehEngine1.png  used on input line 2582.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehEngine2.png, id=420, 803.0pt x 702.625pt>
+<graphique/VehEngine2.png, id=431, 803.0pt x 702.625pt>
 File: graphique/VehEngine2.png Graphic file (type png)
 <use graphique/VehEngine2.png>
-Package pdftex.def Info: graphique/VehEngine2.png  used on input line 2486.
+Package pdftex.def Info: graphique/VehEngine2.png  used on input line 2584.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehEnergy1.png, id=421, 803.0pt x 702.625pt>
+<graphique/VehEnergy1.png, id=432, 803.0pt x 702.625pt>
 File: graphique/VehEnergy1.png Graphic file (type png)
 <use graphique/VehEnergy1.png>
-Package pdftex.def Info: graphique/VehEnergy1.png  used on input line 2488.
+Package pdftex.def Info: graphique/VehEnergy1.png  used on input line 2586.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehEnergy2.png, id=422, 803.0pt x 702.625pt>
+<graphique/VehEnergy2.png, id=433, 803.0pt x 702.625pt>
 File: graphique/VehEnergy2.png Graphic file (type png)
 <use graphique/VehEnergy2.png>
-Package pdftex.def Info: graphique/VehEnergy2.png  used on input line 2490.
+Package pdftex.def Info: graphique/VehEnergy2.png  used on input line 2588.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehMaxSpeed1.png, id=423, 803.0pt x 702.625pt>
+<graphique/VehMaxSpeed1.png, id=434, 803.0pt x 702.625pt>
 File: graphique/VehMaxSpeed1.png Graphic file (type png)
 <use graphique/VehMaxSpeed1.png>
-Package pdftex.def Info: graphique/VehMaxSpeed1.png  used on input line 2492.
+Package pdftex.def Info: graphique/VehMaxSpeed1.png  used on input line 2590.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehMaxSpeed2.png, id=424, 803.0pt x 702.625pt>
+<graphique/VehMaxSpeed2.png, id=435, 803.0pt x 702.625pt>
 File: graphique/VehMaxSpeed2.png Graphic file (type png)
 <use graphique/VehMaxSpeed2.png>
-Package pdftex.def Info: graphique/VehMaxSpeed2.png  used on input line 2494.
+Package pdftex.def Info: graphique/VehMaxSpeed2.png  used on input line 2592.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehClass1.png, id=425, 803.0pt x 702.625pt>
+<graphique/VehClass1.png, id=436, 803.0pt x 702.625pt>
 File: graphique/VehClass1.png Graphic file (type png)
 <use graphique/VehClass1.png>
-Package pdftex.def Info: graphique/VehClass1.png  used on input line 2496.
+Package pdftex.def Info: graphique/VehClass1.png  used on input line 2594.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehClass2.png, id=426, 803.0pt x 702.625pt>
+<graphique/VehClass2.png, id=437, 803.0pt x 702.625pt>
 File: graphique/VehClass2.png Graphic file (type png)
 <use graphique/VehClass2.png>
-Package pdftex.def Info: graphique/VehClass2.png  used on input line 2498.
+Package pdftex.def Info: graphique/VehClass2.png  used on input line 2596.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/RiskVar1.png, id=427, 803.0pt x 702.625pt>
+<graphique/RiskVar1.png, id=438, 803.0pt x 702.625pt>
 File: graphique/RiskVar1.png Graphic file (type png)
 <use graphique/RiskVar1.png>
-Package pdftex.def Info: graphique/RiskVar1.png  used on input line 2500.
+Package pdftex.def Info: graphique/RiskVar1.png  used on input line 2598.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/RiskVar2.png, id=428, 803.0pt x 702.625pt>
+<graphique/RiskVar2.png, id=439, 803.0pt x 702.625pt>
 File: graphique/RiskVar2.png Graphic file (type png)
 <use graphique/RiskVar2.png>
-Package pdftex.def Info: graphique/RiskVar2.png  used on input line 2502.
+Package pdftex.def Info: graphique/RiskVar2.png  used on input line 2600.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/ClaimAmount1.png, id=429, 803.0pt x 702.625pt>
+<graphique/ClaimAmount1.png, id=440, 803.0pt x 702.625pt>
 File: graphique/ClaimAmount1.png Graphic file (type png)
 <use graphique/ClaimAmount1.png>
-Package pdftex.def Info: graphique/ClaimAmount1.png  used on input line 2504.
+Package pdftex.def Info: graphique/ClaimAmount1.png  used on input line 2602.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/ClaimAmount2.png, id=430, 803.0pt x 702.625pt>
+<graphique/ClaimAmount2.png, id=441, 803.0pt x 702.625pt>
 File: graphique/ClaimAmount2.png Graphic file (type png)
 <use graphique/ClaimAmount2.png>
-Package pdftex.def Info: graphique/ClaimAmount2.png  used on input line 2506.
+Package pdftex.def Info: graphique/ClaimAmount2.png  used on input line 2604.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/Garage1.png, id=431, 803.0pt x 702.625pt>
+<graphique/Garage1.png, id=442, 803.0pt x 702.625pt>
 File: graphique/Garage1.png Graphic file (type png)
 <use graphique/Garage1.png>
-Package pdftex.def Info: graphique/Garage1.png  used on input line 2508.
+Package pdftex.def Info: graphique/Garage1.png  used on input line 2606.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/Garage2.png, id=432, 803.0pt x 702.625pt>
+<graphique/Garage2.png, id=443, 803.0pt x 702.625pt>
 File: graphique/Garage2.png Graphic file (type png)
 <use graphique/Garage2.png>
-Package pdftex.def Info: graphique/Garage2.png  used on input line 2510.
+Package pdftex.def Info: graphique/Garage2.png  used on input line 2608.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/ClaimInd1.png, id=433, 803.0pt x 702.625pt>
+<graphique/ClaimInd1.png, id=444, 803.0pt x 702.625pt>
 File: graphique/ClaimInd1.png Graphic file (type png)
 <use graphique/ClaimInd1.png>
-Package pdftex.def Info: graphique/ClaimInd1.png  used on input line 2512.
+Package pdftex.def Info: graphique/ClaimInd1.png  used on input line 2610.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/ClaimInd2.png, id=434, 803.0pt x 702.625pt>
+<graphique/ClaimInd2.png, id=445, 803.0pt x 702.625pt>
 File: graphique/ClaimInd2.png Graphic file (type png)
 <use graphique/ClaimInd2.png>
-Package pdftex.def Info: graphique/ClaimInd2.png  used on input line 2514.
+Package pdftex.def Info: graphique/ClaimInd2.png  used on input line 2612.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
 
-Overfull \hbox (2.03835pt too wide) in alignment at lines 2438--2516
+Overfull \hbox (2.03835pt too wide) in alignment at lines 2536--2614
  [] [] [] 
  []
 
-[31 <./graphique/Exposure1.png> <./graphique/Exposure2.png>] [32 <./graphique/L
-icAge1.png> <./graphique/LicAge2.png> <./graphique/VehAge1.png (PNG copy)> <./g
-raphique/VehAge2.png> <./graphique/MariStat1.png> <./graphique/MariStat2.png>] 
-[33 <./graphique/SocioCateg1.png> <./graphique/SocioCateg2.png> <./graphique/Ve
-hUsage1.png> <./graphique/VehUsage2.png> <./graphique/DrivAge1.png> <./graphiqu
-e/DrivAge2.png>] [34 <./graphique/HasKmLimit1.png> <./graphique/HasKmLimit2.png
-> <./graphique/BonusMalus1.png> <./graphique/BonusMalus2.png> <./graphique/VehB
-ody1.png (PNG copy)> <./graphique/VehBody2.png (PNG copy)>] [35 <./graphique/Ve
-hPrice1.png (PNG copy)> <./graphique/VehPrice2.png (PNG copy)> <./graphique/Veh
-Engine1.png (PNG copy)> <./graphique/VehEngine2.png (PNG copy)> <./graphique/Ve
-hEnergy1.png> <./graphique/VehEnergy2.png>] [36 <./graphique/VehMaxSpeed1.png (
-PNG copy)> <./graphique/VehMaxSpeed2.png (PNG copy)> <./graphique/VehClass1.png
-> <./graphique/VehClass2.png> <./graphique/RiskVar1.png> <./graphique/RiskVar2.
-png>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2518.
-[37 <./graphique/ClaimAmount1.png> <./graphique/ClaimAmount2.png> <./graphique/
-Garage1.png> <./graphique/Garage2.png> <./graphique/ClaimInd1.png> <./graphique
-/ClaimInd2.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 2518.
+[33 <./graphique/Exposure1.png> <./graphique/Exposure2.png> <./graphique/LicAge
+1.png> <./graphique/LicAge2.png> <./graphique/VehAge1.png (PNG copy)> <./graphi
+que/VehAge2.png>] [34 <./graphique/MariStat1.png> <./graphique/MariStat2.png> <
+./graphique/SocioCateg1.png> <./graphique/SocioCateg2.png> <./graphique/VehUsag
+e1.png> <./graphique/VehUsage2.png>] [35 <./graphique/DrivAge1.png> <./graphiqu
+e/DrivAge2.png> <./graphique/HasKmLimit1.png> <./graphique/HasKmLimit2.png> <./
+graphique/BonusMalus1.png> <./graphique/BonusMalus2.png>] [36 <./graphique/VehB
+ody1.png (PNG copy)> <./graphique/VehBody2.png (PNG copy)> <./graphique/VehPric
+e1.png (PNG copy)> <./graphique/VehPrice2.png (PNG copy)> <./graphique/VehEngin
+e1.png (PNG copy)> <./graphique/VehEngine2.png (PNG copy)>] [37 <./graphique/Ve
+hEnergy1.png> <./graphique/VehEnergy2.png> <./graphique/VehMaxSpeed1.png (PNG c
+opy)> <./graphique/VehMaxSpeed2.png (PNG copy)> <./graphique/VehClass1.png> <./
+graphique/VehClass2.png>] [38 <./graphique/RiskVar1.png> <./graphique/RiskVar2.
+png> <./graphique/ClaimAmount1.png> <./graphique/ClaimAmount2.png> <./graphique
+/Garage1.png> <./graphique/Garage2.png>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2616.
+[39 <./graphique/ClaimInd1.png> <./graphique/ClaimInd2.png>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 2616.
 (./markdown-projet-actuariat.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 2518.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 2518.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 2616.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 2616.
 
 Package rerunfilecheck Info: File `markdown-projet-actuariat.out' has not chang
 ed.
 (rerunfilecheck)             Checksum: EDD5581E4855E112F32B6A1EB0B37514;6597.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 2518.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 2616.
  ) 
 Here is how much of TeX's memory you used:
- 12899 strings out of 482895
- 194696 string characters out of 5956533
- 482678 words of memory out of 5000000
- 27787 multiletter control sequences out of 15000+600000
- 583193 words of font info for 67 fonts, out of 8000000 for 9000
+ 12905 strings out of 482895
+ 194747 string characters out of 5956533
+ 482712 words of memory out of 5000000
+ 27789 multiletter control sequences out of 15000+600000
+ 583512 words of font info for 68 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  34i,7n,37p,534b,597s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts
 1.enc}{c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/l
-m-rm.enc}{c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/l
-m/lm-mathex.enc}{c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/
-dvips/lm/lm-mathit.enc}{c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/fon
-ts/enc/dvips/lm/lm-ec.enc}<c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/
+m-ec.enc}{c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/l
+m/lm-rm.enc}{c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvip
+s/lm/lm-mathex.enc}{c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/fonts/e
+nc/dvips/lm/lm-mathit.enc}<c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/
 fonts/type1/public/lm/lmbx10.pfb><c:/Users/Delhaye/AppData/Roaming/TinyTeX/texm
 f-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/Delhaye/AppData/Roaming/TinyT
 eX/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/Users/Delhaye/AppData/Roamin
@@ -1049,11 +1049,12 @@ c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.
 pfb><c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/
 lmri10.pfb><c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/pub
 lic/lm/lmtk10.pfb><c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/fonts/ty
-pe1/public/lm/lmtt10.pfb>
-Output written on markdown-projet-actuariat.pdf (37 pages, 678690 bytes).
+pe1/public/lm/lmtt10.pfb><c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/f
+onts/type1/public/lm/lmtti10.pfb>
+Output written on markdown-projet-actuariat.pdf (39 pages, 694409 bytes).
 PDF statistics:
- 573 PDF objects out of 1000 (max. 8388607)
- 429 compressed objects within 5 object streams
- 113 named destinations out of 1000 (max. 500000)
+ 587 PDF objects out of 1000 (max. 8388607)
+ 440 compressed objects within 5 object streams
+ 116 named destinations out of 1000 (max. 500000)
  460 words of extra memory for PDF output out of 10000 (max. 10000000)
 
