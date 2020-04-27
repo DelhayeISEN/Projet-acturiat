@@ -502,7 +502,7 @@ dev.off()
 
 #### Calcul de l'ACP
 
-Pour réaliser le calcul de l'ACP, plusieurs fonctions, de différents packages, sont disponibles dans le logiciel R :
+|   Pour réaliser le calcul de l'ACP, plusieurs fonctions, de différents packages, sont disponibles dans le logiciel R :
 
 - *prcomp()* et *princomp()* issus du package *stats*
 - *PCA()* issu du package *FactoMineR*
@@ -808,41 +808,68 @@ Et Gamma et Inverse gauss pour représenter la sévérité des sinistres
 ### Fréquence des sinistres
 
 ```{r}
-freMPL2$LicAge <- cut(freMPL2$LicAge, breaks = c(-1,36,1:8*120))
+freMPL2$LicAge <- cut(freMPL2$LicAge, breaks = c(-1,36,1:6*120,960))
 freMPL2$DrivAge <- cut(freMPL2$DrivAge, breaks = c(17,2:8*10,103))
 freMPL2$BonusMalus <- cut(freMPL2$BonusMalus, breaks = c(49,100,350))
 freMPL2$HasKmLimit <- as.factor(freMPL2$HasKmLimit)
 freMPL2$RiskVar <- cut(freMPL2$RiskVar, breaks = c(-1,0:5*4))
-freMPL2.freq <- freMPL2[,c(-4,-19)]
+levels(freMPL2$LicAge)
+freMPL2 <- freMPL2[,c(-4)]
+# Le ClaimAmount risque de fausser nos résultats pour la fréquence
+freMPL2.freq <- freMPL2[,c(-19)]
 ```
 
-```{r, results='hide', echo = TRUE}
+
+
+
+```{r}
 glmfreqinit <- glm(ClaimInd~., offset = log(Exposure), family=binomial(link="logit"), data=freMPL2.freq)
+library(broom)
+glmfreqinittab <- tidy(glmfreqinit)
+knitr::kable(glmfreqinittab[,c("term","estimate","p.value")])
+```
+
+
+```{r}
 #glmfreqfinal <- step(glmfreqinit)
 glmfreqfinal <- glm(ClaimInd ~ Exposure + LicAge + RecordBeg + VehUsage + DrivAge + 
     BonusMalus + VehBody + VehEngine + VehClass + RiskVar, offset = log(Exposure), family=binomial(link="logit"), data=freMPL2.freq)
 ```
 
-```{r}
-print("AIC")
-glmfreqfinal$aic
-print("null.deviance")
-glmfreqfinal$null.deviance
-print("deviance")
-glmfreqfinal$deviance
-print("iter")
-glmfreqfinal$iter
-```
-
 |    La fonction tidy de l’extension broom pour récupérer les coefficients du modèle sous la forme d’un tableau de données. On précisera conf.int = TRUE pour obtenir les intervalles de confiance et exponentiate = TRUE pour avoir les odds ratio plutôt que les coefficients bruts.
-
 
 ```{r}
 #install.packages("broom")
 library(broom)
 glmfreqtab <- tidy(glmfreqfinal)
-knitr::kable(glmfreqtab[,c("term","estimate")])
+knitr::kable(glmfreqtab[,c("term","estimate","p.value")])
 ```
+
+
+comparaison modèle initial et modèle final :
+
+
+```{r}
+aicinit <- glmfreqinit$aic
+aicfin <- glmfreqfinal$aic
+aicdiff <- aicinit-aicfin
+nulldevianceinit <- glmfreqinit$null.deviance
+nulldeviancefin <- glmfreqfinal$null.deviance
+nulldeviancediff <- nulldevianceinit-nulldeviancefin
+devianceinit <- glmfreqinit$deviance
+deviancefin <- glmfreqfinal$deviance
+deviancediff <- deviancefin-devianceinit
+iterinit <- glmfreqinit$iter
+iterfin <- glmfreqfinal$iter
+iterdiff <- iterinit-iterfin
+```
+
+|| glm initial  	| glm final 	|différence|
+|:-:|:-:|:-:|:-:|
+|AIC|`r aicinit`|`r aicfin`|`r aicdiff`|
+|déviance nulle|`r nulldevianceinit`|`r nulldeviancefin`|`r nulldeviancediff`|
+|déviance|`r devianceinit`|`r deviancefin`|`r deviancediff`|
+|nombre d'itération|`r iterinit`|`r iterfin`|`r iterdiff`|
 
 
 ```{r}
@@ -850,6 +877,7 @@ dtfreq <- data.frame(ClaimInd = freMPL2$ClaimInd,
                      Predict_ClaimInd_init = round(predict(glmfreqinit, freMPL2.freq, type = 'response'),2),
                      Predict_ClaimInd_final = round(predict(glmfreqfinal, freMPL2.freq, type = 'response'),2)
                      )
+dtfreq
 ```
 
 ```{r}
@@ -900,22 +928,7 @@ freMPL2.posclaim <- freMPL2[freMPL2$ClaimAmount != 0,]
 
 ```{r, results='hide', echo = TRUE}
 glmsevinit <- glm(ClaimAmount~.,offset = log(Exposure), family=Gamma(link = "log"), data=freMPL2.posclaim)
-#glmsevfinal<- step(glmsevinit)
-glmsevfinal <- glm(ClaimAmount~Exposure + RecordBeg + RecordEnd + VehAge + MariStat + 
-    VehUsage + DrivAge + HasKmLimit + BonusMalus + VehBody + 
-    VehEngine + VehEnergy + RiskVar + Garage,offset = log(Exposure), family=Gamma(link = "log"), data=freMPL2.posclaim)
-```
-
-
-```{r}
-print("AIC")
-glmsevfinal$aic
-print("null.deviance")
-glmsevfinal$null.deviance
-print("deviance")
-glmsevfinal$deviance
-print("iter")
-glmsevfinal$iter
+glmsevfinal<- step(glmsevinit)
 ```
 
 
@@ -924,6 +937,81 @@ glmsevfinal$iter
 library(broom)
 glmsevtab <- tidy(glmsevfinal)
 knitr::kable(glmsevtab[,c("term","estimate")])
+```
+
+
+comparaison modèle initial et modèle final :
+
+
+```{r}
+aicinit2 <- glmsevinit$aic
+aicfin2 <- glmsevfinal$aic
+aicdiff2 <- aicinit2-aicfin2
+nulldevianceinit2 <- glmsevinit$null.deviance
+nulldeviancefin2 <- glmsevfinal$null.deviance
+nulldeviancediff2 <- nulldevianceinit2-nulldeviancefin2
+devianceinit2 <- glmsevinit$deviance
+deviancefin2 <- glmsevfinal$deviance
+deviancediff2 <- deviancefin2-devianceinit2
+iterinit2 <- glmsevinit$iter
+iterfin2 <- glmsevfinal$iter
+iterdiff2 <- iterinit2-iterfin2
+```
+
+|| glm initial  	| glm final 	|différence|
+|:-:|:-:|:-:|:-:|
+|AIC|`r aicinit2`|`r aicfin2`|`r aicdiff2`|
+|déviance nulle|`r nulldevianceinit2`|`r nulldeviancefin2`|`r nulldeviancediff2`|
+|déviance|`r devianceinit2`|`r deviancefin2`|`r deviancediff2`|
+|nombre d'itération|`r iterinit2`|`r iterfin2`|`r iterdiff2`|
+
+
+
+
+
+```{r}
+dtsev <- data.frame(ClaimAmount = freMPL2$ClaimAmount,
+                     Predict_ClaimAmount_final = round(predict(glmsevfinal, newdata = freMPL2, type = 'response'),2))
+dtsev
+```
+
+```{r}
+
+# Vérifications pour l'âge des conducteurs
+
+CompDrivAge <- data.frame(
+  DrivAge = levels(freMPL2.freq$DrivAge),
+  sev_observee_somme = rep(0, times = 8),
+  frequence_predite_init_model_somme = rep(0, times = 8),
+  frequence_predite_final_model_somme = rep(0, times = 8)
+)
+
+for (i in 1:dim(freMPL2[1])){
+  age_conducteur <- freMPL2$DrivAge[i]
+  CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"frequence_observee_somme"] <- CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"frequence_observee_somme"]+freMPL2$ClaimInd[i]
+  CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"frequence_predite_init_model_somme"] <- CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"frequence_predite_init_model_somme"]+dtfreq$Predict_ClaimInd_init[i]
+  CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"frequence_predite_final_model_somme"] <- CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"frequence_predite_final_model_somme"]+dtfreq$Predict_ClaimInd_final[i]
+}
+
+CompDrivAge
+
+# Vérifications pour l'âge du véhicule
+
+CompVehAge <- data.frame(
+  VehAge = levels(freMPL2.freq$VehAge),
+  frequence_observee_somme = rep(0, times = 9),
+  frequence_predite_init_model_somme = rep(0, times = 9),
+  frequence_predite_final_model_somme = rep(0, times = 9)
+)
+
+for (i in 1:dim(freMPL2[1])){
+  age_vehicule <- freMPL2$VehAge[i]
+  CompVehAge[CompVehAge$VehAge == age_vehicule,"frequence_observee_somme"] <- CompVehAge[CompVehAge$VehAge == age_vehicule,"frequence_observee_somme"]+freMPL2$ClaimInd[i]
+  CompVehAge[CompVehAge$VehAge == age_vehicule,"frequence_predite_init_model_somme"] <- CompVehAge[CompVehAge$VehAge == age_vehicule,"frequence_predite_init_model_somme"]+dtfreq$Predict_ClaimInd_init[i]
+  CompVehAge[CompVehAge$VehAge == age_vehicule,"frequence_predite_final_model_somme"] <- CompVehAge[CompVehAge$VehAge == age_vehicule,"frequence_predite_final_model_somme"]+dtfreq$Predict_ClaimInd_final[i]
+}
+
+CompVehAge
 ```
 
 ### Justification des modèles
@@ -979,11 +1067,12 @@ Comment calculer E(N)? Comment calculer E(B)?
 
 ## Internet
 
-- Pour la documantation R : <https://www.rdocumentation.org/>
+- Pour la documentation R : <https://www.rdocumentation.org/>
 
 - Pour l'analyse en composantes prinicipales : <http://www.sthda.com/french/articles/38-methodes-des-composantes-principales-dans-r-guide-pratique/73-acp-analyse-en-composantes-principales-avec-r-l-essentiel/>
 
 - Pour l'analyse factorielle des correspondances : <http://www.sthda.com/french/articles/38-methodes-des-composantes-principales-dans-r-guide-pratique/74-afc-analyse-factorielle-des-correspondances-avec-r-l-essentiel/>
+
   
 ## Littérature
 
