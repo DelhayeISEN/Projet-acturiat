@@ -1,14 +1,14 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/W32TeX) (preloaded format=pdflatex 2020.4.1)  28 APR 2020 15:02
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/W32TeX) (preloaded format=pdflatex 2020.4.7)  28 APR 2020 17:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **markdown-projet-actuariat.tex
 (./markdown-projet-actuariat.tex
 LaTeX2e <2020-02-02> patch level 5
-L3 programming layer <2020-02-25>
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/article.cls
+L3 programming layer <2020-02-25> (c:/Users/admin/AppData/Roaming/TinyTeX/texmf
+-dist/tex/latex/base/article.cls
 Document Class: article 2019/12/20 v1.4l Standard LaTeX document class
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/size10.clo
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/size10.clo
 File: size10.clo 2019/12/20 v1.4l Standard LaTeX file (size option)
 )
 \c@part=\count167
@@ -22,7 +22,7 @@ File: size10.clo 2019/12/20 v1.4l Standard LaTeX file (size option)
 \abovecaptionskip=\skip47
 \belowcaptionskip=\skip48
 \bibindent=\dimen134
-) (c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/lmodern.sty
+) (c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/lmodern.sty
 Package: lmodern 2009/10/30 v1.6 Latin Modern Fonts
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/cmr/m/n --> OT1/lmr/m/n on input line 22.
@@ -57,12 +57,12 @@ LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 (Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 38.
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/amssymb
-.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/amssymb.s
+ty
 Package: amssymb 2013/01/14 v3.01 AMS font symbols
 
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/amsfont
-s.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/amsfonts.
+sty
 Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
 \@emptytoks=\toks15
 \symAMSa=\mathgroup4
@@ -71,29 +71,26 @@ LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
 ))
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amsmath.
-sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amsmath.st
+y
 Package: amsmath 2020/01/20 v2.17e AMS math features
 \@mathmargin=\skip49
 For additional information on amsmath, use the `?' option.
 
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amstext.
-sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amstext.st
+y
 Package: amstext 2000/06/29 v2.01 AMS text
 
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.s
-ty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0 generic functions
 \@emptytoks=\toks16
 \ex@=\dimen135
 ))
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.s
-ty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d Bold Symbols
 \pmbraise@=\dimen136
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.s
-ty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty
 Package: amsopn 2016/03/08 v2.02 operator names
 )
 \inf@bad=\count175
@@ -134,52 +131,46 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 734.
 LaTeX Info: Redefining \[ on input line 2859.
 LaTeX Info: Redefining \] on input line 2860.
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/iftex/ifxetex.
-sty
-Package: ifxetex 2019/10/25 v0.7 ifxetex legacy package. Use iftex instead.
-
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/iftex/iftex.st
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/iftex/ifxetex.st
 y
+Package: ifxetex 2019/10/25 v0.7 ifxetex legacy package. Use iftex instead.
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty
 Package: iftex 2019/11/07 v1.0c TeX engine tests
 ))
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/iftex/ifluatex
-.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/iftex/ifluatex.s
+ty
 Package: ifluatex 2019/10/25 v1.5 ifluatex legacy package. Use iftex instead.
-)
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/fontenc.sty
+) (c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/fontenc.sty
 Package: fontenc 2020/02/11 v2.0o Standard LaTeX package
 LaTeX Font Info:    Trying to load font information for T1+lmr on input line 11
 2.
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
-))
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/inputenc.st
-y
+)) (c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/inputenc.s
+ty
 Package: inputenc 2018/08/11 v1.3c Input encoding file
 \inpenc@prehook=\toks21
 \inpenc@posthook=\toks22
-)
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/textcomp.st
+) (c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/textcomp.st
 y
 Package: textcomp 2020/02/02 v2.0n Standard LaTeX package
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/upquote/upquote.
-sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/upquote/upquote.st
+y
 Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
 tim
-)
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/xcolor/xcolor.st
+) (c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/xcolor/xcolor.st
 y
 Package: xcolor 2016/05/11 v2.12 LaTeX color extensions (UK)
 
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics-cfg/col
-or.cfg
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics-cfg/color
+.cfg
 File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
 Package xcolor Info: Driver file: pdftex.def on input line 225.
 
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics-def/pdf
-tex.def
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics-def/pdfte
+x.def
 File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
 )
 Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1348.
@@ -192,84 +183,83 @@ Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1369.
 Package xcolor Info: Model `Gray' substituted by `gray' on input line 1370.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1371.
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/hyperre
-f.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.
+sty
 Package: hyperref 2020/01/14 v7.00d Hypertext links for LaTeX
 
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmd
-s.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.
+sty
 Package: ltxcmds 2019/12/15 v1.24 LaTeX kernel commands for general use (HO)
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/pdftexcmds/pdfte
-xcmds.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/pdftexcmds/pdftexc
+mds.sty
 Package: pdftexcmds 2019/11/24 v0.31 Utility functions of pdfTeX for LuaTeX (HO
 )
 
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/infwarerr/infw
-arerr.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/infwarerr/infwar
+err.sty
 Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
 )
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 Package pdftexcmds Info: \pdfdraftmode found.
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/keyval.
-sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/keyval.st
+y
 Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \KV@toks@=\toks23
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/kvsetkeys/kvse
-tkeys.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/kvsetkeys/kvsetk
+eys.sty
 Package: kvsetkeys 2019/12/15 v1.18 Key value parser (HO)
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/kvdefinekeys/k
-vdefinekeys.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvd
+efinekeys.sty
 Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pdfescape/pdfe
-scape.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pdfescape/pdfesc
+ape.sty
 Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.
-sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.st
+y
 Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/letltxmacro/letl
-txmacro.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/letltxmacro/letltx
+macro.sty
 Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/auxhook/auxhook.
-sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/auxhook/auxhook.st
+y
 Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/kvoptions/kvopti
-ons.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/kvoptions/kvoption
+s.sty
 Package: kvoptions 2019/11/29 v3.13 Key value format for package options (HO)
 )
 \@linkdim=\dimen144
 \Hy@linkcounter=\count187
 \Hy@pagecounter=\count188
 
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.
-def
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.de
+f
 File: pd1enc.def 2020/01/14 v7.00d Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
 ... no UTF-8 mapping file for font encoding PD1
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/intcalc/intcal
-c.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.
+sty
 Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/etexcmds/etexc
-mds.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/etexcmds/etexcmd
+s.sty
 Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
 )
 \Hy@SavedSpaceFactor=\count189
 \pdfmajorversion=\count190
 Package hyperref Info: Option `unicode' set `true' on input line 4421.
 
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/puenc.d
-ef
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def
 File: puenc.def 2020/01/14 v7.00d Hyperref: PDF Unicode definition (HO)
 Now handling font encoding PU ...
 ... no UTF-8 mapping file for font encoding PU
@@ -282,19 +272,19 @@ Package hyperref Info: Backreferencing OFF on input line 4567.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4800.
 \c@Hy@tempcnt=\count191
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/url/url.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip17
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 5159.
 \XeTeXLinkMargin=\dimen145
 
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/bitset/bitset.
-sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/bitset/bitset.st
+y
 Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
 
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/bigintcalc/big
-intcalc.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/bigintcalc/bigin
+tcalc.sty
 Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
 )
 ))
@@ -311,8 +301,8 @@ Package hyperref Info: PDF/A mode OFF on input line 6460.
 LaTeX Info: Redefining \ref on input line 6500.
 LaTeX Info: Redefining \pageref on input line 6504.
 
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/atbegshi/atbeg
-shi.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/atbegshi/atbegsh
+i.sty
 Package: atbegshi 2019/12/05 v1.19 At begin shipout hook (HO)
 )
 \Hy@abspage=\count193
@@ -321,24 +311,24 @@ Package: atbegshi 2019/12/05 v1.19 At begin shipout hook (HO)
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
 
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex
-.def
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.d
+ef
 File: hpdftex.def 2020/01/14 v7.00d Hyperref driver for pdfTeX
 
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/atveryend/atvery
-end.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/atveryend/atveryen
+d.sty
 Package: atveryend 2019-12-11 v1.11 Hooks at the very end of document (HO)
 Package atveryend Info: \enddocument detected (standard20110627).
 )
 \Fld@listcount=\count196
 \c@bookmark@seq@number=\count197
 
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/rerunfilecheck/r
-erunfilecheck.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rer
+unfilecheck.sty
 Package: rerunfilecheck 2019/12/05 v1.9 Rerun checks for auxiliary files (HO)
 
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/uniquecounter/
-uniquecounter.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/uniquecounter/un
+iquecounter.sty
 Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 )
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
@@ -346,14 +336,11 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 \Hy@SectionHShift=\skip52
 )
-Package hyperref Info: Option `breaklinks' set `true' on input line 42.
-
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/geometry/geometr
-y.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/geometry/geometry.
+sty
 Package: geometry 2020/01/02 v5.9 Page Geometry
 
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/iftex/ifvtex.s
-ty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/iftex/ifvtex.sty
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 )
 \Gm@cnth=\count198
@@ -369,8 +356,8 @@ Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 \Gm@layoutvoffset=\dimen155
 \Gm@dimlist=\toks24
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/fancyvrb/fancyvr
-b.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/fancyvrb/fancyvrb.
+sty
 Package: fancyvrb 2020/01/13 v3.5 verbatim text (tvz,hv)
 \FV@CodeLineNo=\count267
 \FV@InFile=\read2
@@ -378,8 +365,7 @@ Package: fancyvrb 2020/01/13 v3.5 verbatim text (tvz,hv)
 \c@FancyVerbLine=\count268
 \FV@StepNumber=\count269
 \FV@OutFile=\write3
-)
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/framed/framed.st
+) (c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/framed/framed.st
 y
 Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
 \OuterFrameSep=\skip53
@@ -388,8 +374,8 @@ Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
 \FrameRule=\dimen158
 \FrameSep=\dimen159
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/longtable.
-sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/longtable.st
+y
 Package: longtable 2020/01/07 v4.13 Multi-page Table package (DPC)
 \LTleft=\skip54
 \LTright=\skip55
@@ -407,8 +393,8 @@ Package: longtable 2020/01/07 v4.13 Multi-page Table package (DPC)
 \c@LT@chunks=\count274
 \LT@p@ftn=\toks25
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/booktabs/booktab
-s.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/booktabs/booktabs.
+sty
 Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \heavyrulewidth=\dimen161
 \lightrulewidth=\dimen162
@@ -428,26 +414,29 @@ Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \@lastruleclass=\count278
 \@thisrulewidth=\dimen173
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/mdwtools/footnot
-e.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.
+sty
+Package: etoolbox 2019/09/21 v2.5h e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count279
+)
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/mdwtools/footnote.
+sty
 Package: footnote 1997/01/28 1.13 Save footnotes around boxes
 \fn@notes=\box52
 \fn@width=\dimen174
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/graphic
-x.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/graphicx.
+sty
 Package: graphicx 2019/11/30 v1.2a Enhanced LaTeX Graphics (DPC,SPQR)
 
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/graphic
-s.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/graphics.
+sty
 Package: graphics 2019/11/30 v1.4a Standard LaTeX Graphics (DPC,SPQR)
-
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/trig.st
-y
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/trig.sty
 Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics-cfg/gra
-phics.cfg
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics-cfg/graph
+ics.cfg
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 105.
@@ -455,50 +444,46 @@ Package graphics Info: Driver file: pdftex.def on input line 105.
 \Gin@req@height=\dimen175
 \Gin@req@width=\dimen176
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/grffile/grffile.
-sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/grffile/grffile.st
+y
 Package: grffile 2019/11/11 v2.1 Extended file name support for graphics (legac
 y)
 Package grffile Info: This package is an empty stub for compatibility on input 
 line 40.
-)
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/babel.st
+) (c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/babel.st
 y
 Package: babel 2020/02/28 3.41 The Babel package
 
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/switch.d
-ef
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/switch.def
 File: switch.def 2020/02/28 3.41 Babel switching mechanism
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel-french/f
-rench.ldf
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel-french/fre
+nch.ldf
 Language: french 2020/01/30 v3.5g French support from the babel system
-
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/babel.de
-f
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/babel.def
 File: babel.def 2020/02/28 3.41 Babel common definitions
-\babel@savecnt=\count279
+\babel@savecnt=\count280
 \U@D=\dimen177
 
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/txtbabel
-.def)
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/txtbabel.d
+ef)
 \bbl@readstream=\read3
-\bbl@dirlevel=\count280
+\bbl@dirlevel=\count281
 )
 Package babel Info: \l@acadian = using hyphenrules for french
-(babel)             (\language5) on input line 91.
+(babel)             (\language3) on input line 91.
 Package babel Info: \l@canadien = using hyphenrules for french
-(babel)             (\language5) on input line 92.
-\FB@nonchar=\count281
-\FBguill@level=\count282
+(babel)             (\language3) on input line 92.
+\FB@nonchar=\count282
+\FBguill@level=\count283
 \FBold@everypar=\toks26
 \FB@Mht=\dimen178
-\mc@charclass=\count283
-\mc@charfam=\count284
-\mc@charslot=\count285
-\std@mcc=\count286
-\dec@mcc=\count287
-\c@FBcaption@count=\count288
+\mc@charclass=\count284
+\mc@charfam=\count285
+\mc@charslot=\count286
+\std@mcc=\count287
+\dec@mcc=\count288
+\c@FBcaption@count=\count289
 \listindentFB=\dimen179
 \descindentFB=\dimen180
 \labelindentFB=\dimen181
@@ -507,70 +492,70 @@ Package babel Info: \l@canadien = using hyphenrules for french
 \parindentFFN=\dimen184
 \FBfnindent=\dimen185
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel-french/f
-rench.ldf
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel-french/fre
+nch.ldf
 Language: french 2020/01/30 v3.5g French support from the babel system
 ))
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/carlisle/scalefn
-t.sty)
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3backend/l3back
-end-pdfmode.def
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/carlisle/scalefnt.
+sty)
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3backend/l3backen
+d-pdfmode.def
 File: l3backend-pdfmode.def 2020-02-23 L3 backend support: PDF mode
-\l__kernel_color_stack_int=\count289
+\l__kernel_color_stack_int=\count290
 \l__pdf_internal_box=\box53
 ) (./markdown-projet-actuariat.aux)
 \openout1 = `markdown-projet-actuariat.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 129.
-LaTeX Font Info:    ... okay on input line 129.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 129.
-LaTeX Font Info:    ... okay on input line 129.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 129.
-LaTeX Font Info:    ... okay on input line 129.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 129.
-LaTeX Font Info:    ... okay on input line 129.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 129.
-LaTeX Font Info:    ... okay on input line 129.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 129.
-LaTeX Font Info:    ... okay on input line 129.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 129.
-LaTeX Font Info:    ... okay on input line 129.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 129.
-LaTeX Font Info:    ... okay on input line 129.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 129.
-LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 124.
+LaTeX Font Info:    ... okay on input line 124.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 124.
+LaTeX Font Info:    ... okay on input line 124.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 124.
+LaTeX Font Info:    ... okay on input line 124.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 124.
+LaTeX Font Info:    ... okay on input line 124.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 124.
+LaTeX Font Info:    ... okay on input line 124.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 124.
+LaTeX Font Info:    ... okay on input line 124.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 124.
+LaTeX Font Info:    ... okay on input line 124.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 124.
+LaTeX Font Info:    ... okay on input line 124.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 124.
+LaTeX Font Info:    ... okay on input line 124.
 
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/eps
-topdf-base.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epsto
+pdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 85.
 
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/latexconfig/epst
-opdf-sys.cfg
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/latexconfig/epstop
+df-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 \AtBeginShipoutBox=\box54
-Package hyperref Info: Link coloring OFF on input line 129.
+Package hyperref Info: Link coloring OFF on input line 124.
 
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/nameref
-.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.s
+ty
 Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
 
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/refcount/refcoun
-t.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/refcount/refcount.
+sty
 Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 )
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/gettitlestring
-/gettitlestring.sty
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/gettitlestring/g
+ettitlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count290
+\c@section@level=\count291
 )
-LaTeX Info: Redefining \ref on input line 129.
-LaTeX Info: Redefining \pageref on input line 129.
-LaTeX Info: Redefining \nameref on input line 129.
+LaTeX Info: Redefining \ref on input line 124.
+LaTeX Info: Redefining \pageref on input line 124.
+LaTeX Info: Redefining \nameref on input line 124.
 (./markdown-projet-actuariat.out) (./markdown-projet-actuariat.out)
 \@outlinefile=\write4
 \openout4 = `markdown-projet-actuariat.out'.
@@ -609,45 +594,43 @@ LaTeX Info: Redefining \nameref on input line 129.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Info: Redefining \degres on input line 129.
-LaTeX Info: Redefining \dots on input line 129.
-LaTeX Info: Redefining \up on input line 129.
+LaTeX Info: Redefining \degres on input line 124.
+LaTeX Info: Redefining \dots on input line 124.
+LaTeX Info: Redefining \up on input line 124.
 LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 1
-31.
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
+26.
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 1
-31.
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
+26.
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-131.
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
+126.
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-131.
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
+126.
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 131.
+(Font)              <12> on input line 126.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 131.
+(Font)              <8> on input line 126.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 131.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 131
+(Font)              <6> on input line 126.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 126
 .
-
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 131
+LaTeX Font Info:    Trying to load font information for U+msb on input line 126
 .
-
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (./markdown-projet-actuariat.toc
 LaTeX Font Info:    External font `lmex10' loaded for size
@@ -658,24 +641,24 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <5> on input line 4.
 [1
 
-{c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdf
-tex.map}])
+{c:/Users/admin/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdfte
+x.map}])
 \tf@toc=\write5
 \openout5 = `markdown-projet-actuariat.toc'.
 
 [2] [3]
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 6
-29.
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
+24.
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) [4] [5] [6] [7] [8] [9] [10]
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 1
-397.
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
+392.
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 1398.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 1393.
 [11]
 <markdown-projet-actuariat_files/figure-latex/unnamed-chunk-17-1.pdf, id=220, 2
 89.08pt x 289.08pt>
@@ -683,7 +666,7 @@ File: markdown-projet-actuariat_files/figure-latex/unnamed-chunk-17-1.pdf Graph
 ic file (type pdf)
 <use markdown-projet-actuariat_files/figure-latex/unnamed-chunk-17-1.pdf>
 Package pdftex.def Info: markdown-projet-actuariat_files/figure-latex/unnamed-c
-hunk-17-1.pdf  used on input line 1495.
+hunk-17-1.pdf  used on input line 1490.
 (pdftex.def)             Requested size: 289.09251pt x 289.09251pt.
 [12 <./markdown-projet-actuariat_files/figure-latex/unnamed-chunk-17-1.pdf>]
 <markdown-projet-actuariat_files/figure-latex/unnamed-chunk-18-1.pdf, id=232, 2
@@ -692,7 +675,7 @@ File: markdown-projet-actuariat_files/figure-latex/unnamed-chunk-18-1.pdf Graph
 ic file (type pdf)
 <use markdown-projet-actuariat_files/figure-latex/unnamed-chunk-18-1.pdf>
 Package pdftex.def Info: markdown-projet-actuariat_files/figure-latex/unnamed-c
-hunk-18-1.pdf  used on input line 1541.
+hunk-18-1.pdf  used on input line 1536.
 (pdftex.def)             Requested size: 289.09251pt x 289.09251pt.
 <markdown-projet-actuariat_files/figure-latex/unnamed-chunk-19-1.pdf, id=233, 2
 89.08pt x 289.08pt>
@@ -700,7 +683,7 @@ File: markdown-projet-actuariat_files/figure-latex/unnamed-chunk-19-1.pdf Graph
 ic file (type pdf)
 <use markdown-projet-actuariat_files/figure-latex/unnamed-chunk-19-1.pdf>
 Package pdftex.def Info: markdown-projet-actuariat_files/figure-latex/unnamed-c
-hunk-19-1.pdf  used on input line 1567.
+hunk-19-1.pdf  used on input line 1562.
 (pdftex.def)             Requested size: 289.09251pt x 289.09251pt.
 [13 <./markdown-projet-actuariat_files/figure-latex/unnamed-chunk-18-1.pdf>]
 <markdown-projet-actuariat_files/figure-latex/unnamed-chunk-20-1.pdf, id=244, 2
@@ -709,7 +692,7 @@ File: markdown-projet-actuariat_files/figure-latex/unnamed-chunk-20-1.pdf Graph
 ic file (type pdf)
 <use markdown-projet-actuariat_files/figure-latex/unnamed-chunk-20-1.pdf>
 Package pdftex.def Info: markdown-projet-actuariat_files/figure-latex/unnamed-c
-hunk-20-1.pdf  used on input line 1590.
+hunk-20-1.pdf  used on input line 1585.
 (pdftex.def)             Requested size: 289.09251pt x 289.09251pt.
 [14 <./markdown-projet-actuariat_files/figure-latex/unnamed-chunk-19-1.pdf>]
 <markdown-projet-actuariat_files/figure-latex/unnamed-chunk-21-1.pdf, id=254, 2
@@ -718,7 +701,7 @@ File: markdown-projet-actuariat_files/figure-latex/unnamed-chunk-21-1.pdf Graph
 ic file (type pdf)
 <use markdown-projet-actuariat_files/figure-latex/unnamed-chunk-21-1.pdf>
 Package pdftex.def Info: markdown-projet-actuariat_files/figure-latex/unnamed-c
-hunk-21-1.pdf  used on input line 1618.
+hunk-21-1.pdf  used on input line 1613.
 (pdftex.def)             Requested size: 289.09251pt x 289.09251pt.
 [15 <./markdown-projet-actuariat_files/figure-latex/unnamed-chunk-20-1.pdf>]
 <markdown-projet-actuariat_files/figure-latex/unnamed-chunk-22-1.pdf, id=265, 4
@@ -727,7 +710,7 @@ File: markdown-projet-actuariat_files/figure-latex/unnamed-chunk-22-1.pdf Graph
 ic file (type pdf)
 <use markdown-projet-actuariat_files/figure-latex/unnamed-chunk-22-1.pdf>
 Package pdftex.def Info: markdown-projet-actuariat_files/figure-latex/unnamed-c
-hunk-22-1.pdf  used on input line 1628.
+hunk-22-1.pdf  used on input line 1623.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [16 <./markdown-projet-actuariat_files/figure-latex/unnamed-chunk-21-1.pdf>]
 <markdown-projet-actuariat_files/figure-latex/unnamed-chunk-23-1.pdf, id=275, 2
@@ -736,331 +719,334 @@ File: markdown-projet-actuariat_files/figure-latex/unnamed-chunk-23-1.pdf Graph
 ic file (type pdf)
 <use markdown-projet-actuariat_files/figure-latex/unnamed-chunk-23-1.pdf>
 Package pdftex.def Info: markdown-projet-actuariat_files/figure-latex/unnamed-c
-hunk-23-1.pdf  used on input line 1639.
+hunk-23-1.pdf  used on input line 1634.
 (pdftex.def)             Requested size: 289.09251pt x 289.09251pt.
 [17 <./markdown-projet-actuariat_files/figure-latex/unnamed-chunk-22-1.pdf>] [1
-8 <./markdown-projet-actuariat_files/figure-latex/unnamed-chunk-23-1.pdf>]
-Overfull \vbox (16.35678pt too high) has occurred while \output is active []
-
-[19]
+8 <./markdown-projet-actuariat_files/figure-latex/unnamed-chunk-23-1.pdf>] [19]
 <markdown-projet-actuariat_files/figure-latex/unnamed-chunk-27-1.pdf, id=309, 2
 89.08pt x 289.08pt>
 File: markdown-projet-actuariat_files/figure-latex/unnamed-chunk-27-1.pdf Graph
 ic file (type pdf)
 <use markdown-projet-actuariat_files/figure-latex/unnamed-chunk-27-1.pdf>
 Package pdftex.def Info: markdown-projet-actuariat_files/figure-latex/unnamed-c
-hunk-27-1.pdf  used on input line 1806.
+hunk-27-1.pdf  used on input line 1801.
 (pdftex.def)             Requested size: 289.09251pt x 289.09251pt.
-[20 <./markdown-projet-actuariat_files/figure-latex/unnamed-chunk-27-1.pdf>]
-<markdown-projet-actuariat_files/figure-latex/unnamed-chunk-28-1.pdf, id=321, 4
+<markdown-projet-actuariat_files/figure-latex/unnamed-chunk-28-1.pdf, id=310, 4
 69.755pt x 325.215pt>
 File: markdown-projet-actuariat_files/figure-latex/unnamed-chunk-28-1.pdf Graph
 ic file (type pdf)
 <use markdown-projet-actuariat_files/figure-latex/unnamed-chunk-28-1.pdf>
 Package pdftex.def Info: markdown-projet-actuariat_files/figure-latex/unnamed-c
-hunk-28-1.pdf  used on input line 1831.
+hunk-28-1.pdf  used on input line 1826.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[20 <./markdown-projet-actuariat_files/figure-latex/unnamed-chunk-27-1.pdf>]
+<recaploisusuelles.png, id=322, 463.61205pt x 181.03635pt>
+File: recaploisusuelles.png Graphic file (type png)
+<use recaploisusuelles.png>
+Package pdftex.def Info: recaploisusuelles.png  used on input line 1857.
+(pdftex.def)             Requested size: 463.61798pt x 181.03867pt.
 [21 <./markdown-projet-actuariat_files/figure-latex/unnamed-chunk-28-1.pdf>]
 
-LaTeX Warning: Command \textmu invalid in math mode on input line 1869.
+LaTeX Warning: Command \textmu invalid in math mode on input line 1881.
 
 
-LaTeX Warning: Command \textmu invalid in math mode on input line 1869.
+LaTeX Warning: Command \textmu invalid in math mode on input line 1881.
 
-[22] [23] [24] [25] [26] [27] [28]
-Underfull \hbox (badness 10000) in paragraph at lines 2335--2338
+[22 <./Recaploisusuelles.png (PNG copy)>] [23] [24] [25] [26] [27] [28]
+Underfull \hbox (badness 10000) in paragraph at lines 2347--2350
 \T1/lmr/m/n/10 des -[] composantes -[] principales -[] dans -[] r -[] guide -[]
  pratique / 73 -[] acp -[] analyse -[] en -[] composantes -[] principales -[]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2338--2340
+Underfull \hbox (badness 10000) in paragraph at lines 2350--2352
 \T1/lmr/m/n/10 des -[] composantes -[] principales -[] dans -[] r -[] guide -[]
  pratique / 74 -[] afc -[] analyse -[] factorielle -[] des -[] correspondances 
 -[]
  []
 
+[29]
 LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
-2469.
-(c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
+2481.
+(c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-) [29] [30] [31] [32] [33]
-Overfull \hbox (296.74275pt too wide) in paragraph at lines 2675--2675
+) [30] [31] [32] [33]
+Overfull \hbox (296.74275pt too wide) in paragraph at lines 2687--2687
 []\T1/lmtt/m/n/10 ## lowest : carburation                    GPL               
              injection                      injection directe surpuissante élec
 trique[] 
  []
 
 
-Overfull \hbox (359.74257pt too wide) in paragraph at lines 2675--2675
+Overfull \hbox (359.74257pt too wide) in paragraph at lines 2687--2687
 []\T1/lmtt/m/n/10 ## highest: GPL                            injection         
              injection directe surpuissante électrique                     inje
 ction surpuissante[] 
  []
 
-[34]
-Overfull \hbox (2.03835pt too wide) in alignment at lines 2681--2685
+[34] [35]
+Overfull \hbox (2.03835pt too wide) in alignment at lines 2693--2697
  [] [] [] 
  []
 
-<graphique/Exposure1.png, id=422, 803.0pt x 702.625pt>
+<graphique/Exposure1.png, id=428, 803.0pt x 702.625pt>
 File: graphique/Exposure1.png Graphic file (type png)
 <use graphique/Exposure1.png>
-Package pdftex.def Info: graphique/Exposure1.png  used on input line 2687.
+Package pdftex.def Info: graphique/Exposure1.png  used on input line 2699.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/Exposure2.png, id=423, 803.0pt x 702.625pt>
+<graphique/Exposure2.png, id=429, 803.0pt x 702.625pt>
 File: graphique/Exposure2.png Graphic file (type png)
 <use graphique/Exposure2.png>
-Package pdftex.def Info: graphique/Exposure2.png  used on input line 2689.
+Package pdftex.def Info: graphique/Exposure2.png  used on input line 2701.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/LicAge1.png, id=424, 803.0pt x 702.625pt>
+<graphique/LicAge1.png, id=430, 803.0pt x 702.625pt>
 File: graphique/LicAge1.png Graphic file (type png)
 <use graphique/LicAge1.png>
-Package pdftex.def Info: graphique/LicAge1.png  used on input line 2691.
+Package pdftex.def Info: graphique/LicAge1.png  used on input line 2703.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/LicAge2.png, id=425, 803.0pt x 702.625pt>
+<graphique/LicAge2.png, id=431, 803.0pt x 702.625pt>
 File: graphique/LicAge2.png Graphic file (type png)
 <use graphique/LicAge2.png>
-Package pdftex.def Info: graphique/LicAge2.png  used on input line 2693.
+Package pdftex.def Info: graphique/LicAge2.png  used on input line 2705.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehAge1.png, id=426, 803.0pt x 702.625pt>
+<graphique/VehAge1.png, id=432, 803.0pt x 702.625pt>
 File: graphique/VehAge1.png Graphic file (type png)
 <use graphique/VehAge1.png>
-Package pdftex.def Info: graphique/VehAge1.png  used on input line 2695.
+Package pdftex.def Info: graphique/VehAge1.png  used on input line 2707.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehAge2.png, id=427, 803.0pt x 702.625pt>
+<graphique/VehAge2.png, id=433, 803.0pt x 702.625pt>
 File: graphique/VehAge2.png Graphic file (type png)
 <use graphique/VehAge2.png>
-Package pdftex.def Info: graphique/VehAge2.png  used on input line 2697.
+Package pdftex.def Info: graphique/VehAge2.png  used on input line 2709.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/MariStat1.png, id=428, 803.0pt x 702.625pt>
+<graphique/MariStat1.png, id=434, 803.0pt x 702.625pt>
 File: graphique/MariStat1.png Graphic file (type png)
 <use graphique/MariStat1.png>
-Package pdftex.def Info: graphique/MariStat1.png  used on input line 2699.
+Package pdftex.def Info: graphique/MariStat1.png  used on input line 2711.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/MariStat2.png, id=429, 803.0pt x 702.625pt>
+<graphique/MariStat2.png, id=435, 803.0pt x 702.625pt>
 File: graphique/MariStat2.png Graphic file (type png)
 <use graphique/MariStat2.png>
-Package pdftex.def Info: graphique/MariStat2.png  used on input line 2701.
+Package pdftex.def Info: graphique/MariStat2.png  used on input line 2713.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/SocioCateg1.png, id=430, 803.0pt x 702.625pt>
+<graphique/SocioCateg1.png, id=436, 803.0pt x 702.625pt>
 File: graphique/SocioCateg1.png Graphic file (type png)
 <use graphique/SocioCateg1.png>
-Package pdftex.def Info: graphique/SocioCateg1.png  used on input line 2703.
+Package pdftex.def Info: graphique/SocioCateg1.png  used on input line 2715.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/SocioCateg2.png, id=431, 803.0pt x 702.625pt>
+<graphique/SocioCateg2.png, id=437, 803.0pt x 702.625pt>
 File: graphique/SocioCateg2.png Graphic file (type png)
 <use graphique/SocioCateg2.png>
-Package pdftex.def Info: graphique/SocioCateg2.png  used on input line 2705.
+Package pdftex.def Info: graphique/SocioCateg2.png  used on input line 2717.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehUsage1.png, id=432, 803.0pt x 702.625pt>
+<graphique/VehUsage1.png, id=438, 803.0pt x 702.625pt>
 File: graphique/VehUsage1.png Graphic file (type png)
 <use graphique/VehUsage1.png>
-Package pdftex.def Info: graphique/VehUsage1.png  used on input line 2707.
+Package pdftex.def Info: graphique/VehUsage1.png  used on input line 2719.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehUsage2.png, id=433, 803.0pt x 702.625pt>
+<graphique/VehUsage2.png, id=439, 803.0pt x 702.625pt>
 File: graphique/VehUsage2.png Graphic file (type png)
 <use graphique/VehUsage2.png>
-Package pdftex.def Info: graphique/VehUsage2.png  used on input line 2709.
+Package pdftex.def Info: graphique/VehUsage2.png  used on input line 2721.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/DrivAge1.png, id=434, 803.0pt x 702.625pt>
+<graphique/DrivAge1.png, id=440, 803.0pt x 702.625pt>
 File: graphique/DrivAge1.png Graphic file (type png)
 <use graphique/DrivAge1.png>
-Package pdftex.def Info: graphique/DrivAge1.png  used on input line 2711.
+Package pdftex.def Info: graphique/DrivAge1.png  used on input line 2723.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/DrivAge2.png, id=435, 803.0pt x 702.625pt>
+<graphique/DrivAge2.png, id=441, 803.0pt x 702.625pt>
 File: graphique/DrivAge2.png Graphic file (type png)
 <use graphique/DrivAge2.png>
-Package pdftex.def Info: graphique/DrivAge2.png  used on input line 2713.
+Package pdftex.def Info: graphique/DrivAge2.png  used on input line 2725.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/HasKmLimit1.png, id=436, 803.0pt x 702.625pt>
+<graphique/HasKmLimit1.png, id=442, 803.0pt x 702.625pt>
 File: graphique/HasKmLimit1.png Graphic file (type png)
 <use graphique/HasKmLimit1.png>
-Package pdftex.def Info: graphique/HasKmLimit1.png  used on input line 2715.
+Package pdftex.def Info: graphique/HasKmLimit1.png  used on input line 2727.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/HasKmLimit2.png, id=437, 803.0pt x 702.625pt>
+<graphique/HasKmLimit2.png, id=443, 803.0pt x 702.625pt>
 File: graphique/HasKmLimit2.png Graphic file (type png)
 <use graphique/HasKmLimit2.png>
-Package pdftex.def Info: graphique/HasKmLimit2.png  used on input line 2717.
+Package pdftex.def Info: graphique/HasKmLimit2.png  used on input line 2729.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/BonusMalus1.png, id=438, 803.0pt x 702.625pt>
+<graphique/BonusMalus1.png, id=444, 803.0pt x 702.625pt>
 File: graphique/BonusMalus1.png Graphic file (type png)
 <use graphique/BonusMalus1.png>
-Package pdftex.def Info: graphique/BonusMalus1.png  used on input line 2719.
+Package pdftex.def Info: graphique/BonusMalus1.png  used on input line 2731.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/BonusMalus2.png, id=439, 803.0pt x 702.625pt>
+<graphique/BonusMalus2.png, id=445, 803.0pt x 702.625pt>
 File: graphique/BonusMalus2.png Graphic file (type png)
 <use graphique/BonusMalus2.png>
-Package pdftex.def Info: graphique/BonusMalus2.png  used on input line 2721.
+Package pdftex.def Info: graphique/BonusMalus2.png  used on input line 2733.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehBody1.png, id=440, 803.0pt x 702.625pt>
+<graphique/VehBody1.png, id=446, 803.0pt x 702.625pt>
 File: graphique/VehBody1.png Graphic file (type png)
 <use graphique/VehBody1.png>
-Package pdftex.def Info: graphique/VehBody1.png  used on input line 2723.
+Package pdftex.def Info: graphique/VehBody1.png  used on input line 2735.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehBody2.png, id=441, 803.0pt x 702.625pt>
+<graphique/VehBody2.png, id=447, 803.0pt x 702.625pt>
 File: graphique/VehBody2.png Graphic file (type png)
 <use graphique/VehBody2.png>
-Package pdftex.def Info: graphique/VehBody2.png  used on input line 2725.
+Package pdftex.def Info: graphique/VehBody2.png  used on input line 2737.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehPrice1.png, id=442, 803.0pt x 702.625pt>
+<graphique/VehPrice1.png, id=448, 803.0pt x 702.625pt>
 File: graphique/VehPrice1.png Graphic file (type png)
 <use graphique/VehPrice1.png>
-Package pdftex.def Info: graphique/VehPrice1.png  used on input line 2727.
+Package pdftex.def Info: graphique/VehPrice1.png  used on input line 2739.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehPrice2.png, id=443, 803.0pt x 702.625pt>
+<graphique/VehPrice2.png, id=449, 803.0pt x 702.625pt>
 File: graphique/VehPrice2.png Graphic file (type png)
 <use graphique/VehPrice2.png>
-Package pdftex.def Info: graphique/VehPrice2.png  used on input line 2729.
+Package pdftex.def Info: graphique/VehPrice2.png  used on input line 2741.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehEngine1.png, id=444, 803.0pt x 702.625pt>
+<graphique/VehEngine1.png, id=450, 803.0pt x 702.625pt>
 File: graphique/VehEngine1.png Graphic file (type png)
 <use graphique/VehEngine1.png>
-Package pdftex.def Info: graphique/VehEngine1.png  used on input line 2731.
+Package pdftex.def Info: graphique/VehEngine1.png  used on input line 2743.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehEngine2.png, id=445, 803.0pt x 702.625pt>
+<graphique/VehEngine2.png, id=451, 803.0pt x 702.625pt>
 File: graphique/VehEngine2.png Graphic file (type png)
 <use graphique/VehEngine2.png>
-Package pdftex.def Info: graphique/VehEngine2.png  used on input line 2733.
+Package pdftex.def Info: graphique/VehEngine2.png  used on input line 2745.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehEnergy1.png, id=446, 803.0pt x 702.625pt>
+<graphique/VehEnergy1.png, id=452, 803.0pt x 702.625pt>
 File: graphique/VehEnergy1.png Graphic file (type png)
 <use graphique/VehEnergy1.png>
-Package pdftex.def Info: graphique/VehEnergy1.png  used on input line 2735.
+Package pdftex.def Info: graphique/VehEnergy1.png  used on input line 2747.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehEnergy2.png, id=447, 803.0pt x 702.625pt>
+<graphique/VehEnergy2.png, id=453, 803.0pt x 702.625pt>
 File: graphique/VehEnergy2.png Graphic file (type png)
 <use graphique/VehEnergy2.png>
-Package pdftex.def Info: graphique/VehEnergy2.png  used on input line 2737.
+Package pdftex.def Info: graphique/VehEnergy2.png  used on input line 2749.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehMaxSpeed1.png, id=448, 803.0pt x 702.625pt>
+<graphique/VehMaxSpeed1.png, id=454, 803.0pt x 702.625pt>
 File: graphique/VehMaxSpeed1.png Graphic file (type png)
 <use graphique/VehMaxSpeed1.png>
-Package pdftex.def Info: graphique/VehMaxSpeed1.png  used on input line 2739.
+Package pdftex.def Info: graphique/VehMaxSpeed1.png  used on input line 2751.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehMaxSpeed2.png, id=449, 803.0pt x 702.625pt>
+<graphique/VehMaxSpeed2.png, id=455, 803.0pt x 702.625pt>
 File: graphique/VehMaxSpeed2.png Graphic file (type png)
 <use graphique/VehMaxSpeed2.png>
-Package pdftex.def Info: graphique/VehMaxSpeed2.png  used on input line 2741.
+Package pdftex.def Info: graphique/VehMaxSpeed2.png  used on input line 2753.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehClass1.png, id=450, 803.0pt x 702.625pt>
+<graphique/VehClass1.png, id=456, 803.0pt x 702.625pt>
 File: graphique/VehClass1.png Graphic file (type png)
 <use graphique/VehClass1.png>
-Package pdftex.def Info: graphique/VehClass1.png  used on input line 2743.
+Package pdftex.def Info: graphique/VehClass1.png  used on input line 2755.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/VehClass2.png, id=451, 803.0pt x 702.625pt>
+<graphique/VehClass2.png, id=457, 803.0pt x 702.625pt>
 File: graphique/VehClass2.png Graphic file (type png)
 <use graphique/VehClass2.png>
-Package pdftex.def Info: graphique/VehClass2.png  used on input line 2745.
+Package pdftex.def Info: graphique/VehClass2.png  used on input line 2757.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/RiskVar1.png, id=452, 803.0pt x 702.625pt>
+<graphique/RiskVar1.png, id=458, 803.0pt x 702.625pt>
 File: graphique/RiskVar1.png Graphic file (type png)
 <use graphique/RiskVar1.png>
-Package pdftex.def Info: graphique/RiskVar1.png  used on input line 2747.
+Package pdftex.def Info: graphique/RiskVar1.png  used on input line 2759.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/RiskVar2.png, id=453, 803.0pt x 702.625pt>
+<graphique/RiskVar2.png, id=459, 803.0pt x 702.625pt>
 File: graphique/RiskVar2.png Graphic file (type png)
 <use graphique/RiskVar2.png>
-Package pdftex.def Info: graphique/RiskVar2.png  used on input line 2749.
+Package pdftex.def Info: graphique/RiskVar2.png  used on input line 2761.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/ClaimAmount1.png, id=454, 803.0pt x 702.625pt>
+<graphique/ClaimAmount1.png, id=460, 803.0pt x 702.625pt>
 File: graphique/ClaimAmount1.png Graphic file (type png)
 <use graphique/ClaimAmount1.png>
-Package pdftex.def Info: graphique/ClaimAmount1.png  used on input line 2751.
+Package pdftex.def Info: graphique/ClaimAmount1.png  used on input line 2763.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/ClaimAmount2.png, id=455, 803.0pt x 702.625pt>
+<graphique/ClaimAmount2.png, id=461, 803.0pt x 702.625pt>
 File: graphique/ClaimAmount2.png Graphic file (type png)
 <use graphique/ClaimAmount2.png>
-Package pdftex.def Info: graphique/ClaimAmount2.png  used on input line 2753.
+Package pdftex.def Info: graphique/ClaimAmount2.png  used on input line 2765.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/Garage1.png, id=456, 803.0pt x 702.625pt>
+<graphique/Garage1.png, id=462, 803.0pt x 702.625pt>
 File: graphique/Garage1.png Graphic file (type png)
 <use graphique/Garage1.png>
-Package pdftex.def Info: graphique/Garage1.png  used on input line 2755.
+Package pdftex.def Info: graphique/Garage1.png  used on input line 2767.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/Garage2.png, id=457, 803.0pt x 702.625pt>
+<graphique/Garage2.png, id=463, 803.0pt x 702.625pt>
 File: graphique/Garage2.png Graphic file (type png)
 <use graphique/Garage2.png>
-Package pdftex.def Info: graphique/Garage2.png  used on input line 2757.
+Package pdftex.def Info: graphique/Garage2.png  used on input line 2769.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/ClaimInd1.png, id=458, 803.0pt x 702.625pt>
+<graphique/ClaimInd1.png, id=464, 803.0pt x 702.625pt>
 File: graphique/ClaimInd1.png Graphic file (type png)
 <use graphique/ClaimInd1.png>
-Package pdftex.def Info: graphique/ClaimInd1.png  used on input line 2759.
+Package pdftex.def Info: graphique/ClaimInd1.png  used on input line 2771.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
-<graphique/ClaimInd2.png, id=459, 803.0pt x 702.625pt>
+<graphique/ClaimInd2.png, id=465, 803.0pt x 702.625pt>
 File: graphique/ClaimInd2.png Graphic file (type png)
 <use graphique/ClaimInd2.png>
-Package pdftex.def Info: graphique/ClaimInd2.png  used on input line 2761.
+Package pdftex.def Info: graphique/ClaimInd2.png  used on input line 2773.
 (pdftex.def)             Requested size: 187.89635pt x 164.40929pt.
 
-Overfull \hbox (2.03835pt too wide) in alignment at lines 2685--2763
+Overfull \hbox (2.03835pt too wide) in alignment at lines 2697--2775
  [] [] [] 
  []
 
-[35 <./graphique/Exposure1.png> <./graphique/Exposure2.png>] [36 <./graphique/L
-icAge1.png> <./graphique/LicAge2.png> <./graphique/VehAge1.png (PNG copy)> <./g
-raphique/VehAge2.png> <./graphique/MariStat1.png> <./graphique/MariStat2.png>] 
-[37 <./graphique/SocioCateg1.png> <./graphique/SocioCateg2.png> <./graphique/Ve
-hUsage1.png> <./graphique/VehUsage2.png> <./graphique/DrivAge1.png> <./graphiqu
-e/DrivAge2.png>] [38 <./graphique/HasKmLimit1.png> <./graphique/HasKmLimit2.png
-> <./graphique/BonusMalus1.png> <./graphique/BonusMalus2.png> <./graphique/VehB
-ody1.png (PNG copy)> <./graphique/VehBody2.png (PNG copy)>] [39 <./graphique/Ve
-hPrice1.png (PNG copy)> <./graphique/VehPrice2.png (PNG copy)> <./graphique/Veh
-Engine1.png (PNG copy)> <./graphique/VehEngine2.png (PNG copy)> <./graphique/Ve
-hEnergy1.png> <./graphique/VehEnergy2.png>] [40 <./graphique/VehMaxSpeed1.png (
-PNG copy)> <./graphique/VehMaxSpeed2.png (PNG copy)> <./graphique/VehClass1.png
-> <./graphique/VehClass2.png> <./graphique/RiskVar1.png> <./graphique/RiskVar2.
-png>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2765.
-[41 <./graphique/ClaimAmount1.png> <./graphique/ClaimAmount2.png> <./graphique/
-Garage1.png> <./graphique/Garage2.png> <./graphique/ClaimInd1.png> <./graphique
-/ClaimInd2.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 2765.
+[36 <./graphique/Exposure1.png> <./graphique/Exposure2.png> <./graphique/LicAge
+1.png> <./graphique/LicAge2.png> <./graphique/VehAge1.png (PNG copy)> <./graphi
+que/VehAge2.png>] [37 <./graphique/MariStat1.png> <./graphique/MariStat2.png> <
+./graphique/SocioCateg1.png> <./graphique/SocioCateg2.png> <./graphique/VehUsag
+e1.png> <./graphique/VehUsage2.png>] [38 <./graphique/DrivAge1.png> <./graphiqu
+e/DrivAge2.png> <./graphique/HasKmLimit1.png> <./graphique/HasKmLimit2.png> <./
+graphique/BonusMalus1.png> <./graphique/BonusMalus2.png>] [39 <./graphique/VehB
+ody1.png (PNG copy)> <./graphique/VehBody2.png (PNG copy)> <./graphique/VehPric
+e1.png (PNG copy)> <./graphique/VehPrice2.png (PNG copy)> <./graphique/VehEngin
+e1.png (PNG copy)> <./graphique/VehEngine2.png (PNG copy)>] [40 <./graphique/Ve
+hEnergy1.png> <./graphique/VehEnergy2.png> <./graphique/VehMaxSpeed1.png (PNG c
+opy)> <./graphique/VehMaxSpeed2.png (PNG copy)> <./graphique/VehClass1.png> <./
+graphique/VehClass2.png>] [41 <./graphique/RiskVar1.png> <./graphique/RiskVar2.
+png> <./graphique/ClaimAmount1.png> <./graphique/ClaimAmount2.png> <./graphique
+/Garage1.png> <./graphique/Garage2.png>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2777.
+[42 <./graphique/ClaimInd1.png> <./graphique/ClaimInd2.png>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 2777.
 (./markdown-projet-actuariat.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 2765.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 2765.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 2777.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 2777.
 
 Package rerunfilecheck Info: File `markdown-projet-actuariat.out' has not chang
 ed.
 (rerunfilecheck)             Checksum: EDD5581E4855E112F32B6A1EB0B37514;6597.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 2765.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 2777.
  ) 
 Here is how much of TeX's memory you used:
- 12913 strings out of 482895
- 194800 string characters out of 5956533
- 482925 words of memory out of 5000000
- 27792 multiletter control sequences out of 15000+600000
+ 13229 strings out of 482918
+ 198215 string characters out of 5957882
+ 489947 words of memory out of 5000000
+ 28092 multiletter control sequences out of 15000+600000
  583512 words of font info for 68 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 34i,7n,37p,534b,597s stack positions out of 5000i,500n,10000p,200000b,80000s
-{c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts
-1.enc}{c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/l
-m-mathsy.enc}{c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvi
-ps/lm/lm-ec.enc}{c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/
-dvips/lm/lm-rm.enc}{c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/fonts/e
-nc/dvips/lm/lm-mathex.enc}{c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/
-fonts/enc/dvips/lm/lm-mathit.enc}<c:/Users/Delhaye/AppData/Roaming/TinyTeX/texm
-f-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/Delhaye/AppData/Roaming/TinyT
-eX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/Delhaye/AppData/Roamin
-g/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/Users/Delhaye/AppData
-/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/Delhaye/
-AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb><c:/Users/De
-lhaye/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Us
-ers/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb>
-<c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr1
-7.pfb><c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/l
-m/lmr7.pfb><c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/pub
-lic/lm/lmri10.pfb><c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/fonts/ty
-pe1/public/lm/lmsy10.pfb><c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-dist/f
-onts/type1/public/lm/lmsy7.pfb><c:/Users/Delhaye/AppData/Roaming/TinyTeX/texmf-
-dist/fonts/type1/public/lm/lmtk10.pfb><c:/Users/Delhaye/AppData/Roaming/TinyTeX
-/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/Users/Delhaye/AppData/Roaming/
-TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on markdown-projet-actuariat.pdf (41 pages, 708151 bytes).
+ 34i,7n,37p,919b,597s stack positions out of 5000i,500n,10000p,200000b,80000s
+{c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.
+enc}{c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ma
+thsy.enc}{c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/
+lm-ec.enc}{c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm
+/lm-rm.enc}{c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/l
+m/lm-mathex.enc}{c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dv
+ips/lm/lm-mathit.enc}<c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/fonts/t
+ype1/public/lm/lmbx10.pfb><c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/fo
+nts/type1/public/lm/lmbx12.pfb><c:/Users/admin/AppData/Roaming/TinyTeX/texmf-di
+st/fonts/type1/public/lm/lmex10.pfb><c:/Users/admin/AppData/Roaming/TinyTeX/tex
+mf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/admin/AppData/Roaming/TinyTe
+X/texmf-dist/fonts/type1/public/lm/lmmi7.pfb><c:/Users/admin/AppData/Roaming/Ti
+nyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/admin/AppData/Roamin
+g/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/admin/AppData/Ro
+aming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/admin/AppDat
+a/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/admin/App
+Data/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/admi
+n/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users
+/admin/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/U
+sers/admin/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb>
+<c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10
+.pfb><c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/l
+mtti10.pfb><c:/Users/admin/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/publi
+c/amsfonts/symbols/msbm10.pfb>
+Output written on markdown-projet-actuariat.pdf (42 pages, 723393 bytes).
 PDF statistics:
- 608 PDF objects out of 1000 (max. 8388607)
- 457 compressed objects within 5 object streams
- 121 named destinations out of 1000 (max. 500000)
- 460 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 617 PDF objects out of 1000 (max. 8388607)
+ 463 compressed objects within 5 object streams
+ 122 named destinations out of 1000 (max. 500000)
+ 465 words of extra memory for PDF output out of 10000 (max. 10000000)
 

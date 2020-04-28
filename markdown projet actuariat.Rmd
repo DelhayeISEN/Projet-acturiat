@@ -777,6 +777,22 @@ fviz_ca_col (freMPL2.ca, col.col = "cos2",
 
 Les modèles linéaires généralisés aussi appelés GLM sont une extension des modèles linéaires classiques. 
 
+La famille exponentielle est à la base des fonctions de distribution utilisées dans le modèle linéaire généralisé, qui comprend la plupart des modèles de régression en statistique et en économétrie.
+
+La famille exponentielle regroupe les lois de probabilités dont la densité est donnée par
+$$f(x;\theta)- exp(\sum_{j=1}^k\eta_j(\theta)T_j(x)-B(\theta))h(x), x \in \chi$$ où $$\eta(.),T(.) : \mathbb{R}^k\rightarrow\mathbb{R}^k,h(.) : \mathbb{R}^d \rightarrow \mathbb{R}^k$$ la fonction de base
+$$B:\mathbb{R}\rightarrow\mathbb{R} \& \theta \in \iff \subset \mathbb{R}^k$$ est le vecteur de paramètres naturelles.
+
+
+Voici un récapitulatif des lois usuelles utilisées en statistiques.
+
+
+```{r}
+knitr::include_graphics("recaploisusuelles.png")
+```
+
+
+
 |    Cependant les modèles linéaires classiques sont utilisés uniquement lorsque la variable réponse est de type numérique continue. Or dans le cas que nous étudions, nous allons principalement utiliser des variables binaires avec lesquelles nous devrons utiliser la loi de Bernouilli.
 De ce fait l’erreur qui résulte de notre modèle linéaire classique ne peut donc pas suivre une loi normale de moyenne nulle et de variance constante, nos résultats étant soit 0 ou 1.
 
