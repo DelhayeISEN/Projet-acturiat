@@ -7,6 +7,9 @@ output:
     number_section: yes
     toc: yes
     toc_depth: 4
+  word_document:
+    toc: yes
+    toc_depth: '4'
   html_document:
     df_print: paged
     toc: yes
@@ -805,11 +808,42 @@ Et Gamma et Inverse gauss pour représenter la sévérité des sinistres
 
 ## Modélisation de la fréquence et de la sévérité des sinistres par les GLM
 
+|    Dans cette partie, nous allons voir comment on modélise la fréquence et la sévérité des sévérités grâce à des GLM afin de pouvoir, par la suite, calculer la prime pure. 
+|    Les compagnies d'assurance prennent de nombreux critères en compte pour le calcul de votre prime d’assurance automobile. Parmi eux, on trouve :
+
+- Les caractéristiques du véhicule
+- L’usage du véhicule
+- L’endroit de stationement du véhicule 
+- Le niveau de protection souhaité (assurance tous risques, assurance au tiers, etc.) ;
+- Le kilométrage parcouru chaque année
+- Le profil de conducteur : âge, date de permis, bonus-malus, antécédents d’assurance, etc.
+
+Bien que nous ne possédons pas la totalité de ses informations (par exemple, l'endroit où le véhicule est stationné ou le nombre de kilomètres parcourus), nous avons une quantité suffisante d'informations pour pouvoir calculer notre propre prime d'assurance.
+
 ### Fréquence des sinistres
+
+|    Avant de calculer cette prime, il faut d'abord s'intéresser à la fréquence des sinistres pour une police (un individu) donné.  
+|    Pour celà, nous allons nous intéresser à la variable ClaimInd qui est un indice correspondant à l'événement "L'individu a eu un accident sur la période pour laquelle il était assuré". En effet, cette variable est à 1 si l'individu a subi un accident et à 0 sinon. 
+|    Ainsi, cette variable peut être associée à une expérience de Bernoulli, c'est-à-dire une expérience aléatoire comportant 2 issues, un succés ou un échec. Dans notre cas, le "succés" correspondrait au fait d'avoir eu au moins un accident et l'échec de ne pas avoir eu d'accident durant la durée d'exposition (période pendant lequel l'individu est assuré). La prédiction de notre modèle GLM correspondra donc à la probabilité qu'un individu avec ses caractéristiques associées d'avoir au moins un accident pendant qu'il est assuré.   
+
+|    Avant de faire une calibration de notre modèle, il est important de segmenter nos données continues comme l'âge du conducteur. En effet, l'âge du conducteur, s'il n'est pas diviser en plusieurs catégories, n'aura aucune influence puisqu'un coefficient unique lui serait associés. Pour catégoriser nos données, il faut utiliser l'instruction **cut()** en R. Voici un exemple d'utilisation : 
+```{r, echo = TRUE}
+freMPL2$DrivAge <- cut(freMPL2$DrivAge, breaks = c(17,2:8*10,103))
+levels(freMPL2$DrivAge)
+```
+|    Dans cet exemple, l'âge du conducteur est divisé de la façon suivante : 
+
+- groupe 1 : les conducteurs agés entre 18 et 20 ans
+- groupe 2 : les conducteurs agés entre 21 et 30 ans
+- groupe 3 : les conducteurs agés entre 31 et 40 ans
+- groupe 4 : les conducteurs agés entre 41 et 50 ans
+- groupe 5 : les conducteurs agés entre 51 et 60 ans
+- groupe 6 : les conducteurs agés entre 61 et 70 ans
+- groupe 7 : les conducteurs agés entre 71 et 80 ans
+- groupe 8 : les conducteurs agés de 81 ans ou plus.
 
 ```{r}
 freMPL2$LicAge <- cut(freMPL2$LicAge, breaks = c(-1,36,1:6*120,960))
-freMPL2$DrivAge <- cut(freMPL2$DrivAge, breaks = c(17,2:8*10,103))
 freMPL2$BonusMalus <- cut(freMPL2$BonusMalus, breaks = c(49,100,350))
 freMPL2$HasKmLimit <- as.factor(freMPL2$HasKmLimit)
 freMPL2$RiskVar <- cut(freMPL2$RiskVar, breaks = c(-1,0:5*4))
@@ -818,33 +852,46 @@ freMPL2save <- freMPL2[,c(-4)]
 freMPL2 <- freMPL2[,c(-19)]
 ```
 
-```{r}
+|     Pour utiliser un GLM avec R, il suffit d’employer la fonction **glm()** du package **stats**. Cette fonction s'écrit de la façon suivante :
+**glm(variable à expliquer ~ variable(s) explicative(s), type de loi(fonction de lien), ...)**
+
+|    Dans le premier modèle que l'on va éxécuter, la variable à expliquer correspond au ClaimInd, les variables explicatives correspondent à l'ensemble des autres variables de notre tableau. 
+|    Pour le type de loi, nous utilisons l'argument family de la fonction glm() et, plus précisement, la famille binomiale. Nous avons utilisé cette famille-là car elle correspond aux données associées à un schéma de Bernoulli comme notre variable à expliquer. Les autres familles possibles sont : gaussian, Gamma, inverse.gaussian, poisson, quasi, quasibinomial et quasipoisson.
+|    Enfin, nous allons utilisé la fonction de lien **logit** qui est associé aux lois binomiales. 
+
+Voici le premier modèle que nous avons utilisé : 
+```{r, echo = TRUE}
 glmfreqinit <- glm(ClaimInd~., offset = log(Exposure), family=binomial(link="logit"), data=freMPL2)
-library(broom)
-glmfreqinittab <- tidy(glmfreqinit)
-knitr::kable(glmfreqinittab[,c("term","estimate","p.value")])
 ```
 
+|    On remarquera la présence de 2 nouveaux arguments : offset et data. L'argument data sert à préciser le dataframe utilisé pour entraîner notre modèle et l'argument offset qui fixe le coefficient associé à la variable spécifié à 1.
+
+|    Pour juger de la pretinence de notre modèle, nous pouvons regarder le résumé de notre modèle (disponible en Annexes : Modèle GLM pour fréquence n°= 1). On notera que les coefficients associés à l'intercept (une constante qui correspond à la valeur moyenne de ClaimInd lorsque toutes les variables sont nulles) et à l' "Exposure" sont trop importantes. 
+
+|    On peut également évalué la performance d'une régression logistique avec des métriques clés spécifiques comme : 
+
+- l' AIC (Critère d'information d'Akaike) qui mesure l'ajustement lorsqu'une pénalité est appliquée au nombre de paramètres. 
+- Null deviance : Il s'agit de la déviance du modèle nul, c'est-à-dire qu'il n'est caractérisé par aucun facteur.
+- Residual deviance : Il s'agit de la déviance du modèle avec toutes les variables. 
+- Number of Fisher Scoring iterations : Il s'agit du nombre d'itérations avant la convergence.
+
+|    Le critère le plus souvent utilisé pour améliorer son modèle est le critère AIC. En effet, plus les valeurs d'AIC sont petites, plus notre modèle est plus proche de la vérité.
+
+|    Pour trouver le modèle qui se rapproche donc le plus de la vérité, nous allons tester différents modèles avec une méthode progressive. C'est-à-dire que nous partons d'un modèle globale (contenant toutes les variables que l'on peut conserver) et que l'on ajoute et on supprime itérativement des variables dans le modèle afin de trouver le sous-ensemble de variables donnant le modèle le plus performant, c'est-à-dire un modèle qui réduit l'erreur de prédiction.
 
 ```{r}
 #glmfreqfinal <- step(glmfreqinit)
+```
+
+|    Pour cela, nous allons utiliser la fonction **step()** qui réalise cette sélection pas à pas. Voici donc le modèle GLM qui se rapproche le plus de la vérité : 
+
+```{r, echo=TRUE}
 glmfreqfinal <- glm(ClaimInd ~ Exposure + LicAge + RecordBeg + VehUsage + DrivAge + 
     HasKmLimit + BonusMalus + VehBody + VehEngine + VehClass + 
     RiskVar, offset = log(Exposure), family=binomial(link="logit"), data=freMPL2)
 ```
 
-|    La fonction tidy de l’extension broom pour récupérer les coefficients du modèle sous la forme d’un tableau de données. On précisera conf.int = TRUE pour obtenir les intervalles de confiance et exponentiate = TRUE pour avoir les odds ratio plutôt que les coefficients bruts.
-
-```{r}
-#install.packages("broom")
-library(broom)
-glmfreqtab <- tidy(glmfreqfinal)
-knitr::kable(glmfreqtab[,c("term","estimate","p.value")])
-```
-
-
-comparaison modèle initial et modèle final :
-
+Voici la comparaison des performances entre nos 2 modèles : 
 
 ```{r}
 aicinit <- glmfreqinit$aic
@@ -874,6 +921,18 @@ dtfreq <- data.frame(ClaimInd = freMPL2$ClaimInd,
                      Predict_ClaimInd_final = round(predict(glmfreqfinal, freMPL2, type = 'response'),2))
 head(dtfreq,10)
 ```
+
+
+
+```{r}
+library(broom)
+glmfreqfintab <- tidy(glmfreqfinal)
+knitr::kable(glmfreqfintab[,c("term","estimate","p.value")])
+```
+
+
+
+
 
 ```{r}
 # Sur les données ne figurant pas dans notre modèle
@@ -996,14 +1055,6 @@ dtsev <- data.frame(ClaimAmount = freMPL2$ClaimAmount,
 head(dtsev,10)
 ```
 
-### Justification des modèles
-
-|    Le résumé de notre modèle révèle des informations intéressantes. La performance d'une régression logistique est évaluée avec des métriques clés spécifiques :
-- AIC (Critère d'information d'Akaike): Il mesure l'ajustement lorsqu'une pénalité est appliquée au nombre de paramètres. Des valeurs AIC plus petites indiquent que le modèle est plus proche de la vérité. 
-- Null deviance : Il s'agit de la déviance du modèle nul, c'est-à-dire qu'il n'est caractérisé par aucun facteur.
-- Residual deviance : Il s'agit de la déviance du modèle avec toutes les variables. 
-- Number of Fisher Scoring iterations : Il s'agit du nombre d'itérations avant la convergence.
-
 ### Calcul de la prime pure établi par le GLM
 
 Soit X le coût monétaire au risque
@@ -1066,10 +1117,18 @@ calcul_prime(freMPL1[1,])
 
 - Pour la documentation R : <https://www.rdocumentation.org/>
 
-- Pour l'analyse en composantes prinicipales : <http://www.sthda.com/french/articles/38-methodes-des-composantes-principales-dans-r-guide-pratique/73-acp-analyse-en-composantes-principales-avec-r-l-essentiel/>
+- Pour connaître le fonctionnement de l'assurance automobile en France : 
+<https://fr.wikipedia.org/wiki/Assurance_automobile_en_France>
+
+- Pour l'analyse en composantes principales: <http://www.sthda.com/french/articles/38-methodes-des-composantes-principales-dans-r-guide-pratique/73-acp-analyse-en-composantes-principales-avec-r-l-essentiel/>
 
 - Pour l'analyse factorielle des correspondances : <http://www.sthda.com/french/articles/38-methodes-des-composantes-principales-dans-r-guide-pratique/74-afc-analyse-factorielle-des-correspondances-avec-r-l-essentiel/>
 
+- Pour les GLM : 
+<https://statistique-et-logiciel-r.com/introduction-aux-glm/>
+
+- Pour des compléments d'informations (lois de probabilités, ...):
+<https://www.wikipedia.org/>
   
 ## Littérature
 
@@ -1226,3 +1285,21 @@ describe_freMPL2
 | **`r colnames_freMPL2[21]`**  	| ![](graphique/Garage1.png){width=40%}|![](graphique/Garage2.png){width=40%}|
 | **`r colnames_freMPL2[22]`**  	| ![](graphique/ClaimInd1.png){width=40%}|![](graphique/ClaimInd2.png){width=40%}|
 
+## Summary des modèles GLM testés
+
+### Modèle GLM pour fréquence n°= 1 : 
+
+```{r}
+#install.packages("broom")
+library(broom)
+# La fonction tidy de l’extension broom pour récupérer les coefficients du modèle sous la forme  # d’un tableau de données. On précisera conf.int = TRUE pour obtenir les intervalles de confiance # et exponentiate = TRUE pour avoir les odds ratio plutôt que les coefficients bruts.
+glmfreqinittab <- tidy(glmfreqinit)
+knitr::kable(glmfreqinittab[,c("term","estimate","p.value")])
+```
+
+### Modèle GLM pour fréquence n°= 2 : 
+
+```{r}
+glmfreqfintab <- tidy(glmfreqfinal)
+knitr::kable(glmfreqfintab[,c("term","estimate","p.value")])
+```
