@@ -813,17 +813,13 @@ freMPL2$DrivAge <- cut(freMPL2$DrivAge, breaks = c(17,2:8*10,103))
 freMPL2$BonusMalus <- cut(freMPL2$BonusMalus, breaks = c(49,100,350))
 freMPL2$HasKmLimit <- as.factor(freMPL2$HasKmLimit)
 freMPL2$RiskVar <- cut(freMPL2$RiskVar, breaks = c(-1,0:5*4))
-levels(freMPL2$LicAge)
-freMPL2 <- freMPL2[,c(-4)]
-# Le ClaimAmount risque de fausser nos résultats pour la fréquence
-freMPL2.freq <- freMPL2[,c(-19)]
+
+freMPL2save <- freMPL2[,c(-4)]
+freMPL2 <- freMPL2[,c(-19)]
 ```
 
-
-
-
 ```{r}
-glmfreqinit <- glm(ClaimInd~., offset = log(Exposure), family=binomial(link="logit"), data=freMPL2.freq)
+glmfreqinit <- glm(ClaimInd~., offset = log(Exposure), family=binomial(link="logit"), data=freMPL2)
 library(broom)
 glmfreqinittab <- tidy(glmfreqinit)
 knitr::kable(glmfreqinittab[,c("term","estimate","p.value")])
@@ -833,7 +829,8 @@ knitr::kable(glmfreqinittab[,c("term","estimate","p.value")])
 ```{r}
 #glmfreqfinal <- step(glmfreqinit)
 glmfreqfinal <- glm(ClaimInd ~ Exposure + LicAge + RecordBeg + VehUsage + DrivAge + 
-    BonusMalus + VehBody + VehEngine + VehClass + RiskVar, offset = log(Exposure), family=binomial(link="logit"), data=freMPL2.freq)
+    HasKmLimit + BonusMalus + VehBody + VehEngine + VehClass + 
+    RiskVar, offset = log(Exposure), family=binomial(link="logit"), data=freMPL2)
 ```
 
 |    La fonction tidy de l’extension broom pour récupérer les coefficients du modèle sous la forme d’un tableau de données. On précisera conf.int = TRUE pour obtenir les intervalles de confiance et exponentiate = TRUE pour avoir les odds ratio plutôt que les coefficients bruts.
@@ -874,61 +871,81 @@ iterdiff <- iterinit-iterfin
 
 ```{r}
 dtfreq <- data.frame(ClaimInd = freMPL2$ClaimInd,
-                     Predict_ClaimInd_init = round(predict(glmfreqinit, freMPL2.freq, type = 'response'),2),
-                     Predict_ClaimInd_final = round(predict(glmfreqfinal, freMPL2.freq, type = 'response'),2)
-                     )
-dtfreq
+                     Predict_ClaimInd_final = round(predict(glmfreqfinal, freMPL2, type = 'response'),2))
+head(dtfreq,10)
 ```
 
 ```{r}
+# Sur les données ne figurant pas dans notre modèle
 
 # Vérifications pour l'âge des conducteurs
 
 CompDrivAge <- data.frame(
-  DrivAge = levels(freMPL2.freq$DrivAge),
+  DrivAge = levels(freMPL2$DrivAge),
   frequence_observee_somme = rep(0, times = 8),
-  frequence_predite_init_model_somme = rep(0, times = 8),
   frequence_predite_final_model_somme = rep(0, times = 8)
 )
 
 for (i in 1:dim(freMPL2[1])){
   age_conducteur <- freMPL2$DrivAge[i]
   CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"frequence_observee_somme"] <- CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"frequence_observee_somme"]+freMPL2$ClaimInd[i]
-  CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"frequence_predite_init_model_somme"] <- CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"frequence_predite_init_model_somme"]+dtfreq$Predict_ClaimInd_init[i]
   CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"frequence_predite_final_model_somme"] <- CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"frequence_predite_final_model_somme"]+dtfreq$Predict_ClaimInd_final[i]
 }
 
 CompDrivAge
 
+# Vérifications pour la durée en mois depuis l'obtention du permis
+
+CompLicAge <- data.frame(
+  LicAge = levels(freMPL2$LicAge),
+  frequence_observee_somme = rep(0, times = 8),
+  frequence_predite_final_model_somme = rep(0, times = 8)
+)
+
+for (i in 1:dim(freMPL2[1])){
+  age_licence <- freMPL2$LicAge[i]
+  CompLicAge[CompLicAge$LicAge == age_licence,"frequence_observee_somme"] <- CompLicAge[CompLicAge$LicAge == age_licence,"frequence_observee_somme"]+freMPL2$ClaimInd[i]
+  CompLicAge[CompLicAge$LicAge == age_licence,"frequence_predite_final_model_somme"] <- CompLicAge[CompLicAge$LicAge == age_licence,"frequence_predite_final_model_somme"]+dtfreq$Predict_ClaimInd_final[i]
+}
+
+CompLicAge
+
+```
+
+```{r}
+# Sur les données ne figurant pas dans notre modèle
+
 # Vérifications pour l'âge du véhicule
 
 CompVehAge <- data.frame(
-  VehAge = levels(freMPL2.freq$VehAge),
+  VehAge = levels(freMPL2$VehAge),
   frequence_observee_somme = rep(0, times = 9),
-  frequence_predite_init_model_somme = rep(0, times = 9),
   frequence_predite_final_model_somme = rep(0, times = 9)
 )
 
 for (i in 1:dim(freMPL2[1])){
   age_vehicule <- freMPL2$VehAge[i]
   CompVehAge[CompVehAge$VehAge == age_vehicule,"frequence_observee_somme"] <- CompVehAge[CompVehAge$VehAge == age_vehicule,"frequence_observee_somme"]+freMPL2$ClaimInd[i]
-  CompVehAge[CompVehAge$VehAge == age_vehicule,"frequence_predite_init_model_somme"] <- CompVehAge[CompVehAge$VehAge == age_vehicule,"frequence_predite_init_model_somme"]+dtfreq$Predict_ClaimInd_init[i]
   CompVehAge[CompVehAge$VehAge == age_vehicule,"frequence_predite_final_model_somme"] <- CompVehAge[CompVehAge$VehAge == age_vehicule,"frequence_predite_final_model_somme"]+dtfreq$Predict_ClaimInd_final[i]
 }
 
 CompVehAge
 ```
 
-
 ### Sévérité des sinistres
 
 ```{r}
+freMPL2 <- freMPL2save
 freMPL2.posclaim <- freMPL2[freMPL2$ClaimAmount != 0,]
 ```
 
 ```{r, results='hide', echo = TRUE}
-glmsevinit <- glm(ClaimAmount~.,offset = log(Exposure), family=Gamma(link = "log"), data=freMPL2.posclaim)
-glmsevfinal<- step(glmsevinit)
+glmsevinit <- glm(ClaimAmount~., family=Gamma(link = "log"), data=freMPL2.posclaim)
+#glmsevfinal<- step(glmsevinit)
+glmsevfinal <- glm(ClaimAmount ~ Exposure + LicAge + RecordBeg + VehAge + MariStat + 
+    VehUsage + DrivAge + HasKmLimit + BonusMalus + VehBody + 
+    VehEngine + VehEnergy + VehMaxSpeed + VehClass + RiskVar + 
+    Garage, family=Gamma(link = "log"), data=freMPL2.posclaim)
 ```
 
 
@@ -936,7 +953,7 @@ glmsevfinal<- step(glmsevinit)
 #install.packages("broom")
 library(broom)
 glmsevtab <- tidy(glmsevfinal)
-knitr::kable(glmsevtab[,c("term","estimate")])
+knitr::kable(glmsevtab[,c("term","estimate","p.value")])
 ```
 
 
@@ -966,52 +983,17 @@ iterdiff2 <- iterinit2-iterfin2
 |nombre d'itération|`r iterinit2`|`r iterfin2`|`r iterdiff2`|
 
 
+```{r}
+freMPL2 <- freMPL2[freMPL2$VehEngine!="GPL",]
+```
 
 
 
 ```{r}
 dtsev <- data.frame(ClaimAmount = freMPL2$ClaimAmount,
-                     Predict_ClaimAmount_final = round(predict(glmsevfinal, newdata = freMPL2, type = 'response'),2))
-dtsev
-```
+                     Predict_ClaimAmount = round(predict(glmsevfinal, newdata = freMPL2, type = 'response'),2))
 
-```{r}
-
-# Vérifications pour l'âge des conducteurs
-
-CompDrivAge <- data.frame(
-  DrivAge = levels(freMPL2.freq$DrivAge),
-  sev_observee_somme = rep(0, times = 8),
-  frequence_predite_init_model_somme = rep(0, times = 8),
-  frequence_predite_final_model_somme = rep(0, times = 8)
-)
-
-for (i in 1:dim(freMPL2[1])){
-  age_conducteur <- freMPL2$DrivAge[i]
-  CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"frequence_observee_somme"] <- CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"frequence_observee_somme"]+freMPL2$ClaimInd[i]
-  CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"frequence_predite_init_model_somme"] <- CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"frequence_predite_init_model_somme"]+dtfreq$Predict_ClaimInd_init[i]
-  CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"frequence_predite_final_model_somme"] <- CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"frequence_predite_final_model_somme"]+dtfreq$Predict_ClaimInd_final[i]
-}
-
-CompDrivAge
-
-# Vérifications pour l'âge du véhicule
-
-CompVehAge <- data.frame(
-  VehAge = levels(freMPL2.freq$VehAge),
-  frequence_observee_somme = rep(0, times = 9),
-  frequence_predite_init_model_somme = rep(0, times = 9),
-  frequence_predite_final_model_somme = rep(0, times = 9)
-)
-
-for (i in 1:dim(freMPL2[1])){
-  age_vehicule <- freMPL2$VehAge[i]
-  CompVehAge[CompVehAge$VehAge == age_vehicule,"frequence_observee_somme"] <- CompVehAge[CompVehAge$VehAge == age_vehicule,"frequence_observee_somme"]+freMPL2$ClaimInd[i]
-  CompVehAge[CompVehAge$VehAge == age_vehicule,"frequence_predite_init_model_somme"] <- CompVehAge[CompVehAge$VehAge == age_vehicule,"frequence_predite_init_model_somme"]+dtfreq$Predict_ClaimInd_init[i]
-  CompVehAge[CompVehAge$VehAge == age_vehicule,"frequence_predite_final_model_somme"] <- CompVehAge[CompVehAge$VehAge == age_vehicule,"frequence_predite_final_model_somme"]+dtfreq$Predict_ClaimInd_final[i]
-}
-
-CompVehAge
+head(dtsev,10)
 ```
 
 ### Justification des modèles
@@ -1023,27 +1005,6 @@ CompVehAge
 - Number of Fisher Scoring iterations : Il s'agit du nombre d'itérations avant la convergence.
 
 ### Calcul de la prime pure établi par le GLM
-
-```{r}
-# Pour ceux qui ont eu un accident
-
-
-calcul_prime <- data.frame(
-  identifiant_individu = 1:dim(freMPL2.posclaim)[1], 
-  prediction_moyenne_frequence = round(predict(glmfreqfinal, freMPL2.posclaim, type = 'response'),2),
-  prediction_moyenne_severite = round(predict(glmsevfinal, freMPL2.posclaim, type = 'response'),2),
-  prime_pure = rep(0, times   = dim(freMPL2.posclaim)[1])
-)
-
-
-
-for (i in 1:dim(freMPL2.posclaim)[1]){
-  calcul_prime$prime_pure[i] <- calcul_prime$prediction_moyenne_frequence[i]*calcul_prime$prediction_moyenne_severite[i]
-}
-
-head(calcul_prime)
-```
-
 
 Soit X le coût monétaire au risque
 
@@ -1062,6 +1023,42 @@ Comment calculer E(N)? Comment calculer E(B)?
 
 |    fonction de lien logit : $$log_{it}(x) = ln(\frac{X}{1-x})$$
 |    fonction réciproque : $$sigmoid(x) = \frac{1}{1+e^{-x}}$$
+
+
+
+```{r}
+calcul_prime <- function(table){
+  prediction_moyenne_frequence <- round(predict(glmfreqfinal, newdata = table, type = 'response'),2)
+  prediction_moyenne_severite <- round(predict(glmsevfinal, newdata = table, type = 'response'),2)
+  return(round(prediction_moyenne_frequence*prediction_moyenne_severite,2))
+}
+
+calcul_prime(freMPL2[1,])
+```
+
+
+
+###### Application du modèle sur notre 2nd tableau
+
+```{r}
+
+freMPL1$LicAge <- cut(freMPL1$LicAge, breaks = c(-1,36,1:6*120,960))
+freMPL1$DrivAge <- cut(freMPL1$DrivAge, breaks = c(17,2:8*10,103))
+freMPL1$BonusMalus <- cut(freMPL1$BonusMalus, breaks = c(49,100,350))
+freMPL1$HasKmLimit <- as.factor(freMPL1$HasKmLimit)
+freMPL1$RiskVar <- cut(freMPL1$RiskVar, breaks = c(-1,0:5*4))
+freMPL1 <- freMPL1[freMPL1$VehEngine!="GPL",]
+```
+
+```{r}
+calcul_prime(freMPL1[1,])
+```
+
+
+
+
+
+
 
 # Bibliographie
 
