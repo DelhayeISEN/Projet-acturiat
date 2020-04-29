@@ -19,6 +19,7 @@ lang: fr
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE)
+options(tinytex.verbose=T)
 ```
 
 ```{r}
