@@ -4,6 +4,7 @@ author: "Solène Corre, Florentin Dehooghe, François Delhaye"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
   pdf_document:
+    latex_engine: xelatex
     number_section: yes
     toc: yes
     toc_depth: 4
@@ -16,10 +17,6 @@ output:
     toc_depth: '4'
 lang: fr
 ---
-```{r}
-options(tinytex.verbose = TRUE)
-```
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE)
 ```
@@ -106,10 +103,6 @@ Les noms des caractéristiques des jeux de données sont les mêmes. ses différ
 - **`r colnames_freMPL2[20]`** : c'est le montant total de la garantie à laquelle peut prétendre l'assuré.
 - **`r colnames_freMPL2[21]`** : il s'agit du type de garage auquel se rend l'assuré.
 - **`r colnames_freMPL2[22]`** : c'est un indicateur précisant si oui ou non l'assuré peut prétendre à une garantie.
-
-
-
-
 
 Regardons maintenant les premiers éléments composant le jeu de données **freMPL1** :
 
