@@ -16,6 +16,10 @@ output:
     toc_depth: '4'
 lang: fr
 ---
+```{r}
+options(tinytex.verbose = TRUE)
+```
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE)
 ```
@@ -913,6 +917,7 @@ glmfreqinit <- glm(ClaimInd~., offset = log(Exposure), family=binomial(link="log
 ```{r}
 #glmfreqfinal <- step(glmfreqinit)
 ```
+
 ```{r, echo=TRUE}
 glmfreqfinal <- glm(ClaimInd ~ Exposure + LicAge + RecordBeg + VehUsage +
                       DrivAge + HasKmLimit + BonusMalus + VehBody +
@@ -950,103 +955,129 @@ iterdiff <- iterinit-iterfin
 
 #### Calcul de l'espérance du nombre de sinistres (E(N))
 
+|    Pour calculer l'espérance du nombre de sinistres, autrement la fréquence d'accident sur la période d'exposition, il suffit d'appliquer la formule suivante : 
+E(N)=g^(-1) ( ∑▒〖a_i X_i 〗)
 
+Avec: 
 
-|    fonction de lien logit : $$log_{it}(x) = ln(\frac{X}{1-x})$$
-|    fonction réciproque : $$sigmoid(x) = \frac{1}{1+e^{-x}}$$
+- g^-1 : la fonction réciproque de la fonction de lien (dans notre modèle, la fonction de lien est logit(x) : $$log_{it}(x) = ln(\frac{x}{1-x})$$) et donc sa fonction réciproque est : $$sigmoid(x) = \frac{1}{1+e^{-x}}$$)
+- a_i : le coefficient associé à un caractéristique de notre police. Pour rappel, le coefficient associé à l'offset est égal à 1).
+- X_i : une caractéristique de notre police d'assurance. 
 
+|    Fort heureusement pour nous, il existe une fonction R capable de calculer les fréquences selon les individus et selon les modèles GLM. Cette fonction est appelé **predict()** et s'implémente de la façon suivante : 
+> predict(glmfreqfinal, freMPL2, type = 'response'),2)
 
-```{r}
+|    Elle prend en paramètres un modèle linéaire (ici, glmfreqfinal), une base de données sur laquelle effectuée ces prédictions (freMPL2) et le type	de prediction (response ou autre). Dans notre cas, nous avons choisit le type 'response' qui nous renvoie l'espérance moyenne de la prédiction (donc ici notre fréquence). L'autre type nous aurait renvoyer la somme des coefficients (donc non transformée par la fonction réciproque). 
+
+```{r, results = 'hide'}
 dtfreq <- data.frame(ClaimInd = freMPL2$ClaimInd,
                      Predict_ClaimInd_final = round(predict(glmfreqfinal, freMPL2, type = 'response'),2))
-head(dtfreq,10)
+predind1 <- dtfreq[1,2]
+predind2 <- dtfreq[2,2]
+predind3 <- dtfreq[3,2]
 ```
 
-```{r}
-# Sur les données ne figurant pas dans notre modèle
+|    Ainsi, la prédiction faite pour les 3 premiers individus (dont les caractéristiques figurent au debut de ce rapport) donnent les résultats suivants : `r predind1`, `r predind2` et `r predind3`.
+|    Selon notre modèle, le premier individu avait 5% de chances d'avoir un accident durant la période pour laquelle il était assuré.
 
+|    Par curiosité, nous avons également décidé de voir les influences de l'âge du conducteur mais aussi de l'âge du véhicule sur cette fréquence : 
+
+- Pour l'âge des conducteurs : 
+
+```{r}
 # Vérifications pour l'âge des conducteurs
 
 CompDrivAge <- data.frame(
   DrivAge = levels(freMPL2$DrivAge),
-  frequence_observee_somme = rep(0, times = 8),
-  frequence_predite_final_model_somme = rep(0, times = 8)
+  nb_individu = rep(0, times = 8),
+  frequence_predite_somme = rep(0, times = 8),
+  frequence_predite_moyenne = rep(0, times = 8)
 )
 
 for (i in 1:dim(freMPL2[1])){
   age_conducteur <- freMPL2$DrivAge[i]
-  CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"frequence_observee_somme"] <- CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"frequence_observee_somme"]+freMPL2$ClaimInd[i]
-  CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"frequence_predite_final_model_somme"] <- CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"frequence_predite_final_model_somme"]+dtfreq$Predict_ClaimInd_final[i]
+  CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"nb_individu"] <- CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"nb_individu"]+1
+  CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"frequence_predite_somme"] <- CompDrivAge[CompDrivAge$DrivAge == age_conducteur,"frequence_predite_somme"]+dtfreq$Predict_ClaimInd_final[i]
 }
 
-CompDrivAge
-
-# Vérifications pour la durée en mois depuis l'obtention du permis
-
-CompLicAge <- data.frame(
-  LicAge = levels(freMPL2$LicAge),
-  frequence_observee_somme = rep(0, times = 8),
-  frequence_predite_final_model_somme = rep(0, times = 8)
-)
-
-for (i in 1:dim(freMPL2[1])){
-  age_licence <- freMPL2$LicAge[i]
-  CompLicAge[CompLicAge$LicAge == age_licence,"frequence_observee_somme"] <- CompLicAge[CompLicAge$LicAge == age_licence,"frequence_observee_somme"]+freMPL2$ClaimInd[i]
-  CompLicAge[CompLicAge$LicAge == age_licence,"frequence_predite_final_model_somme"] <- CompLicAge[CompLicAge$LicAge == age_licence,"frequence_predite_final_model_somme"]+dtfreq$Predict_ClaimInd_final[i]
+for(j in 1:length(levels(CompDrivAge$DrivAge))){
+  CompDrivAge[j,"frequence_predite_moyenne"] <- round(CompDrivAge[j,"frequence_predite_somme"]/CompDrivAge[j,"nb_individu"],2)
 }
 
-CompLicAge
-
+knitr::kable(CompDrivAge[,c("DrivAge","frequence_predite_moyenne")])
 ```
 
-```{r}
-# Sur les données ne figurant pas dans notre modèle
+- Pour l'âge des véhicules : 
 
+```{r}
 # Vérifications pour l'âge du véhicule
 
 CompVehAge <- data.frame(
   VehAge = levels(freMPL2$VehAge),
-  frequence_observee_somme = rep(0, times = 9),
-  frequence_predite_final_model_somme = rep(0, times = 9)
+  nb_individu = rep(0, times = 9),
+  frequence_predite_somme = rep(0, times = 9),
+  frequence_predite_moyenne = rep(0, times = 9)
 )
 
 for (i in 1:dim(freMPL2[1])){
   age_vehicule <- freMPL2$VehAge[i]
-  CompVehAge[CompVehAge$VehAge == age_vehicule,"frequence_observee_somme"] <- CompVehAge[CompVehAge$VehAge == age_vehicule,"frequence_observee_somme"]+freMPL2$ClaimInd[i]
-  CompVehAge[CompVehAge$VehAge == age_vehicule,"frequence_predite_final_model_somme"] <- CompVehAge[CompVehAge$VehAge == age_vehicule,"frequence_predite_final_model_somme"]+dtfreq$Predict_ClaimInd_final[i]
+   CompVehAge[CompVehAge$VehAge == age_vehicule,"nb_individu"] <- CompVehAge[CompVehAge$VehAge == age_vehicule,"nb_individu"]+1
+  CompVehAge[CompVehAge$VehAge == age_vehicule,"frequence_predite_somme"] <- CompVehAge[CompVehAge$VehAge == age_vehicule,"frequence_predite_somme"]+dtfreq$Predict_ClaimInd_final[i]
 }
 
-CompVehAge
+for(j in 1:length(levels(CompVehAge$VehAge))){
+  CompVehAge[j,"frequence_predite_moyenne"] <- round(CompVehAge[j,"frequence_predite_somme"]/CompVehAge[j,"nb_individu"],2)
+}
+
+knitr::kable(CompVehAge[,c("VehAge","frequence_predite_moyenne")])
 ```
+
+On constate donc que l'âge du conducteur n'influe pas énormément sur la fréquence de sinistre hormis chez les jeunes conducteurs (les apprentis) puisque leur fréquence est de 10% environ contre 5% environ pour les autres catégories d'âge. 
+De même, l'âge du véhicule n'influence pas la fréquence de sinistres ce qui explique probablement le fait que cette variable n'est pas été retenu pour établir notre modèle GLM.
 
 ### Sévérité des sinistres
 
+#### Mise en place et exécution du modèle GLM
+
+|    Après avoir déterminer la fréquence des sinistres, il nous faut maintenant calculer la sévérité de ces sinistres pour une police donnée.  
+|    Pour celà, nous allons nous intéresser à la variable ClaimAmount qui correspond à un montant auquel peut prétendre l'assurer en cas d'accident. Si le montant est nulle, c'est que la personne n'a pas eu d'accident sinon c'est qu'il en a eu au moins un. 
+|    Pour modéliser la sévérité des sinistres, la loi la plus utilisée est la loi de probabilité Gamma. C'est donc cette loi que nous allons utilisé pour faire notre prédiction. Le résultat de la prédiction de notre modèle GLM correspondra à une valeur numérique traduisant la sévérité de l'accident : Plus la valeur sera élévée, plus l'accident sera grave.
 ```{r}
 freMPL2 <- freMPL2save
+```
+
+|    Avant d'appliquer notre modèle, il est important de s'assurer que notre modèle d'entrainement ne contienne uniquement des valeurs non nulles. Pour cela, on utilise la commande *freMPL2[freMPL2$ClaimAmount != 0,]* qui conservera ces valeurs.
+
+```{r}
 freMPL2.posclaim <- freMPL2[freMPL2$ClaimAmount != 0,]
 ```
 
-```{r, results='hide', echo = TRUE}
+|    Nous pouvons maintenant passer à la modélisation de la sévérité des sinistres grâce à notre GLM.
+
+|    Nous allons donc, comme pour la modélisation des sinistres, éxécuter un premier modèle GLM où la variable à expliquer est ClaimAmount, les variables explicatives correspondent à l'ensemble des autres variables de notre tableau. 
+|    Pour le type de loi, nous utilisons donc la famille Gamma et la fonction de lien associé log qui est le logarithme népérien. 
+
+|    Voici le premier modèle que nous avons utilisé dont le résultat figure en Annnexes au paragraphe "Modèle GLM pour sévérité n°=1" : 
+```{r, echo = TRUE}
 glmsevinit <- glm(ClaimAmount~., family=Gamma(link = "log"), data=freMPL2.posclaim)
-#glmsevfinal<- step(glmsevinit)
-glmsevfinal <- glm(ClaimAmount ~ Exposure + LicAge + RecordBeg + VehAge + MariStat + 
-    VehUsage + DrivAge + HasKmLimit + BonusMalus + VehBody + 
-    VehEngine + VehEnergy + VehMaxSpeed + VehClass + RiskVar + 
-    Garage, family=Gamma(link = "log"), data=freMPL2.posclaim)
 ```
 
-
+|    Comme pour la fréquence, nous allons appliquer la fonction **step()** sur ce premier modèle afin d'obtenir un modèle plus proche de la vérité. Voici le modèle qui résulte de cette fonction :   
 ```{r}
-#install.packages("broom")
-library(broom)
-glmsevtab <- tidy(glmsevfinal)
-knitr::kable(glmsevtab[,c("term","estimate","p.value")])
+#glmsevfinal<- step(glmsevinit)
 ```
 
+```{r, echo = TRUE}
+glmsevfinal <- glm(ClaimAmount ~ Exposure + LicAge + RecordBeg + VehAge +
+                     MariStat + VehUsage + DrivAge + HasKmLimit + 
+                     BonusMalus + VehBody + VehEngine + VehEnergy +
+                     VehMaxSpeed + VehClass + RiskVar + Garage,
+                   family=Gamma(link = "log"), data=freMPL2.posclaim)
+```
 
-comparaison modèle initial et modèle final :
+|    On remarque que, comme pour la fréquence, le modèle final a conservé une grande majorité des variables comme l'âge du conducteur, le type de moteur du véhicule ou encore la variable associée au bonus et au malus et à retirer des variables comme l'âge du véhicule pour modéliser la fréquence.  
 
-
+|    Avant de visualiser les fréquences prédites par le modèle, regardons la différence au niveau de la performance de nos modèles : 
 ```{r}
 aicinit2 <- glmsevinit$aic
 aicfin2 <- glmsevfinal$aic
@@ -1069,18 +1100,79 @@ iterdiff2 <- iterinit2-iterfin2
 |déviance|`r devianceinit2`|`r deviancefin2`|`r deviancediff2`|
 |nombre d'itération|`r iterinit2`|`r iterfin2`|`r iterdiff2`|
 
+|    On remarquera que notre nouveau modèle n'a que très peu varié par rapport à l'ancien (augmentation de 42 AIC et baisse de 111 en déviance). Notre modèle s'est donc légèrement éloigné de la vérité (AIC) mais est plus linéaire puisque la déviance a diminuée de 111. 
+
+#### Calcul de l'espérance de la sévérité des sinistres (E(B))
 
 ```{r}
 freMPL2 <- freMPL2[freMPL2$VehEngine!="GPL",]
 ```
 
+|    Pour calculer l'espérance de la sévérité des sinistres,, il suffit d'appliquer la même formule que pour E(N) : 
+E(B)=g^(-1) ( ∑▒〖a_i X_i 〗)
 
+avec, cette fois-ci, g-1 : la fonction réciproque de la fonction de lien (dans notre modèle, la fonction de lien est log(x) : $$log(x) = ln(x)$$) et donc sa fonction réciproque est la fonction exponentielle.
 
-```{r}
+```{r, results='hide'}
 dtsev <- data.frame(ClaimAmount = freMPL2$ClaimAmount,
                      Predict_ClaimAmount = round(predict(glmsevfinal, newdata = freMPL2, type = 'response'),2))
+predindsev1 <- dtsev[1,2]
+predindsev2 <- dtsev[2,2]
+predindsev3 <- dtsev[3,2]
+```
 
-head(dtsev,10)
+|    Ainsi, la prédiction faite (grâce à la fonction **predict()**) pour les 3 premiers individus (dont les caractéristiques figurent au debut de ce rapport) donnent les résultats suivants : `r predindsev1`, `r predindsev2` et `r predindsev3`.
+
+|    Par curiosité, nous avons également décidé de voir les influences de l'âge du conducteur mais aussi de l'âge du véhicule sur cette fréquence
+
+- Pour l'âge des conducteurs : 
+
+```{r}
+# Vérifications pour l'âge des conducteurs
+
+CompDrivAge1 <- data.frame(
+  DrivAge = levels(freMPL2$DrivAge),
+  nb_individu = rep(0, times = 8),
+  montant_predit_somme = rep(0, times = 8),
+  montant_predit_moyenne = rep(0, times = 8)
+)
+
+for (i in 1:dim(freMPL2[1])){
+  age_conducteur <- freMPL2$DrivAge[i]
+  CompDrivAge1[CompDrivAge1$DrivAge == age_conducteur,"nb_individu"] <- CompDrivAge1[CompDrivAge1$DrivAge == age_conducteur,"nb_individu"]+1
+  CompDrivAge1[CompDrivAge1$DrivAge == age_conducteur,"montant_predit_somme"] <- CompDrivAge1[CompDrivAge1$DrivAge == age_conducteur,"montant_predit_somme"]+dtsev$Predict_ClaimAmount[i]
+}
+
+for(j in 1:length(levels(CompDrivAge1$DrivAge))){
+  CompDrivAge1[j,"montant_predit_moyenne"] <- round(CompDrivAge1[j,"montant_predit_somme"]/CompDrivAge[j,"nb_individu"],2)
+}
+
+knitr::kable(CompDrivAge1[,c("DrivAge","montant_predit_moyenne")])
+```
+
+- Pour l'âge des véhicules : 
+
+```{r}
+# Vérifications pour l'âge du véhicule
+
+CompVehAge1 <- data.frame(
+  VehAge = levels(freMPL2$VehAge),
+  nb_individu = rep(0, times = 9),
+  montant_predit_somme = rep(0, times = 9),
+  montant_predit_moyenne = rep(0, times = 9)
+)
+
+for (i in 1:dim(freMPL2[1])){
+  age_vehicule <- freMPL2$VehAge[i]
+  CompVehAge1[CompVehAge1$VehAge == age_vehicule,"nb_individu"] <- CompVehAge1[CompVehAge1$VehAge == age_vehicule,"nb_individu"]+1
+  CompVehAge1[CompVehAge1$VehAge == age_vehicule,"montant_predit_somme"] <- CompVehAge1[CompVehAge1$VehAge == age_vehicule,"montant_predit_somme"]+dtsev$Predict_ClaimAmount[i]
+}
+
+for(j in 1:length(levels(CompVehAge1$VehAge))){
+  CompVehAge1[j,"montant_predit_moyenne"] <- round(CompVehAge1[j,"montant_predit_somme"]/CompVehAge1[j,"nb_individu"],2)
+}
+
+knitr::kable(CompVehAge1[,c("VehAge","montant_predit_moyenne")])
 ```
 
 ### Calcul de la prime pure établi par le GLM
@@ -1088,15 +1180,14 @@ head(dtsev,10)
 Soit X le coût monétaire au risque
 
 Selon le modèle général, $$X = \sum_{i=1}^NB_k$$
-
 où N correspond au nombre de sinistres  
 et Bk correspond au montant de sinistres
 
 Autrement dit, N représente la fréquence (variable discrète) et Bk la sévérité (variable continue positive)
 
-En admettant que la fréquence n'a pas d'influence sur la sévérité et que les montants des sinistres ont le même comportement aléatoire, on a : E(X) = E(N).E(B)   (prime pure). 
+En admettant que la fréquence n'a pas d'influence sur la sévérité et que les montants des sinistres ont le même comportement aléatoire, on a : E(X) = E(N).E(B).
 
-Comment calculer E(N)? Comment calculer E(B)?
+Ainsi, pour calculer la prime pure, il suffit de faire le produit ligne par ligne des 2 prédictions. 
 
 ```{r}
 calcul_prime <- function(table){
@@ -1105,15 +1196,20 @@ calcul_prime <- function(table){
   return(round(prediction_moyenne_frequence*prediction_moyenne_severite,2))
 }
 
-calcul_prime(freMPL2[1,])
+primeind1 <- calcul_prime(freMPL2[1,])
+primeind2 <- calcul_prime(freMPL2[2,])
+primeind3 <- calcul_prime(freMPL2[3,])
 ```
 
+Voici les résultats que l'on obtient en prime pure pour les trois premiers individus du tableau freMPL2 (celui sur lequel on a entraîné notre modèle):
 
-
-###### Application du modèle sur notre 2nd tableau
+|individu| **E(N)**  	| **E(B)** 	|**prime pure**|
+|:-:|:-:|:-:|:-:|
+|1|`r predind1`|`r predindsev1`|`r primeind1`€|
+|2|`r predind2`|`r predindsev2`|`r primeind2`€|
+|3|`r predind3`|`r predindsev3`|`r primeind3`€|
 
 ```{r}
-
 freMPL1$LicAge <- cut(freMPL1$LicAge, breaks = c(-1,36,1:6*120,960))
 freMPL1$DrivAge <- cut(freMPL1$DrivAge, breaks = c(17,2:8*10,103))
 freMPL1$BonusMalus <- cut(freMPL1$BonusMalus, breaks = c(49,100,350))
@@ -1122,9 +1218,26 @@ freMPL1$RiskVar <- cut(freMPL1$RiskVar, breaks = c(-1,0:5*4))
 freMPL1 <- freMPL1[freMPL1$VehEngine!="GPL",]
 ```
 
+
+Nous pouvons également obtenir les primes pures de notre autre tableau (freMPL1). Voici les résultats pour les 3 premiers individus :
+
 ```{r}
-calcul_prime(freMPL1[1,])
+predind4 <- round(predict(glmfreqfinal, freMPL1[1,], type = 'response'),2)
+predind5 <- round(predict(glmfreqfinal, freMPL1[2,], type = 'response'),2)
+predind6 <- round(predict(glmfreqfinal, freMPL1[3,], type = 'response'),2)
+predindsev4 <- round(predict(glmsevfinal, freMPL1[1,], type = 'response'),2)
+predindsev5 <- round(predict(glmsevfinal, freMPL1[2,], type = 'response'),2)
+predindsev6 <- round(predict(glmsevfinal, freMPL1[3,], type = 'response'),2)
+primeind4 <- calcul_prime(freMPL1[1,])
+primeind5 <- calcul_prime(freMPL1[2,])
+primeind6 <- calcul_prime(freMPL1[3,])
 ```
+
+|individu| **E(N)**  	| **E(B)** 	|**prime pure**|
+|:-:|:-:|:-:|:-:|
+|1|`r predind4`|`r predindsev4`|`r primeind4`€|
+|2|`r predind5`|`r predindsev5`|`r primeind5`€|
+|3|`r predind6`|`r predindsev6`|`r primeind6`€|
 
 # Gestion de projet
 
@@ -1338,3 +1451,18 @@ knitr::kable(glmfreqinittab[,c("term","estimate","p.value")])
 glmfreqfintab <- tidy(glmfreqfinal)
 knitr::kable(glmfreqfintab[,c("term","estimate","p.value")])
 ```
+
+### Modèle GLM pour sévérité n°= 1 :
+
+```{r}
+glmsevtab <- tidy(glmsevinit)
+knitr::kable(glmsevtab[,c("term","estimate","p.value")])
+```
+
+### Modèle GLM pour sévérité n°= 2 : 
+
+```{r}
+glmsevtab <- tidy(glmsevfinal)
+knitr::kable(glmsevtab[,c("term","estimate","p.value")])
+```
+
