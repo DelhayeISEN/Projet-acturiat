@@ -47,7 +47,7 @@ data(freMPL2)
 
 # Présentation du projet
 
-|    L’assurance est un contrat par lequel, moyennant le versement d’une prime dont le montant est ﬁxé a priori (en début de période de couverture), l’assureur s’engage à indemniser l’assuré pendant toute la période de couverture (généralement un an). Cette prime doit reﬂéter le risque associé au contrat.   
+|    L’assurance est un contrat par lequel, moyennant le versement d’une prime dont le montant est ﬁxé à priori (en début de période de couverture), l’assureur s’engage à indemniser l’assuré pendant toute la période de couverture (généralement un an). Cette prime doit reﬂéter le risque associé au contrat.   
 |    Pour chaque police d’assurance, la prime est fonction de variables dites de tariﬁcation permettant de segmenter la population en fonction de son risque. Il est usuel d’utiliser une approche fréquence/sévérité ou une approche indemnitaire pour modéliser le coût annuel d’une police d’assurance. Sur les données utilisées dans ce projet, nous utiliserons cette dernière approche car on ne dispose pas des montants individuels de sinistre.  
 |    Le but de ce projet est de proposer un tariﬁcateur en se basant deux méthodes : les modèles linéaires généralisés (GLM) et les modèles additifs généralisés (GAM). Ces derniers sont une extension des GLM (proposé par McCullagh et Nelder, 1989) en considérant une approche non-paramétrique pour le prédicteur.  
 |    Un second objectif sera, en plus de calculer une prime pure par police, de déterminer une commerciale intégrant une marge pour risque. Une approche par simulation sera réalisée pour juger de l’adéquation du chargement par rapport à la charge sinistre totale portefeuille.
@@ -63,10 +63,10 @@ dim_freMPL1 <- dim(freMPL1)
 dim_freMPL2 <- dim(freMPL2)
 ```
 
-|    Les dimmensions du jeu de données **freMPL1** sont (`r dim_freMPL1`).
+|    Les dimensions du jeu de données **freMPL1** sont (`r dim_freMPL1`).
 Ainsi, notre jeu contient `r dim_freMPL1[1]` données différentes, toutes définies par `r dim_freMPL1[2]` caractéristiques différentes. 
 
-|    De même, les dimmensions du jeu de données **freMPL2** sont (`r dim_freMPL2`).
+|    De même, les dimensions du jeu de données **freMPL2** sont (`r dim_freMPL2`).
 Ainsi, notre jeu contient `r dim_freMPL2[1]` données différentes, toutes définies par `r dim_freMPL2[2]` caractéristiques différentes. 
 
 ```{r, results='hide'}
@@ -78,28 +78,28 @@ str(freMPL2)
 # On constate qu'il y a de nombreux types de données : des données numériques, des données descriptives (ex : Il y a troix types de garages : "collective garage", "None" et "Private Garage")
 ```
 
-Les noms des caractéristiques des jeux de données sont les mêmes. es différentes caractéristiques sont :
+Les noms des caractéristiques des jeux de données sont les mêmes. ses différentes caractéristiques sont :
 
 - **`r colnames_freMPL2[1]`** : il s'agit d'une donnée de type numérique qui correspond à la fréquence d'exposition aux risques d'un individu sur une année. Par exemple, si l'individu a été exposé 100 jours, le chiffre affiché est 0,27 (= 100/365,25).
 - **`r colnames_freMPL2[2]`** : c'est un nombre entier de mois correspondant à l'âge de la licence de la personne concernée.
 - **`r colnames_freMPL2[3]`** : cela correspond à la date de début d'exposition aux risques.
-- **`r colnames_freMPL2[4]`** : c'est la date de fin d'exposition au risque. Si elle n'est pas renseigner, c'est que la personne est toujours exposée.
+- **`r colnames_freMPL2[4]`** : c'est la date de fin d'exposition aux risques. Si elle n'est pas renseignée, c'est que la personne est toujours exposée.
 - **`r colnames_freMPL2[5]`** : Il correspond à l'âge du véhicule en année(s). Il est composé en 9 catégories distinctes : "0", "1", "2", "3", "4", "5", "6-7", "8-9" et "10+".
 - **`r colnames_freMPL2[6]`** : c'est le sexe de l'individu.
 - **`r colnames_freMPL2[7]`** : il s'agit du statut marital de la personne. Elle est soit célibataire ("Alone") soit autre chose ("Other").
 - **`r colnames_freMPL2[8]`** : Cela correspond à la catégorie socioprofessionnelle de l'individu. Les valeurs, comprises entre "CSP1" et "CSP99", correspondent à la classification française (voir lien suivant : <https://fr.wikipedia.org/wiki/Professions_et_catégories_socioprofessionnelles_en_France>). 
-- **`r colnames_freMPL2[9]`** : Cela correspond à l'utilisation du véhicule par le propriétaire. Il est soit privée ("Private"), soit professionnel ("Professional"), ...
+- **`r colnames_freMPL2[9]`** : Cela correspond à l'utilisation du véhicule par le propriétaire. Son utilisation peut être soit privée ("Private"), soit professionnelle ("Professional"), ...
 - **`r colnames_freMPL2[10]`** : C'est l'âge du conducteur (en années). Pour rappel, en France, la conduite est possible à partir de 18 ans.
 - **`r colnames_freMPL2[11]`** : il s'agit d'une valeur numérique spécifiant si oui ("1") ou non ("0") l'assurance comporte une limite kilométique.
 - **`r colnames_freMPL2[12]`** : c'est un variable de type numérique, dont la valeur est comprise entre 50 et 350, précisant si la personne possède des bonus ou des malus. Si la valeur est inférieure à 100, l'individu a droit à des bonus. Sinon, la personne a des malus.
 - **`r colnames_freMPL2[13]`** : il s'agit du type de modèle concerné par l'assurance de l'individu.
 - **`r colnames_freMPL2[14]`** : c'est un indicateur correspondant au prix du véhicule. 
 - **`r colnames_freMPL2[15]`** : cela correspond au type de moteur que possède le véhicule.
-- **`r colnames_freMPL2[16]`** : cela correspond au type d'énergie consommé par le véhicule que possède le véhicule
+- **`r colnames_freMPL2[16]`** : cela correspond au type d'énergie consommé par le véhicule
 - **`r colnames_freMPL2[17]`** : c'est la vitesse maximum que peut atteindre le véhicule. Les différentes catégories sont:"1-130 km/h", "130-140 km/h", "140-150 km/h", "150-160 km/h", "160-170 km/h", "170-180 km/h", "180-190 km/h", "190-200 km/h", "200-220 km/h", "220+ km/h".
 - **`r colnames_freMPL2[18]`** : il s'agit de la classe du véhicule.
 - **`r colnames_freMPL2[19]`** : Nombre compris entre 1 et 20 correspondant au risque inconnu probable.
-- **`r colnames_freMPL2[20]`** : c'est le montant total de la garantie ) laquelle peut prétendre l'assuré.
+- **`r colnames_freMPL2[20]`** : c'est le montant total de la garantie à laquelle peut prétendre l'assuré.
 - **`r colnames_freMPL2[21]`** : il s'agit du type de garage auquel se rend l'assuré.
 - **`r colnames_freMPL2[22]`** : c'est un indicateur précisant si oui ou non l'assuré peut prétendre à une garantie.
 
@@ -129,7 +129,7 @@ Cette fonction (appelée nettoyage_dataframe) prend l'un des deux data frames en
 - Suppression des données des individus assurés moins d'un jour (Exposure)
 - Modification des données des individus ayant un ClaimAmount négatif
 - Suppression de la colonne associée au sexe de la personne
-- Réduction du nombre de catégories socioprofessionnels
+- Réduction du nombre de catégories socioprofessionnelles
 - Traduction des données (VehBody, MariStat, VehUsage, VehEngine, VehEnergy, Garage)
 
 ```{r}
@@ -280,7 +280,7 @@ dfSummary(freMPL2, plain.ascii = FALSE, style = "grid", headings = FALSE,
           graph.col = FALSE, valid.col = FALSE, lang = 'fr', dfSummary.silent = TRUE)
 ```
 
-|    Pour ce data frame, l'âge moyen du conducteur est de 44,5 ans avec pour écart-type 14,7 ans. Le plus jeune conducteur a 18 ans(âge minimum légale pour conduire en France) et le plus âgé a 103 ans. L'écart interquartile (IQR) est de 23 ce qui veut dire que 50% des conducteurs ont un âge compris entre 33 et 56 ans. Le coefficient de variation (CV) est égale à 3.   
+|    Pour ce data frame, l'âge moyen du conducteur est de 44,5 ans avec pour écart-type 14,7 ans. Le plus jeune conducteur a 18 ans(âge minimum légal pour conduire en France) et le plus âgé a 103 ans. L'écart interquartile (IQR) est de 23 ce qui veut dire que 50% des conducteurs ont un âge compris entre 33 et 56 ans. Le coefficient de variation (CV) est égal à 3.   
 
 |    De même, en ce qui concerne l'usage du véhicule par son propriétaire, on remarquera que la plupart des personnes renseignées utilise leur véhicule pour les trajets privés et pour se rendre à leur bureau (46,4%).
 
@@ -512,7 +512,7 @@ dev.off()
 
 |    L'ACP permet d’analyser et de visualiser un jeu de données contenant des individus décrits par plusieurs variables quantitatives.  
 |    C’est une méthode statistique qui permet d’explorer des données dites multivariées (données avec plusieurs variables). Chaque variable pourrait être considérée comme une dimension différente.  
-|    L’analyse en composantes principales est utilisée pour extraire et de visualiser les informations importantes contenues dans une table de données multivariées. L’ACP synthétise cette information en seulement quelques nouvelles variables appelées composantes principales. Ces nouvelles variables correspondent à une combinaison linéaire des variables originels. Le nombre de composantes principales est inférieur ou égal au nombre de variables d’origine.
+|    L’analyse en composantes principales est utilisée pour extraire et de visualiser les informations importantes contenues dans une table de données multivariées. L’ACP synthétise cette information en seulement quelques nouvelles variables appelées composantes principales. Ces nouvelles variables correspondent à une combinaison linéaire des variables originelles. Le nombre de composantes principales est inférieur ou égal au nombre de variables d’origine.
 
 #### Calcul de l'ACP
 
@@ -523,9 +523,9 @@ dev.off()
 - *dudi.pca()* issu du package *ade4*
 - *epPCA()*  issu du package *ExPosition*.
 
-|    Parmi ces fonctions, nous avons decider d'utiliser la fonction **PCA()** du package **FactoMineR** car ce package nous permettra également de réaliser notre seconde analyse. Enfin, pour extraire et visualiser les résultats, nous allons utiliser les fonctions R fournies par le package **factoextra**.  
+|    Parmi ces fonctions, nous avons décidé d'utiliser la fonction **PCA()** du package **FactoMineR** car ce package nous permettra également de réaliser notre seconde analyse. Enfin, pour extraire et visualiser les résultats, nous allons utiliser les fonctions R fournies par le package **factoextra**.  
 
-|    Nous allons donc exécuter l'ACP sur notre tableau freMPL2 en prenant à ce que l'ensemble des valeurs que nous utilisons soit de type numérique (quitte à réaliser une conversion sur certaines de nos colonnes).   
+|    Nous allons donc exécuter l'ACP sur notre tableau freMPL2 en prenant garde à ce que l'ensemble des valeurs que nous utilisons soit de type numérique (quitte à réaliser une conversion sur certaines de nos colonnes).   
 
 ```{r}
 freMPL2$LicAge <- as.numeric(freMPL2$LicAge)
@@ -537,7 +537,7 @@ freMPL2$ClaimAmount <- as.numeric(freMPL2$ClaimAmount)
 freMPL2$ClaimInd <- as.numeric(freMPL2$ClaimInd)
 ```
 
-|    Une fois que nos données ont été converties, il faut veiller à la *standardisation des données*. Pour cela, on normalise nos variables afin que le résultat de l'ACP obtenue ne soient pas affecté (par exemple, par des différences d'unités).  
+|    Une fois que nos données ont été converties, il faut veiller à la *standardisation des données*. Pour cela, on normalise nos variables afin que le résultat de l'ACP obtenu ne soit pas affecté (par exemple, par des différences d'unités).  
 |    Ainsi, l'objectif est de rendre les variables comparables en les normalisant généralement de manière à ce qu'elles aient un écart type égal à 1 et une moyenne nulle.  
 |    L'approche consiste à transformer les données en soustrayant à chaque valeur une valeur de référence (la moyenne de la variable) et en la divisant par l’écart type.  
 |    Pour normaliser les données, il est possible d'utiliser la fonction *scale()*. Cependant, par défaut, le fonction PCA() normalise automatiquement les données. Nous n'avons pas eu besoin de faire cette transformation. 
@@ -575,16 +575,16 @@ knitr::kable(round(get_eigenvalue(freMPL2.pca),3))
 
 |    Dans ce tableau, nous avons les valeurs propres de chacune des 8 colonnes du dataframe freMPL2.active (Exposure, LicAge, DrivAge, HasKmLimit, BonusMalus, RiskVar, ClaimAmount, ClaimInd), la proportion de variance associée et la variance cumulée.
 
-|    La somme de toutes les valeurs propres donne une variance total de 8 (le nombre de dimensions). Pour obtenir la proportion de variance de la deuxième colonne, il suffit de prendre la valeur propre associée, de diviser cette valeur par le nombre de dimensions et de le mettre en pourcentage. Par exemple, pour la dimension 1, 2,341 divisé par 8 donne 0,29259, ce qui donne 29,259% de la variance. Enfin, la dernière colonne correspond à la somme cumulée des variances. Par exemple, 59.029 correspond à la somme de 12.780 avec 16.990 et 29.259. 
+|    La somme de toutes les valeurs propres donne une variance totale de 8 (le nombre de dimensions). Pour obtenir la proportion de variance de la deuxième colonne, il suffit de prendre la valeur propre associée, de diviser cette valeur par le nombre de dimensions et de le mettre en pourcentage. Par exemple, pour la dimension 1, 2,341 divisé par 8 donne 0,29259, ce qui donne 29,259% de la variance. Enfin, la dernière colonne correspond à la somme cumulée des variances. Par exemple, 59.029 correspond à la somme de 12.780 avec 16.990 et 29.259. 
 
 On notera ainsi qu'environ 46,25% de la variance totale est expliquée par nos 2 premières dimensions.
 
 On peut utiliser ses valeurs propres pour déterminer le nombre d'axes principaux à conserver après l'ACP :
 
-- Une valeur propre > 1 indique que la composante principale  concernée représente plus de variance par rapport à une seule variable d’origine, lorsque les données sont standardisées. Ceci est généralement utilisé comme seuil à partir duquel les PC sont conservés (Dans ce cas, on aurait 3 composantes principales).
+- Une valeur propre > 1 indique que la composante principale concernée représente une variance plus marquée par rapport à une seule variable d’origine, lorsque les données sont standardisées. Ceci est généralement utilisé comme seuil à partir duquel les PC sont conservés (Dans ce cas, on aurait 3 composantes principales).
 - On peut également limiter le nombre d’axes à un nombre qui représente une certaine fraction de la variance totale. Par exemple, si vous êtes satisfaits avec 70% de la variance totale expliquée, utilisez le nombre d’axes pour y parvenir (Dans ce cas, on aurait 4 dimensions).
 
-|    Une autre méthode pour déterminer le nombre de composantes principales est de regarder le graphique des valeurs propres (appelé **scree plot**). Le nombre d’axes est déterminé par le point, au-delà duquel les valeurs propres restantes sont toutes relativement petites et de tailles comparables. 
+|    Une autre méthode pour déterminer le nombre de composantes principales, consiste à regarder le graphique des valeurs propres (appelé **scree plot**). Le nombre d’axes est déterminé par le point, au-delà duquel les valeurs propres restantes sont toutes relativement petites et de tailles comparables. 
 
 Le graphique des valeurs propres peut être généré à l’aide de la fonction *fviz_eig()* ou *fviz_screeplot()* du package *factoextra*.
 
@@ -631,11 +631,11 @@ library("corrplot")
 corrplot(get_pca_var(freMPL2.pca)$cos2, is.corr=FALSE)
 ```
 
-|    On remarquera qu'avec 5 axes principaux l'ensemble des 8 variables utilisées dans notre ACP sont plutôt bien représentées.
+|    On remarquera qu'avec 5 axes principaux, l'ensemble des 8 variables utilisées dans notre ACP est plutôt bien représenté.
 
 |    Pour visualiser le cosinus carré, nous aurions pu utiliser aussi la fonction *fviz_cos2()* du package *factoextra* pour créer un diagramme bâton du cosinus carré des variables. 
 
-|    Plus la valeur du cosinus carré est élévée, plus la réprésentation de la variable sur les axes prinicipaux pris en considération est bonne. Dans ce cas-là, la variable est positionnée à proximité de la circonférence du cercle de corrélation et le point associé dans le tableau de corrélation est gros et de couleur foncé.  
+|    Plus la valeur du cosinus carré est élévée, plus la réprésentation de la variable sur les axes prinicipaux prise en considération est bonne. Dans ce cas-là, la variable est positionnée à proximité de la circonférence du cercle de corrélation et le point associé dans le tableau de corrélation est gros et de couleur foncé.  
 |    Inversement, un faible cosinus carré indique que la variable n’est pas parfaitement représentée par les axes principaux. Dans ce cas, la variable est proche du centre du cercle et le point du tableau de corrélation est petit (voir inexistant). 
 
 Il est également possible de colorer les variables en fonction de la valeur de leurs cosinus carré.  
@@ -689,7 +689,7 @@ fviz_pca_var(freMPL2.pca, col.var = "contrib",
              )
 ```
 
-|    Au final, on notera que 5 de nos variables ont plus d'importances que les autres : l'age du conducteur, l'âge de la licence de ce conducteur, son bonus ou son malus, s'il a eu un accident pendant qu'il était assuré et le montant auquel il peut prendre prétendre.  
+|    Au final, on notera que 5 de nos variables ont plus d'importances que les autres : l'age du conducteur, l'âge de la licence de ce conducteur, son bonus ou son malus, s'il a eu un accident pendant qu'il était assuré et le montant auquel il peut prétendre.  
 |    On a également vu que nos 8 variables peuvent être réduites en 5 nouvelles variables qui sont des combinaisons linéaires des anciennes variables, sans pour autant perdre d'informations ou très peu (17% de l'ensemble de nos données). 
 
 ### Analyse factorielle des correspondances (AFC)
@@ -783,7 +783,7 @@ fviz_ca_col (freMPL2.ca, col.col = "cos2",
              repel = TRUE)
 ```
 
-|    Comme pour l'ACP, on constate que 5 variables sont plutôt bien représentés. En effet, les colonnes LicAge, DrivAge, ClaimAmount, BonusMalus et RiskVar sont les variables les mieux représentées. 
+|    Comme pour l'ACP, on constate que 5 variables sont plutôt bien représentées. En effet, les colonnes LicAge, DrivAge, ClaimAmount, BonusMalus et RiskVar sont les variables les mieux représentées. 
 
 # GLM 
 
@@ -851,11 +851,11 @@ Bien que nous ne possédons pas la totalité de ses informations (par exemple, l
 
 #### Mise en place et exécution du modèle GLM
 
-|    Avant de calculer cette prime, il faut d'abord s'intéresser à la fréquence des sinistres pour une police (un individu) donné.  
+|    Avant de calculer cette prime, il faut d'abord s'intéresser à la fréquence des sinistres pour une police (un individu) donnée.  
 |    Pour celà, nous allons nous intéresser à la variable ClaimInd qui est un indice correspondant à l'événement "L'individu a eu un accident sur la période pour laquelle il était assuré". En effet, cette variable est à 1 si l'individu a subi un accident et à 0 sinon. 
 |    Ainsi, cette variable peut être associée à une expérience de Bernoulli, c'est-à-dire une expérience aléatoire comportant 2 issues, un succés ou un échec. Dans notre cas, le "succés" correspondrait au fait d'avoir eu au moins un accident et l'échec de ne pas avoir eu d'accident durant la durée d'exposition (période pendant lequel l'individu est assuré). La prédiction de notre modèle GLM correspondra donc à la probabilité qu'un individu avec ses caractéristiques associées d'avoir au moins un accident pendant qu'il est assuré.   
 
-|    Avant de faire une calibration de notre modèle, il est important de segmenter nos données continues comme l'âge du conducteur. En effet, l'âge du conducteur, s'il n'est pas diviser en plusieurs catégories, n'aura aucune influence puisqu'un coefficient unique lui serait associés. Pour catégoriser nos données, il faut utiliser l'instruction **cut()** en R. Voici un exemple d'utilisation : 
+|    Avant de faire une calibration de notre modèle, il est important de segmenter nos données continues comme l'âge du conducteur. En effet, l'âge du conducteur, s'il n'est pas diviser en plusieurs catégories, n'aura aucune influence puisqu'un coefficient unique lui serait associé. Pour catégoriser nos données, il faut utiliser l'instruction **cut()** en R. Voici un exemple d'utilisation : 
 ```{r, echo = TRUE}
 freMPL2$DrivAge <- cut(freMPL2$DrivAge, breaks = c(17,2:8*10,103))
 ```
@@ -896,7 +896,7 @@ glmfreqinit <- glm(ClaimInd~., offset = log(Exposure), family=binomial(link="log
 
 |    On remarquera la présence de 2 nouveaux arguments : offset et data. L'argument data sert à préciser le dataframe utilisé pour entraîner notre modèle et l'argument offset qui fixe le coefficient associé à la variable spécifié à 1.
 
-|    Pour juger de la pretinence de notre modèle, nous pouvons regarder le résumé de notre modèle (disponible en Annexes : Modèle GLM pour fréquence n°= 1). Sur ce résumé, nous pouvons voir de nombreuses informations comme l'estimate (qui correspond au coefficient attribué par un GLM à un terme) ou la p-value (utilisée pour quantifier la significativité statistique d'un résultat dans le cadre d'une hypothèse appélée hypothèse nulle postulant l'égalité entre des paramètres statistiques comme la moyenne ou la variance de 2 échantillons mais nous pouvons aussi aussi avoir l'écart type ou encore l'intervalle de confiance associés aux différents coefficients. 
+|    Pour juger de la pretinence de notre modèle, nous pouvons regarder le résumé de notre modèle (disponible en Annexes : Modèle GLM pour fréquence n°= 1). Sur ce résumé, nous pouvons voir de nombreuses informations comme l'estimate (qui correspond au coefficient attribué par un GLM à un terme) ou la p-value (utilisée pour quantifier la significativité statistique d'un résultat dans le cadre d'une hypothèse appélée hypothèse nulle) postulant l'égalité entre des paramètres statistiques comme la moyenne ou la variance de 2 échantillons mais nous pouvons aussi aussi avoir l'écart type ou encore l'intervalle de confiance associés aux différents coefficients. 
 
 |    On peut également évalué la performance d'une régression logistique avec des métriques clés spécifiques comme : 
 
@@ -1133,18 +1133,18 @@ calcul_prime(freMPL1[1,])
 |    Pour cela, plusieurs alternatives ont été mises en place :
 
 |    Nous faisions environ un point par semaine avec nos référents sur Teams afin de : 
-- Avoir un suivi de projet. 
--  Poser des questions si certaines parties du projet ne sont pas totalement maîtrisées.   
+- Poser des questions si certaines parties du projet ne sont pas totalement maîtrisées.  
+- Avoir un suivi de projet.  
 - Procéder à des modifications si certaines tâches effectuées ne correspondent pas à leurs attentes.  
 
 |    Nous faisions également une réunion par semaine avec seulement les membres du groupe de projet afin de : 
-- Pouvoir entrer plus dans les détails. 
-- Faire une synthèse des tâches à effectuer et les répartir.
-- Se fixer des objectifs hebdomadaires. 
+- Pouvoir entrer plus dans les détails.  
+- Faire une synthèse des tâches à effectuer et les répartir.  
+- Se fixer des objectifs hebdomadaires.  
 
 |    Pour le partage d’informations, nous utilisions GitHub. De plus, lorsque nous avions des questions à poser à nos référents, nous échangions par mail.
 
-|    La communication entre nous s’est faite via Messenger ou Discord, cela nous a permis d’échanger de manière instantanée et également d’avoir un historique des différents éléments que nous avions partagés.
+|    La communication entre nous s’est faite via Messenger ou Discord, cela nous a permis d’échanger par messagerie instantanée et par vocal, afin également d’avoir un historique des différents éléments que nous avions partagé.
 
 # Bibliographie
 
