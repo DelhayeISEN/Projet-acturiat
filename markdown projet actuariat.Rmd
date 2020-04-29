@@ -105,6 +105,8 @@ Les noms des caractéristiques des jeux de données sont les mêmes. es différe
 
 
 
+
+
 Regardons maintenant les premiers éléments composant le jeu de données **freMPL1** :
 
 ```{r}
@@ -295,7 +297,7 @@ describe_freMPL2 <- describe(freMPL2)
 
 ## Représentations graphiques des données
 
-Dans cette partie, vous allez voir des représentations graphiques des colonnes les plus importantes de nos data frames. L'ensemble des graphiques est cependant disponible dans les annexes de ce rapport. 
+Dans cette partie, vous allez voir quelques représentations graphiques des colonnes qui figurent parmi les plus importantes de nos data frames. L'ensemble des graphiques est cependant disponible dans les annexes de ce rapport. 
 
 ```{r}
 # On met les colonnes dans le même ordre
@@ -492,6 +494,15 @@ png(file = "graphique/ClaimInd2.png", width = 800, height = 700)
 representation_graphique(freMPL1,colnames(freMPL2)[21])
 dev.off()
 ```
+
+|| **freMPL1**  	| **freMPL2** 	|
+|:-:|:-:|:-:|
+|**`r colnames_freMPL2[1]`**|![](graphique/Exposure1.png){width=40%}|![](graphique/Exposure2.png){width=40%}|
+|**`r colnames_freMPL2[2]`**   	|![](graphique/LicAge1.png){width=40%}   	| ![](graphique/LicAge2.png){width=40%}  	|
+|  **`r colnames_freMPL2[5]`** 	|![](graphique/VehAge1.png){width=40%}|![](graphique/VehAge2.png){width=40%}|
+| **`r colnames_freMPL2[8]`**  	|![](graphique/SocioCateg1.png){width=40%}|![](graphique/SocioCateg2.png){width=40%}|
+| **`r colnames_freMPL2[9]`**  	| ![](graphique/VehUsage1.png){width=40%}|![](graphique/VehUsage2.png){width=40%}|
+| **`r colnames_freMPL2[10]`**  	|![](graphique/DrivAge1.png){width=40%}|![](graphique/DrivAge2.png){width=40%}|
 
 ## Méthodes des composantes principales
 
@@ -838,6 +849,8 @@ Bien que nous ne possédons pas la totalité de ses informations (par exemple, l
 
 ### Fréquence des sinistres
 
+#### Mise en place et exécution du modèle GLM
+
 |    Avant de calculer cette prime, il faut d'abord s'intéresser à la fréquence des sinistres pour une police (un individu) donné.  
 |    Pour celà, nous allons nous intéresser à la variable ClaimInd qui est un indice correspondant à l'événement "L'individu a eu un accident sur la période pour laquelle il était assuré". En effet, cette variable est à 1 si l'individu a subi un accident et à 0 sinon. 
 |    Ainsi, cette variable peut être associée à une expérience de Bernoulli, c'est-à-dire une expérience aléatoire comportant 2 issues, un succés ou un échec. Dans notre cas, le "succés" correspondrait au fait d'avoir eu au moins un accident et l'échec de ne pas avoir eu d'accident durant la durée d'exposition (période pendant lequel l'individu est assuré). La prédiction de notre modèle GLM correspondra donc à la probabilité qu'un individu avec ses caractéristiques associées d'avoir au moins un accident pendant qu'il est assuré.   
@@ -845,10 +858,9 @@ Bien que nous ne possédons pas la totalité de ses informations (par exemple, l
 |    Avant de faire une calibration de notre modèle, il est important de segmenter nos données continues comme l'âge du conducteur. En effet, l'âge du conducteur, s'il n'est pas diviser en plusieurs catégories, n'aura aucune influence puisqu'un coefficient unique lui serait associés. Pour catégoriser nos données, il faut utiliser l'instruction **cut()** en R. Voici un exemple d'utilisation : 
 ```{r, echo = TRUE}
 freMPL2$DrivAge <- cut(freMPL2$DrivAge, breaks = c(17,2:8*10,103))
-levels(freMPL2$DrivAge)
 ```
-|    Dans cet exemple, l'âge du conducteur est divisé de la façon suivante : 
 
+|    Dans cet exemple, l'âge du conducteur est divisé de la façon suivante : 
 - groupe 1 : les conducteurs agés entre 18 et 20 ans
 - groupe 2 : les conducteurs agés entre 21 et 30 ans
 - groupe 3 : les conducteurs agés entre 31 et 40 ans
@@ -865,11 +877,13 @@ freMPL2$HasKmLimit <- as.factor(freMPL2$HasKmLimit)
 freMPL2$RiskVar <- cut(freMPL2$RiskVar, breaks = c(-1,0:5*4))
 
 freMPL2save <- freMPL2[,c(-4)]
-freMPL2 <- freMPL2[,c(-19)]
+freMPL2 <- freMPL2[,c(-4,-19)]
 ```
 
+|     Nous pouvons maintenant passer à la modélisation de la fréquence des sinistres grâce à notre GLM.
 |     Pour utiliser un GLM avec R, il suffit d’employer la fonction **glm()** du package **stats**. Cette fonction s'écrit de la façon suivante :
-**glm(variable à expliquer ~ variable(s) explicative(s), type de loi(fonction de lien), ...)**
+
+>**glm(variable à expliquer ~ variable(s) explicative(s), type de loi(fonction de lien), ...)**
 
 |    Dans le premier modèle que l'on va éxécuter, la variable à expliquer correspond au ClaimInd, les variables explicatives correspondent à l'ensemble des autres variables de notre tableau. 
 |    Pour le type de loi, nous utilisons l'argument family de la fonction glm() et, plus précisement, la famille binomiale. Nous avons utilisé cette famille-là car elle correspond aux données associées à un schéma de Bernoulli comme notre variable à expliquer. Les autres familles possibles sont : gaussian, Gamma, inverse.gaussian, poisson, quasi, quasibinomial et quasipoisson.
@@ -882,7 +896,7 @@ glmfreqinit <- glm(ClaimInd~., offset = log(Exposure), family=binomial(link="log
 
 |    On remarquera la présence de 2 nouveaux arguments : offset et data. L'argument data sert à préciser le dataframe utilisé pour entraîner notre modèle et l'argument offset qui fixe le coefficient associé à la variable spécifié à 1.
 
-|    Pour juger de la pretinence de notre modèle, nous pouvons regarder le résumé de notre modèle (disponible en Annexes : Modèle GLM pour fréquence n°= 1). On notera que les coefficients associés à l'intercept (une constante qui correspond à la valeur moyenne de ClaimInd lorsque toutes les variables sont nulles) et à l' "Exposure" sont trop importantes. 
+|    Pour juger de la pretinence de notre modèle, nous pouvons regarder le résumé de notre modèle (disponible en Annexes : Modèle GLM pour fréquence n°= 1). Sur ce résumé, nous pouvons voir de nombreuses informations comme l'estimate (qui correspond au coefficient attribué par un GLM à un terme) ou la p-value (utilisée pour quantifier la significativité statistique d'un résultat dans le cadre d'une hypothèse appélée hypothèse nulle postulant l'égalité entre des paramètres statistiques comme la moyenne ou la variance de 2 échantillons mais nous pouvons aussi aussi avoir l'écart type ou encore l'intervalle de confiance associés aux différents coefficients. 
 
 |    On peut également évalué la performance d'une régression logistique avec des métriques clés spécifiques comme : 
 
@@ -895,19 +909,20 @@ glmfreqinit <- glm(ClaimInd~., offset = log(Exposure), family=binomial(link="log
 
 |    Pour trouver le modèle qui se rapproche donc le plus de la vérité, nous allons tester différents modèles avec une méthode progressive. C'est-à-dire que nous partons d'un modèle globale (contenant toutes les variables que l'on peut conserver) et que l'on ajoute et on supprime itérativement des variables dans le modèle afin de trouver le sous-ensemble de variables donnant le modèle le plus performant, c'est-à-dire un modèle qui réduit l'erreur de prédiction.
 
+|    Pour cela, nous allons utiliser la fonction **step()** qui réalise cette sélection pas à pas. Voici donc le modèle GLM qui se rapproche le plus de la vérité : 
 ```{r}
 #glmfreqfinal <- step(glmfreqinit)
 ```
-
-|    Pour cela, nous allons utiliser la fonction **step()** qui réalise cette sélection pas à pas. Voici donc le modèle GLM qui se rapproche le plus de la vérité : 
-
 ```{r, echo=TRUE}
-glmfreqfinal <- glm(ClaimInd ~ Exposure + LicAge + RecordBeg + VehUsage + DrivAge + 
-    HasKmLimit + BonusMalus + VehBody + VehEngine + VehClass + 
-    RiskVar, offset = log(Exposure), family=binomial(link="logit"), data=freMPL2)
+glmfreqfinal <- glm(ClaimInd ~ Exposure + LicAge + RecordBeg + VehUsage +
+                      DrivAge + HasKmLimit + BonusMalus + VehBody +
+                      VehEngine + VehClass + RiskVar, offset =log(Exposure),
+                    family=binomial(link="logit"), data=freMPL2)
 ```
 
-Voici la comparaison des performances entre nos 2 modèles : 
+|    On remarque que le modèle final a conservé des variables comme l'âge du conducteur, le type de moteur du véhicule ou encore la variable associée au bonus et au malus et à retirer des variables comme l'âge du véhicule pour modéliser la fréquence.  
+
+Avant de visualiser les fréquences prédites par le modèle, regardons la différence au niveau de la performance de nos modèles : 
 
 ```{r}
 aicinit <- glmfreqinit$aic
@@ -931,24 +946,21 @@ iterdiff <- iterinit-iterfin
 |déviance|`r devianceinit`|`r deviancefin`|`r deviancediff`|
 |nombre d'itération|`r iterinit`|`r iterfin`|`r iterdiff`|
 
+|    On remarquera que notre nouveau modèle n'a que très peu varié par rapport à l'ancien (baisse de 31 AIC et baisse de 76 en déviance). Notre modèle se rapproche donc plus de la vérité (AIC) tout en convergeant plus rapidement puisque le second modèle converge au bout de 10 itérations contre 11 précédemment. 
+
+#### Calcul de l'espérance du nombre de sinistres (E(N))
+
+
+
+|    fonction de lien logit : $$log_{it}(x) = ln(\frac{X}{1-x})$$
+|    fonction réciproque : $$sigmoid(x) = \frac{1}{1+e^{-x}}$$
+
 
 ```{r}
 dtfreq <- data.frame(ClaimInd = freMPL2$ClaimInd,
                      Predict_ClaimInd_final = round(predict(glmfreqfinal, freMPL2, type = 'response'),2))
 head(dtfreq,10)
 ```
-
-
-
-```{r}
-library(broom)
-glmfreqfintab <- tidy(glmfreqfinal)
-knitr::kable(glmfreqfintab[,c("term","estimate","p.value")])
-```
-
-
-
-
 
 ```{r}
 # Sur les données ne figurant pas dans notre modèle
@@ -1085,13 +1097,6 @@ Autrement dit, N représente la fréquence (variable discrète) et Bk la sévér
 En admettant que la fréquence n'a pas d'influence sur la sévérité et que les montants des sinistres ont le même comportement aléatoire, on a : E(X) = E(N).E(B)   (prime pure). 
 
 Comment calculer E(N)? Comment calculer E(B)?
-
-#### Calcul de l'espérance du nombre de sinistres (E(N))    
-
-|    fonction de lien logit : $$log_{it}(x) = ln(\frac{X}{1-x})$$
-|    fonction réciproque : $$sigmoid(x) = \frac{1}{1+e^{-x}}$$
-
-
 
 ```{r}
 calcul_prime <- function(table){
