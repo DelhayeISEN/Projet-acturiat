@@ -1,5 +1,5 @@
 ---
-title: "Projet Actuariat"
+title: "Projet Actuariat - Tarification en assurance IARD avec les GLM et les GAM"
 author: "Solène Corre, Florentin Dehooghe, François Delhaye"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
@@ -750,7 +750,7 @@ knitr::kable(round(get_eigenvalue(freMPL2.ca),3))
 On peut voir cela sur le graphique des valeurs propres afin de déterminer le nombre de dimensions à l’aide de la fonction ou *fviz_screeplot()*.
 
 ```{r,fig.width = 4, fig.height = 4, fig.align='center'}
-fviz_screeplot (freMPL2.ca, addlabels = TRUE)+
+fviz_screeplot (freMPL2.ca, addlabels = TRUE, ylim = c(0,90))+
   geom_hline (yintercept = 12.5, linetype = 2, color = "red")
 ```
 
@@ -1121,11 +1121,25 @@ freMPL1 <- freMPL1[freMPL1$VehEngine!="GPL",]
 calcul_prime(freMPL1[1,])
 ```
 
+# Gestion de projet
 
+|    Durant ce projet, nous avons dû nous adapter aux circonstances actuelles et ainsi appréhender la gestion de projet d’une manière totalement nouvelle pour nous. Nous avons réussi à nous organiser afin que le projet se déroule le mieux possible.
 
+|    Pour cela, plusieurs alternatives ont été mises en place :
 
+|    Nous faisions environ un point par semaine avec nos référents sur Teams afin de : 
+- Avoir un suivi de projet. 
+-  Poser des questions si certaines parties du projet ne sont pas totalement maîtrisées.   
+- Procéder à des modifications si certaines tâches effectuées ne correspondent pas à leurs attentes.  
 
+|    Nous faisions également une réunion par semaine avec seulement les membres du groupe de projet afin de : 
+- Pouvoir entrer plus dans les détails. 
+- Faire une synthèse des tâches à effectuer et les répartir.
+- Se fixer des objectifs hebdomadaires. 
 
+|    Pour le partage d’informations, nous utilisions GitHub. De plus, lorsque nous avions des questions à poser à nos référents, nous échangions par mail.
+
+|    La communication entre nous s’est faite via Messenger ou Discord, cela nous a permis d’échanger de manière instantanée et également d’avoir un historique des différents éléments que nous avions partagés.
 
 # Bibliographie
 
