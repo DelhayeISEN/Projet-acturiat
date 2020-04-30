@@ -950,7 +950,7 @@ iterdiff <- iterinit-iterfin
 #### Calcul de l'espérance du nombre de sinistres (E(N))
 
 |    Pour calculer l'espérance du nombre de sinistres, autrement la fréquence d'accident sur la période d'exposition, il suffit d'appliquer la formule suivante : 
-E(N)=g^(-1) ( ∑▒〖a_i X_i 〗)
+$$E(N)=g^{-1} ( \sum a_i X_i )$$
 
 Avec: 
 
@@ -1103,7 +1103,7 @@ freMPL2 <- freMPL2[freMPL2$VehEngine!="GPL",]
 ```
 
 |    Pour calculer l'espérance de la sévérité des sinistres,, il suffit d'appliquer la même formule que pour E(N) : 
-E(B)=g^(-1) ( ∑▒〖a_i X_i 〗)
+$$E(B)=g^{-1}  \sum  a_i X_i $$
 
 avec, cette fois-ci, g-1 : la fonction réciproque de la fonction de lien (dans notre modèle, la fonction de lien est log(x) : $$log(x) = ln(x)$$) et donc sa fonction réciproque est la fonction exponentielle.
 
@@ -1255,10 +1255,10 @@ primeind6 <- calcul_prime(freMPL1[3,])
 
 # Conclusion
 
-|    Durant ce projet, nous avons rencontrées plusieurs difficultés :
+|    Durant ce projet, nous avons rencontré plusieurs difficultés :
 
 -	Adapter la partie théorique afin qu’elle soit compréhensible par un non-spécialiste de l’assurance, en particulier pour les GLMs.
--	Juger si la qualité des résultats des statistiques descriptive était satisfaisante, pour l’ACP et l’AFC.
+-	Juger si la qualité des résultats des statistiques descriptives était satisfaisante, pour l’ACP et l’AFC.
 -	Tirer des conclusions de ce que l’on a obtenu, des modélisations, faire des choix statistiques.
 -	La modélisation de la sévérité des sinistres à l’aide des GLMs (polices en GPL). 
 -	Juger des données que l’on peut exploiter ou non, et celles que l’on doit modifier.
@@ -1287,6 +1287,10 @@ primeind6 <- calcul_prime(freMPL1[3,])
   
 ## Littérature
 
+-Mathématiques de l'assurance non Vie T.1 et T.2 par A. Charpentier et M. Denuit
+-Generalized Linear Models. Chapman et Hall par T.J Hastie et R.J Tibshirani
+-R: A language and Environment for Statistical Computing par R Core Team
+-Cours sur l'Actuariat Non-Vie par C. Dutang
 
 # Annexes
 
