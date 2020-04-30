@@ -1253,6 +1253,19 @@ primeind6 <- calcul_prime(freMPL1[3,])
 
 |    La communication entre nous s’est faite via Messenger ou Discord, cela nous a permis d’échanger par messagerie instantanée et par vocal, afin également d’avoir un historique des différents éléments que nous avions partagé.
 
+# Conclusion
+
+|    Durant ce projet, nous avons rencontrées plusieurs difficultés :
+
+-	Adapter la partie théorique afin qu’elle soit compréhensible par un non-spécialiste de l’assurance, en particulier pour les GLMs.
+-	Juger si la qualité des résultats des statistiques descriptive était satisfaisante, pour l’ACP et l’AFC.
+-	Tirer des conclusions de ce que l’on a obtenu, des modélisations, faire des choix statistiques.
+-	La modélisation de la sévérité des sinistres à l’aide des GLMs (polices en GPL). 
+-	Juger des données que l’on peut exploiter ou non, et celles que l’on doit modifier.
+
+|    Ce projet a été très enrichissant, il nous a permis de nous familiariser avec le monde de l’assurance. Nous avons dû faire des choix : évincer certaines données afin de ne garder que les principales, modifier des données et choisir certaines lois afin qu’elles soient adaptées au mieux aux différents problèmes.
+|    Cependant, par manque de temps, la modélisation de la fréquence et de la sévérité des sinistres à l’aide des GAMs n’a pas été faite. Cela est donc une amélioration possible du projet.
+
 # Bibliographie
 
 ## Internet
