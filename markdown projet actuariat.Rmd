@@ -51,7 +51,7 @@ data(freMPL2)
 
 |    L’assurance est un contrat par lequel, moyennant le versement d’une prime dont le montant est ﬁxé à priori (en début de période de couverture), l’assureur s’engage à indemniser l’assuré pendant toute la période de couverture (généralement un an). Cette prime doit reﬂéter le risque associé au contrat.   
 |    Pour chaque police d’assurance, la prime est fonction de variables dites de tariﬁcation permettant de segmenter la population en fonction de son risque. Il est usuel d’utiliser une approche fréquence/sévérité ou une approche indemnitaire pour modéliser le coût annuel d’une police d’assurance. Sur les données utilisées dans ce projet, nous utiliserons cette dernière approche car on ne dispose pas des montants individuels de sinistre.  
-|    Le but de ce projet est de proposer un tariﬁcateur en se basant deux méthodes : les modèles linéaires généralisés (GLM) et les modèles additifs généralisés (GAM). Ces derniers sont une extension des GLM (proposé par McCullagh et Nelder, 1989) en considérant une approche non-paramétrique pour le prédicteur.  
+|    Le but de ce projet est de proposer un tariﬁcateur en se basant sur deux méthodes : les modèles linéaires généralisés (GLM) et les modèles additifs généralisés (GAM). Ces derniers sont une extension des GLM (proposée par McCullagh et Nelder, 1989) en considérant une approche non-paramétrique pour le prédicteur.  
 |    Un second objectif sera, en plus de calculer une prime pure par police, de déterminer une commerciale intégrant une marge pour risque. Une approche par simulation sera réalisée pour juger de l’adéquation du chargement par rapport à la charge sinistre totale portefeuille.
 
 # Exploration des jeux de données freMPL1 et freMPL2
@@ -80,7 +80,7 @@ str(freMPL2)
 # On constate qu'il y a de nombreux types de données : des données numériques, des données descriptives (ex : Il y a troix types de garages : "collective garage", "None" et "Private Garage")
 ```
 
-Les noms des caractéristiques des jeux de données sont les mêmes. ses différentes caractéristiques sont :
+Les noms des caractéristiques des jeux de données sont les mêmes. Ses différentes caractéristiques sont :
 
 - **`r colnames_freMPL2[1]`** : il s'agit d'une donnée de type numérique qui correspond à la fréquence d'exposition aux risques d'un individu sur une année. Par exemple, si l'individu a été exposé 100 jours, le chiffre affiché est 0,27 (= 100/365,25).
 - **`r colnames_freMPL2[2]`** : c'est un nombre entier de mois correspondant à l'âge de la licence de la personne concernée.
@@ -97,7 +97,7 @@ Les noms des caractéristiques des jeux de données sont les mêmes. ses différ
 - **`r colnames_freMPL2[13]`** : il s'agit du type de modèle concerné par l'assurance de l'individu.
 - **`r colnames_freMPL2[14]`** : c'est un indicateur correspondant au prix du véhicule. 
 - **`r colnames_freMPL2[15]`** : cela correspond au type de moteur que possède le véhicule.
-- **`r colnames_freMPL2[16]`** : cela correspond au type d'énergie consommé par le véhicule
+- **`r colnames_freMPL2[16]`** : cela correspond au type d'énergie consommée par le véhicule
 - **`r colnames_freMPL2[17]`** : c'est la vitesse maximum que peut atteindre le véhicule. Les différentes catégories sont:"1-130 km/h", "130-140 km/h", "140-150 km/h", "150-160 km/h", "160-170 km/h", "170-180 km/h", "180-190 km/h", "190-200 km/h", "200-220 km/h", "220+ km/h".
 - **`r colnames_freMPL2[18]`** : il s'agit de la classe du véhicule.
 - **`r colnames_freMPL2[19]`** : Nombre compris entre 1 et 20 correspondant au risque inconnu probable.
@@ -122,7 +122,7 @@ knitr::kable(t(head(freMPL2,3)))
 Remarquons qu'il serait intéressant de faire un peu de nettoyage de données avant d'effectuer quelconques travaux sur celles-ci.
 Pour cela, nous allons créer une fonction qui servira à nettoyer les 2 data frames.
 
-Cette fonction (appelée nettoyage_dataframe) prend l'un des deux data frames en paramètres et effectue les opérations suivantes :
+Cette fonction (appelée nettoyage_dataframe) prend l'un des deux data frames en paramètre et effectue les opérations suivantes :
 
 - Suppression des données des individus assurés moins d'un jour (Exposure)
 - Modification des données des individus ayant un ClaimAmount négatif
@@ -266,7 +266,7 @@ dfSummary(freMPL1, plain.ascii = FALSE,style = "grid", headings = FALSE,
           graph.col = FALSE, valid.col = FALSE, lang = 'fr', dfSummary.silent = TRUE)
 ```
 
-|    On constate ainsi que, pour ce data frame, l'âge moyen du conducteur est de 46,3 ans avec pour écart-type 14,9 ans. Le plus jeune conducteur a 18 ans(âge minimum légale pour conduire en France) et le plus âgé a 97 ans. L'écart interquartile (IQR), c'est-à-dire la mesure de dispersion qui s'obtient en faisant la différence entre le premier (25% des valeurs du data frame sont inférieures à ce quartile) et le troisième quartile(75 %), est de 23. Autrement dit, 50% des âges des conducteurs est compris entre 35 et 58 ans. Le coefficient de variation (CV), le rapport entre l'écart-type et la moyenne, est égale à 3.  
+|    On constate ainsi que, pour ce data frame, l'âge moyen du conducteur est de 46,3 ans avec pour écart-type 14,9 ans. Le plus jeune conducteur a 18 ans(âge minimum légal pour conduire en France) et le plus âgé a 97 ans. L'écart interquartile (IQR), c'est-à-dire la mesure de dispersion qui s'obtient en faisant la différence entre le premier (25% des valeurs du data frame sont inférieures à ce quartile) et le troisième quartile (75 %), est de 23. Autrement dit, 50% des conducteurs ont un âge compris entre 35 et 58 ans. Le coefficient de variation (CV), le rapport entre l'écart-type et la moyenne, est égal à 3.  
 
 |    De même, en ce qui concerne l'usage du véhicule par son propriétaire, on remarquera que la plupart des personnes renseignées utilise leur véhicule pour les trajets privés et pour se rendre à leur bureau (44,1%).  
 
@@ -633,7 +633,7 @@ corrplot(get_pca_var(freMPL2.pca)$cos2, is.corr=FALSE)
 
 |    Pour visualiser le cosinus carré, nous aurions pu utiliser aussi la fonction *fviz_cos2()* du package *factoextra* pour créer un diagramme bâton du cosinus carré des variables. 
 
-|    Plus la valeur du cosinus carré est élévée, plus la réprésentation de la variable sur les axes prinicipaux prise en considération est bonne. Dans ce cas-là, la variable est positionnée à proximité de la circonférence du cercle de corrélation et le point associé dans le tableau de corrélation est gros et de couleur foncé.  
+|    Plus la valeur du cosinus carré est élévée, plus la réprésentation de la variable sur les axes prinicipaux prise en considération est bonne. Dans ce cas-là, la variable est positionnée à proximité de la circonférence du cercle de corrélation et le point associé dans le tableau de corrélation est grand et de couleur foncé.  
 |    Inversement, un faible cosinus carré indique que la variable n’est pas parfaitement représentée par les axes principaux. Dans ce cas, la variable est proche du centre du cercle et le point du tableau de corrélation est petit (voir inexistant). 
 
 Il est également possible de colorer les variables en fonction de la valeur de leurs cosinus carré.  
@@ -645,7 +645,7 @@ fviz_pca_var(freMPL2.pca, col.var = "cos2",
              )
 ```
 
-|    On remarquera donc que les variables DrivAge et LicAge sont bien représentées par nos axes principaux tandis que la variable RiskVar n'est pas bien représenté par nos axes. 
+|    On remarquera donc que les variables DrivAge et LicAge sont bien représentées par nos axes principaux tandis que la variable RiskVar n'est pas bien représentée par nos axes. 
 
 ###### Contribution des variables aux axes principaux
 
@@ -676,7 +676,7 @@ f5 <- fviz_contrib(freMPL2.pca, choice = "var", axes = 5, top = 4, title = "Dim-
 plot_grid(f1,f2,f3,f4,f5, ncol = 5, nrow = 1, align = "h")
 ```
 
-La ligne en pointillé rouge, sur les graphiques ci-dessus, indique la contribution moyenne attendue (dans notre cas, il est de 12,5%). Pour une composante donnée, une variable avec une contribution supérieure à ce seuil pourrait être considérée comme importante pour contribuer à la composante.
+La ligne en pointillés rouge, sur les graphiques ci-dessus, indique la contribution moyenne attendue (dans notre cas, il est de 12,5%). Pour une composante donnée, une variable avec une contribution supérieure à ce seuil pourrait être considérée comme importante pour contribuer à la composante.
 
 Enfin, on peut mettre en évidence les variables les plus importantes sur le graphe de corrélation. 
 
@@ -687,7 +687,7 @@ fviz_pca_var(freMPL2.pca, col.var = "contrib",
              )
 ```
 
-|    Au final, on notera que 5 de nos variables ont plus d'importances que les autres : l'age du conducteur, l'âge de la licence de ce conducteur, son bonus ou son malus, s'il a eu un accident pendant qu'il était assuré et le montant auquel il peut prétendre.  
+|    Au final, on notera que 5 de nos variables ont plus d'importance que les autres : l'age du conducteur, l'âge de la licence de ce conducteur, son bonus ou son malus, s'il a eu un accident pendant qu'il était assuré et le montant auquel il peut prétendre.  
 |    On a également vu que nos 8 variables peuvent être réduites en 5 nouvelles variables qui sont des combinaisons linéaires des anciennes variables, sans pour autant perdre d'informations ou très peu (17% de l'ensemble de nos données). 
 
 ### Analyse factorielle des correspondances (AFC)
@@ -763,7 +763,7 @@ fviz_screeplot (freMPL2.ca, addlabels = TRUE, ylim = c(0,90))+
   geom_hline (yintercept = 12.5, linetype = 2, color = "red")
 ```
 
-|    Selon le graphique ci-dessus, seule la dimension 1 doit être considérées pour l’interprétation de la solution. La dimension 2 explique seulement 11% de l’inertie totale, ce qui est inférieur à la valeur moyenne des axes (12,5%) et trop petit pour être éventuellement conservé pour une analyse plus approfondie.
+|    Selon le graphique ci-dessus, seule la dimension 1 doit être considérée pour l’interprétation de la solution. La dimension 2 explique seulement 11% de l’inertie totale, ce qui est inférieur à la valeur moyenne des axes (12,5%) et trop petit pour être éventuellement conservé pour une analyse plus approfondie.
 
 |    La dimension 1 explique environ 87,9% de l’inertie totale. Plus la rétention est élevée, plus la subtilité contenue dans les données d’origine est conservée dans la solution de l’AFC à faible dimension.
 
@@ -808,10 +808,10 @@ knitr::include_graphics("recaploisusuelles.png")
 |    Cependant les modèles linéaires classiques sont utilisés uniquement lorsque la variable réponse est de type numérique continue. Or dans le cas que nous étudions, nous allons principalement utiliser des variables binaires avec lesquelles nous devrons utiliser la loi de Bernouilli.
 De ce fait l’erreur qui résulte de notre modèle linéaire classique ne peut donc pas suivre une loi normale de moyenne nulle et de variance constante, nos résultats étant soit 0 ou 1.
 
-Un GLM est composé de trois éléments :
-1.	Un prédicteur linéaire
-2.	Une fonction de lien
-3.	Une structure des erreurs
+Un GLM est composé de trois éléments :  
+1.	Un prédicteur linéaire  
+2.	Une fonction de lien  
+3.	Une structure des erreurs  
 
 |    Les prédicteurs linéaires sont un ensemble de variables prédictives induisant une variable dépendante que l’on nomme réponse.
 $$\eta \; = \sum_{j=1}^{p} \beta_j\;X_{ij}$$
@@ -821,13 +821,13 @@ $$g(µ_y) =\sum_{j=1}^{p} \beta_j\;X_{ij}$$
 
 |    Le but d’une fonction de lien est primordial dans notre exemple, celle-ci va contraindre les valeurs prédites dans l’échelle des valeurs observées. On comprendra alors que cette fonction lien nous est nécessaire pour pouvoir analyser nos variables binaires.
 
-|    Enfin la structure des erreurs va donc devoir être adaptée par rapport à nos modèles linéaires classique afin qu’ils puissent correspondre à nos nouvelles données. Pour cela il existe plusieurs lois comme la loi de Poisson ou la loi Binomiale nous offrant une distribution des erreurs et des réponses qui seront différents.
+|    Enfin la structure des erreurs va donc devoir être adaptée par rapport à nos modèles linéaires classiques afin qu’ils puissent correspondre à nos nouvelles données. Pour cela il existe plusieurs lois comme la loi de Poisson ou la loi Binomiale nous offrant une distribution des erreurs et des réponses qui seront différentes.
 
 |    La loi de Poisson est principalement utilisée lorsqu’il s’agit de problèmes de comptage (nombre de poissons dans une rivière, nombre de buts marqués dans une saison etc.)
 
-|    Lorsque les données sont continues, nous pouvons donc utiliser une distribution Gaussienne, mais il existe également des distributions Binomiales négatives qui a pour but de modéliser des variables de comptage lorsque celles-ci sont sur-dispersées
+|    Lorsque les données sont continues, nous pouvons donc utiliser une distribution Gaussienne, mais il existe également des distributions Binomiales négatives qui a pour but de modéliser des variables de comptage lorsque celles-ci sont sur-dispersées.
 
-|    Ainsi, dans notre cas les distribution de Poisson ou binomiale négative peuvent être utiliser pour représenter les fréquences des sinistres
+|    Ainsi, dans notre cas les distributions de Poisson ou binomiales négatives peuvent être utiliser pour représenter les fréquences des sinistres.
 
 Et Gamma et Inverse gauss pour représenter la sévérité des sinistres
 
@@ -1294,7 +1294,7 @@ primeind6 <- calcul_prime(freMPL1[3,])
 
 # Annexes
 
-## Affichage de l'implementation de la fonction nettoyage_dataframe : 
+## Affichage de l'implémentation de la fonction nettoyage_dataframe : 
 
 ```
 nettoyage_dataframe <- function(dt){
