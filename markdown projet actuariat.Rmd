@@ -793,7 +793,7 @@ La famille exponentielle est à la base des fonctions de distribution utilisées
 
 La famille exponentielle regroupe les lois de probabilités dont la densité est donnée par
 $$f(x;\theta)- exp(\sum_{j=1}^k\eta_j(\theta)T_j(x)-B(\theta))h(x), x \in \chi$$ où $$\eta(.),T(.) : \mathbb{R}^k\rightarrow\mathbb{R}^k,h(.) : \mathbb{R}^d \rightarrow \mathbb{R}^k$$ la fonction de base
-$$B:\mathbb{R}\rightarrow\mathbb{R} \& \theta \in \iff \subset \mathbb{R}^k$$ est le vecteur de paramètres naturelles.
+$$B:\mathbb{R}\rightarrow\mathbb{R} \& \theta \in \iff \subset \mathbb{R}^k$$ est le vecteur de paramètres naturels.
 
 
 Voici un récapitulatif des lois usuelles utilisées en statistiques.
@@ -827,13 +827,13 @@ $$g(µ_y) =\sum_{j=1}^{p} \beta_j\;X_{ij}$$
 
 |    Lorsque les données sont continues, nous pouvons donc utiliser une distribution Gaussienne, mais il existe également des distributions Binomiales négatives qui a pour but de modéliser des variables de comptage lorsque celles-ci sont sur-dispersées.
 
-|    Ainsi, dans notre cas les distributions de Poisson ou binomiales négatives peuvent être utiliser pour représenter les fréquences des sinistres.
+|    Ainsi, dans notre cas les distributions de Poisson ou binomiales négatives peuvent être utilisées pour représenter les fréquences des sinistres.
 
 Et Gamma et Inverse gauss pour représenter la sévérité des sinistres
 
 ## Modélisation de la fréquence et de la sévérité des sinistres par les GLM
 
-|    Dans cette partie, nous allons voir comment on modélise la fréquence et la sévérité des sévérités grâce à des GLM afin de pouvoir, par la suite, calculer la prime pure. 
+|    Dans cette partie, nous allons voir comment on modélise la fréquence et la sévérité des sinistres grâce à des GLM afin de pouvoir, par la suite, calculer la prime pure. 
 |    Les compagnies d'assurance prennent de nombreux critères en compte pour le calcul de votre prime d’assurance automobile. Parmi eux, on trouve :
 
 - Les caractéristiques du véhicule
@@ -843,7 +843,7 @@ Et Gamma et Inverse gauss pour représenter la sévérité des sinistres
 - Le kilométrage parcouru chaque année
 - Le profil de conducteur : âge, date de permis, bonus-malus, antécédents d’assurance, etc.
 
-Bien que nous ne possédons pas la totalité de ses informations (par exemple, l'endroit où le véhicule est stationné ou le nombre de kilomètres parcourus), nous avons une quantité suffisante d'informations pour pouvoir calculer notre propre prime d'assurance.
+Bien que nous ne possédons pas la totalité de ces informations (par exemple, l'endroit où le véhicule est stationné ou le nombre de kilomètres parcourus), nous avons une quantité suffisante d'informations pour pouvoir calculer notre propre prime d'assurance.
 
 ### Fréquence des sinistres
 
@@ -851,9 +851,9 @@ Bien que nous ne possédons pas la totalité de ses informations (par exemple, l
 
 |    Avant de calculer cette prime, il faut d'abord s'intéresser à la fréquence des sinistres pour une police (un individu) donnée.  
 |    Pour celà, nous allons nous intéresser à la variable ClaimInd qui est un indice correspondant à l'événement "L'individu a eu un accident sur la période pour laquelle il était assuré". En effet, cette variable est à 1 si l'individu a subi un accident et à 0 sinon. 
-|    Ainsi, cette variable peut être associée à une expérience de Bernoulli, c'est-à-dire une expérience aléatoire comportant 2 issues, un succés ou un échec. Dans notre cas, le "succés" correspondrait au fait d'avoir eu au moins un accident et l'échec de ne pas avoir eu d'accident durant la durée d'exposition (période pendant lequel l'individu est assuré). La prédiction de notre modèle GLM correspondra donc à la probabilité qu'un individu avec ses caractéristiques associées d'avoir au moins un accident pendant qu'il est assuré.   
+|    Ainsi, cette variable peut être associée à une expérience de Bernoulli, c'est-à-dire une expérience aléatoire comportant 2 issues, un succés ou un échec. Dans notre cas, le "succés" correspondrait au fait d'avoir eu au moins un accident et l'échec de ne pas avoir eu d'accident durant la durée d'exposition (période pendant laquelle l'individu est assuré). La prédiction de notre modèle GLM correspondra donc à la probabilité qu'un individu avec ses caractéristiques associées d'avoir au moins un accident pendant qu'il est assuré.   
 
-|    Avant de faire une calibration de notre modèle, il est important de segmenter nos données continues comme l'âge du conducteur. En effet, l'âge du conducteur, s'il n'est pas diviser en plusieurs catégories, n'aura aucune influence puisqu'un coefficient unique lui serait associé. Pour catégoriser nos données, il faut utiliser l'instruction **cut()** en R. Voici un exemple d'utilisation : 
+|    Avant de faire une calibration de notre modèle, il est important de segmenter nos données continues comme l'âge du conducteur. En effet, l'âge du conducteur, s'il n'est pas divisé en plusieurs catégories, n'aura aucune influence puisqu'un coefficient unique lui serait associé. Pour catégoriser nos données, il faut utiliser l'instruction **cut()** en R. Voici un exemple d'utilisation : 
 ```{r, echo = TRUE}
 freMPL2$DrivAge <- cut(freMPL2$DrivAge, breaks = c(17,2:8*10,103))
 ```
@@ -894,7 +894,7 @@ glmfreqinit <- glm(ClaimInd~., offset = log(Exposure), family=binomial(link="log
 
 |    On remarquera la présence de 2 nouveaux arguments : offset et data. L'argument data sert à préciser le dataframe utilisé pour entraîner notre modèle et l'argument offset qui fixe le coefficient associé à la variable spécifié à 1.
 
-|    Pour juger de la pretinence de notre modèle, nous pouvons regarder le résumé de notre modèle (disponible en Annexes : Modèle GLM pour fréquence n°= 1). Sur ce résumé, nous pouvons voir de nombreuses informations comme l'estimate (qui correspond au coefficient attribué par un GLM à un terme) ou la p-value (utilisée pour quantifier la significativité statistique d'un résultat dans le cadre d'une hypothèse appélée hypothèse nulle) postulant l'égalité entre des paramètres statistiques comme la moyenne ou la variance de 2 échantillons mais nous pouvons aussi aussi avoir l'écart type ou encore l'intervalle de confiance associés aux différents coefficients. 
+|    Pour juger de la pretinence de notre modèle, nous pouvons regarder le résumé de notre modèle (disponible en Annexes : Modèle GLM pour fréquence n°= 1). Sur ce résumé, nous pouvons voir de nombreuses informations comme l'estimate (qui correspond au coefficient attribué par un GLM à un terme) ou la p-value (utilisée pour quantifier la significativité statistique d'un résultat dans le cadre d'une hypothèse appélée hypothèse nulle) postulant l'égalité entre des paramètres statistiques comme la moyenne ou la variance de 2 échantillons mais nous pouvons aussi aussi avoir l'écart type ou encore l'intervalle de confiance associé aux différents coefficients. 
 
 |    On peut également évalué la performance d'une régression logistique avec des métriques clés spécifiques comme : 
 
@@ -905,7 +905,7 @@ glmfreqinit <- glm(ClaimInd~., offset = log(Exposure), family=binomial(link="log
 
 |    Le critère le plus souvent utilisé pour améliorer son modèle est le critère AIC. En effet, plus les valeurs d'AIC sont petites, plus notre modèle est plus proche de la vérité.
 
-|    Pour trouver le modèle qui se rapproche donc le plus de la vérité, nous allons tester différents modèles avec une méthode progressive. C'est-à-dire que nous partons d'un modèle globale (contenant toutes les variables que l'on peut conserver) et que l'on ajoute et on supprime itérativement des variables dans le modèle afin de trouver le sous-ensemble de variables donnant le modèle le plus performant, c'est-à-dire un modèle qui réduit l'erreur de prédiction.
+|    Pour trouver le modèle qui se rapproche donc le plus de la vérité, nous allons tester différents modèles avec une méthode progressive. C'est-à-dire que nous partons d'un modèle global (contenant toutes les variables que l'on peut conserver) et que l'on ajoute et on supprime itérativement des variables dans le modèle afin de trouver le sous-ensemble de variables donnant le modèle le plus performant, c'est-à-dire un modèle qui réduit l'erreur de prédiction.
 
 |    Pour cela, nous allons utiliser la fonction **step()** qui réalise cette sélection pas à pas. Voici donc le modèle GLM qui se rapproche le plus de la vérité : 
 ```{r}
@@ -961,7 +961,7 @@ Avec:
 |    Fort heureusement pour nous, il existe une fonction R capable de calculer les fréquences selon les individus et selon les modèles GLM. Cette fonction est appelé **predict()** et s'implémente de la façon suivante : 
 > predict(glmfreqfinal, freMPL2, type = 'response'),2)
 
-|    Elle prend en paramètres un modèle linéaire (ici, glmfreqfinal), une base de données sur laquelle effectuée ces prédictions (freMPL2) et le type	de prediction (response ou autre). Dans notre cas, nous avons choisit le type 'response' qui nous renvoie l'espérance moyenne de la prédiction (donc ici notre fréquence). L'autre type nous aurait renvoyer la somme des coefficients (donc non transformée par la fonction réciproque). 
+|    Elle prend en paramètres un modèle linéaire (ici, glmfreqfinal), une base de données sur laquelle effectuée ces prédictions (freMPL2) et le type	de prediction (response ou autre). Dans notre cas, nous avons choisi le type 'response' qui nous renvoie l'espérance moyenne de la prédiction (donc ici notre fréquence). L'autre type nous aurait renvoyé la somme des coefficients (donc non transformée par la fonction réciproque). 
 
 ```{r, results = 'hide'}
 dtfreq <- data.frame(ClaimInd = freMPL2$ClaimInd,
@@ -1027,15 +1027,15 @@ knitr::kable(CompVehAge[,c("VehAge","frequence_predite_moyenne")])
 ```
 
 On constate donc que l'âge du conducteur n'influe pas énormément sur la fréquence de sinistre hormis chez les jeunes conducteurs (les apprentis) puisque leur fréquence est de 10% environ contre 5% environ pour les autres catégories d'âge. 
-De même, l'âge du véhicule n'influence pas la fréquence de sinistres ce qui explique probablement le fait que cette variable n'est pas été retenu pour établir notre modèle GLM.
+De même, l'âge du véhicule n'influence pas la fréquence de sinistres ce qui explique probablement le fait que cette variable n'ait pas été retenue pour établir notre modèle GLM.
 
 ### Sévérité des sinistres
 
 #### Mise en place et exécution du modèle GLM
 
-|    Après avoir déterminer la fréquence des sinistres, il nous faut maintenant calculer la sévérité de ces sinistres pour une police donnée.  
-|    Pour celà, nous allons nous intéresser à la variable ClaimAmount qui correspond à un montant auquel peut prétendre l'assurer en cas d'accident. Si le montant est nulle, c'est que la personne n'a pas eu d'accident sinon c'est qu'il en a eu au moins un. 
-|    Pour modéliser la sévérité des sinistres, la loi la plus utilisée est la loi de probabilité Gamma. C'est donc cette loi que nous allons utilisé pour faire notre prédiction. Le résultat de la prédiction de notre modèle GLM correspondra à une valeur numérique traduisant la sévérité de l'accident : Plus la valeur sera élévée, plus l'accident sera grave.
+|    Après avoir déterminé la fréquence des sinistres, il nous faut maintenant calculer la sévérité de ces sinistres pour une police donnée.  
+|    Pour cela, nous allons nous intéresser à la variable ClaimAmount qui correspond à un montant auquel peut prétendre l'assuré en cas d'accident. Si le montant est nul, c'est que la personne n'a pas eu d'accident sinon c'est qu'il en a eu au moins un. 
+|    Pour modéliser la sévérité des sinistres, la loi la plus utilisée est la loi de probabilité Gamma. C'est donc cette loi que nous allons utiliser pour faire notre prédiction. Le résultat de la prédiction de notre modèle GLM correspondra à une valeur numérique traduisant la sévérité de l'accident : Plus la valeur sera élévée, plus l'accident sera grave.
 ```{r}
 freMPL2 <- freMPL2save
 ```
@@ -1049,7 +1049,7 @@ freMPL2.posclaim <- freMPL2[freMPL2$ClaimAmount != 0,]
 |    Nous pouvons maintenant passer à la modélisation de la sévérité des sinistres grâce à notre GLM.
 
 |    Nous allons donc, comme pour la modélisation des sinistres, éxécuter un premier modèle GLM où la variable à expliquer est ClaimAmount, les variables explicatives correspondent à l'ensemble des autres variables de notre tableau. 
-|    Pour le type de loi, nous utilisons donc la famille Gamma et la fonction de lien associé log qui est le logarithme népérien. 
+|    Pour le type de loi, nous utilisons donc la famille Gamma et la fonction de lien associée log qui est le logarithme népérien. 
 
 |    Voici le premier modèle que nous avons utilisé dont le résultat figure en Annnexes au paragraphe "Modèle GLM pour sévérité n°=1" : 
 ```{r, echo = TRUE}
@@ -1102,7 +1102,7 @@ iterdiff2 <- iterinit2-iterfin2
 freMPL2 <- freMPL2[freMPL2$VehEngine!="GPL",]
 ```
 
-|    Pour calculer l'espérance de la sévérité des sinistres,, il suffit d'appliquer la même formule que pour E(N) : 
+|    Pour calculer l'espérance de la sévérité des sinistres, il suffit d'appliquer la même formule que pour E(N) : 
 $$E(B)=g^{-1}  \sum  a_i X_i $$
 
 avec, cette fois-ci, g-1 : la fonction réciproque de la fonction de lien (dans notre modèle, la fonction de lien est log(x) : $$log(x) = ln(x)$$) et donc sa fonction réciproque est la fonction exponentielle.
@@ -1251,7 +1251,7 @@ primeind6 <- calcul_prime(freMPL1[3,])
 
 |    Pour le partage d’informations, nous utilisions GitHub. De plus, lorsque nous avions des questions à poser à nos référents, nous échangions par mail.
 
-|    La communication entre nous s’est faite via Messenger ou Discord, cela nous a permis d’échanger par messagerie instantanée et par vocal, afin également d’avoir un historique des différents éléments que nous avions partagé.
+|    La communication entre nous s’est faite via Messenger ou Discord, cela nous a permis d’échanger par messagerie instantanée et par vocal, afin également d’avoir un historique des différents éléments que nous avions partagés.
 
 # Conclusion
 
@@ -1287,10 +1287,10 @@ primeind6 <- calcul_prime(freMPL1[3,])
   
 ## Littérature
 
--Mathématiques de l'assurance non Vie T.1 et T.2 par A. Charpentier et M. Denuit
--Generalized Linear Models. Chapman et Hall par T.J Hastie et R.J Tibshirani
--R: A language and Environment for Statistical Computing par R Core Team
--Cours sur l'Actuariat Non-Vie par C. Dutang
+-Mathématiques de l'assurance non Vie T.1 et T.2 par A. Charpentier et M. Denuit  
+-Generalized Linear Models. Chapman et Hall par T.J Hastie et R.J Tibshirani  
+-R: A language and Environment for Statistical Computing par R Core Team  
+-Cours sur l'Actuariat Non-Vie par C. Dutang  
 
 # Annexes
 
