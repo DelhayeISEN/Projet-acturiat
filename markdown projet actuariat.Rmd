@@ -1264,7 +1264,33 @@ primeind6 <- calcul_prime(freMPL1[3,])
 -	Juger des données que l’on peut exploiter ou non, et celles que l’on doit modifier.
 
 |    Ce projet a été très enrichissant, il nous a permis de nous familiariser avec le monde de l’assurance. Nous avons dû faire des choix : évincer certaines données afin de ne garder que les principales, modifier des données et choisir certaines lois afin qu’elles soient adaptées au mieux aux différents problèmes.
-|    Cependant, par manque de temps, la modélisation de la fréquence et de la sévérité des sinistres à l’aide des GAMs n’a pas été faite. Cela est donc une amélioration possible du projet.
+|    Cependant, par manque de temps, la modélisation de la fréquence et de la sévérité des sinistres à l’aide des GAMs n’a pas été faite. Cela est donc une amélioration possible du projet.  
+|    Nous avons cependant jugé util d'apporter des connaissances sur les modèles additifs généralisés en tant qu'ouverture pour une continuation du projet.
+
+# Ouverture sur les GAM
+
+|    Les Modèles Additifs Généralisés (GAM) sont des modèles visant à regrouper les propriétés des Modèles Linéaires Généralisés (GLM) ainsi que des modèles additifs.
+
+
+|    Les modèles additifs proposent une regression non paramétrique de notre modèle et sont une généralisation de la régression multiple. Ainsi dans une regression linéaire, on calcule un ajustement linéaire par les moindres carrés pour un ensemble de variables X appelé prédicteurs, afin de prévoir une variable dépendante Y.
+$$Y= b_0 + b_1*X_1+...+b_m*X_m$$
+Ici, les X représentent les m valeurs des variables prédictives, les b rerprésentent les coefficients de régression et Y notre variable dépendante.
+
+
+|    Les modèles additifs généralisés diffèrent des modèles linéaires généraux sur deux aspects :  
+- La distribution de la variable dépendante n'est pas obligatoirement normale. Celle-ci peut être discontinue comme dans le cas d'une distribution binomiale.  
+- La fonction de lien lie notre variable dépendante et nos variables prédictives par une fonction qui n'est pas forcément linéaire. La relation s'exprime ainsi :
+$$Y=g(b_0+b_1*X_1+...+b_m*X_m)$$
+où g représente une fonction.  
+
+|    L'objectif des GAM est de maximiser la qualité de la prévision d'une variable dépendante Y à partir de diverses distributions en estimant des fonctions non-paramétriques des variables prédictives liées à la variable dépendante par la fonction de lien.
+
+Ces distributions pour la variable dépendante peuvent suivre une distribution Normale, Gamma, Binomiale ou Poisson.
+
+Ainsi nous pouvons écrire un modèle additif généralisé de cette forme :
+$$g^{-1}(\mu Y)=\sum_i (f_i(X_i))$$
+où g est une fonction, μY est la valeur théorique de Y et f notre fonction lien avec X les paramètres prédictifs.
+
 
 # Bibliographie
 
@@ -1284,6 +1310,9 @@ primeind6 <- calcul_prime(freMPL1[3,])
 
 - Pour des compléments d'informations (lois de probabilités, ...):
 <https://www.wikipedia.org/>
+
+- Pour les GAM :
+<https://www.statsoft.fr/concepts-statistiques/modeles-additifs-generalises/modeles-additifs-generalises.php>
   
 ## Littérature
 

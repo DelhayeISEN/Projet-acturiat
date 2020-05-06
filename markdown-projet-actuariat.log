@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999992 (TeX Live 2020/W32TeX) (preloaded format=xelatex 2020.4.29)  4 MAY 2020 16:13
+This is XeTeX, Version 3.14159265-2.6-0.999992 (TeX Live 2020/W32TeX) (preloaded format=xelatex 2020.4.29)  6 MAY 2020 16:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1126,7 +1126,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 2510--2512
  []
 
 [31]
-Underfull \hbox (badness 10000) in paragraph at lines 2571--2574
+Underfull \hbox (badness 10000) in paragraph at lines 2584--2588
+
+ []
+
+Missing character: There is no μ in font [lmroman10-regular]:mapping=tex-text;!
+[32]
+Underfull \hbox (badness 10000) in paragraph at lines 2620--2623
 [][][][][][][][][][][] [][] [][][][][][][][][][][] [][] [][][][] [][] [] [][] [
 ][][][][] [][] [][][][][][][][] [] [][] [][] [][][] [][] [][][][][][][] [][] []
 [] [][] [][][][][][][][][][][] [][] [][][][][][][][][][][] [][] [][][][] [][] [
@@ -1134,29 +1140,29 @@ Underfull \hbox (badness 10000) in paragraph at lines 2571--2574
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2574--2577
+Underfull \hbox (badness 10000) in paragraph at lines 2623--2626
 [][][] [][] [][][][][][][][][][][] [][] [][][][][][][][][][][] [][] [][][][] []
 [] [] [][] [][][][][] [][] [][][][][][][][] [] [][] [][] [][][] [][] [][][][][]
 [][] [][] [][][][][][][][][][][] [][] [][][] [][] [][][][][][][][][][][][][][][
 ] [][]
  []
 
-[32] [33] [34] [35] [36]
-Overfull \hbox (296.74498pt too wide) in paragraph at lines 2922--2922
+[33] [34] [35] [36] [37]
+Overfull \hbox (296.74498pt too wide) in paragraph at lines 2977--2977
 []\TU/lmtt/m/n/10 ## lowest : carburation                    GPL               
              injection                      injection directe surpuissante élec
 trique[] 
  []
 
 
-Overfull \hbox (359.74498pt too wide) in paragraph at lines 2922--2922
+Overfull \hbox (359.74498pt too wide) in paragraph at lines 2977--2977
 []\TU/lmtt/m/n/10 ## highest: GPL                            injection         
              injection directe surpuissante électrique                     inje
 ction surpuissante[] 
  []
 
-[37]
-Overfull \hbox (2.03772pt too wide) in alignment at lines 2928--2932
+[38]
+Overfull \hbox (2.03772pt too wide) in alignment at lines 2983--2987
  [] [] [] 
  []
 
@@ -1237,11 +1243,11 @@ File: graphique/ClaimInd1.png Graphic file (type bmp)
 File: graphique/ClaimInd2.png Graphic file (type bmp)
 <graphique/ClaimInd2.png>
 
-Overfull \hbox (2.03772pt too wide) in alignment at lines 2932--3010
+Overfull \hbox (2.03772pt too wide) in alignment at lines 2987--3065
  [] [] [] 
  []
 
-[38] [39] [40] [41] [42] [43] [44] [45] [46] [47] [48] [49] [50]
+[39] [40] [41] [42] [43] [44] [45] [46] [47] [48] [49] [50] [51]
 The property list \polyglossia@langsetup contains the pairs (without outer
 braces):
 >  {latex/script}  =>  {latin}
@@ -1276,29 +1282,29 @@ braces):
 >  {french/babelname}  =>  {french}
 >  {french/localnumeral}  =>  {polyglossia@C@localnumeral}
 >  {french/Localnumeral}  =>  {polyglossia@C@localnumeral}.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 3374.
-[51]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 3374.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 3429.
+[52]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 3429.
 (./markdown-projet-actuariat.aux
 LaTeX Info: Redefining \rmfamily on input line 19.
 LaTeX Info: Redefining \sffamily on input line 19.
 LaTeX Info: Redefining \ttfamily on input line 19.
 )
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 3374.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 3374.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 3429.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 3429.
 
 Package rerunfilecheck Info: File `markdown-projet-actuariat.out' has not chang
 ed.
-(rerunfilecheck)             Checksum: F8A9B5B5302E049986349EFA1A9C63EE;8895.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 3374.
+(rerunfilecheck)             Checksum: 43FE20CE3BF6CC9682B43AEA484E1682;9053.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 3429.
  ) 
 Here is how much of TeX's memory you used:
- 18825 strings out of 481455
- 343048 string characters out of 5927330
- 801392 words of memory out of 5000000
- 35838 multiletter control sequences out of 15000+600000
+ 18826 strings out of 481455
+ 343071 string characters out of 5927330
+ 803437 words of memory out of 5000000
+ 35839 multiletter control sequences out of 15000+600000
  538765 words of font info for 74 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  53i,6n,118p,919b,527s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on markdown-projet-actuariat.pdf (51 pages).
+Output written on markdown-projet-actuariat.pdf (52 pages).
